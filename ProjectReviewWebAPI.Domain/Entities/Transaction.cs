@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Entities
 {
-    public class Transaction
+    public class Transaction : BaseEntity
     {
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
-        private string OtherName { get; set; }
-        private string Email { get; set; }
-        private string ProjectId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string OtherName { get; set; }
+        public string Email { get; set; }
+        public string ProjectId { get; set; }
         [Column(TypeName = "Money")]
-        private double Amount { get; set; }
-        private string InvoiceCode { get; set; }
+        public double Amount { get; set; }
+        public string InvoiceCode { get; set; }
     }
 }

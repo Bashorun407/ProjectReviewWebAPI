@@ -1,4 +1,6 @@
-﻿using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
+﻿using ProjectReviewWebAPI.Infrastructure.Persistence;
+using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
+using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -10,32 +12,36 @@ namespace ProjectReviewWebAPI.Infrastructure.UoW.Implementation
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private IClienttRepository clienttRepository;
-        private ICommentRepository commentRepository;
-        private IProjectRepository projectRepository; 
-        private IRatingRepository ratingRepository;
-        private IUserRepository serviceProvoderRepository;
-        private ITransactionRepository transactionRepository;
+        private ICommentRepository _commentRepository;
+        private IProjectRepository _projectRepository; 
+        private IRatingRepository _ratingRepository;
+        private IUserRepository _userRepository;
+        private ITransactionRepository _transactionRepository;
 
-
+        private readonly ApplicationDbContext _context;
 
         //Implementation starts here....
 
-        public IClienttRepository ClienttRepository => throw new NotImplementedException();
 
-        public ICommentRepository CommentRepository => throw new NotImplementedException();
+        public ICommentRepository CommentRepository => _commentRepository ?? new CommentRepository(_context);
 
-        public IProjectRepository ProjectRepository => throw new NotImplementedException();
+        public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
 
-        public IRatingRepository RatingRepository => throw new NotImplementedException();
+        public IRatingRepository RatingRepository => _ratingRepository ?? new RatingRepository(_context);
 
-        public IUserRepository ServiceProvoderRepository => throw new NotImplementedException();
+        public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context);
 
-        public ITransactionRepository TransactionRepository => throw new NotImplementedException();
+        public ITransactionRepository TransactionRepository => _transactionRepository ?? new TransactionRepository(_context);
 
-        public Task SaveAsyn()
+        public void Dispose()
         {
-            throw new NotImplementedException();
+           _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

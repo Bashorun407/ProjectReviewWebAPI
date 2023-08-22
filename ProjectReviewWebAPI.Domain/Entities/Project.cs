@@ -22,8 +22,8 @@ namespace ProjectReviewWebAPI.Domain.Entities
         [ForeignKey(nameof(User))]
         public string ProjectOwnerId { get; set; } 
         public string? ServiceProviderId { get; set; }
-        public DateOnly StartDate { get; set; } 
-        public DateOnly EndDate { get; set;}
+        public DateTime StartDate { get; set; } 
+        public DateTime EndDate { get; set;}
         public ProjectCompletionStatus ProjectStatus { get; set; }
         public ProjectApprovalStatus ProjectApprovalStatus { get; set; }
     }

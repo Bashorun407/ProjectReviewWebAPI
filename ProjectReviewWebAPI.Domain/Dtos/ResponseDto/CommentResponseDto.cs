@@ -8,8 +8,8 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
     public class CommentResponseDto
     {
-        private string UserName { get; set; }
-        private string Comments { get; set; }
+        public string UserName { get; set; }
+        public string Comments { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

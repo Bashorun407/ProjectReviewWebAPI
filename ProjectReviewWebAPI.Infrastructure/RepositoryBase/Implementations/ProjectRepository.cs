@@ -47,9 +47,12 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return  await _projects.FindAsync(projectId);
         }
 
-        public Task<PagedList<Project>> GetProjectByProjectName(ProjectRequestInputParameter parameterName)
+        public async Task<PagedList<Project>> GetProjectByProjectName(ProjectRequestInputParameter parameter)
         {
-            throw new NotImplementedException();
+            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize).ToListAsync();
+            var count = await _projects.CountAsync();
+
+            return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);
         }
     }
 }

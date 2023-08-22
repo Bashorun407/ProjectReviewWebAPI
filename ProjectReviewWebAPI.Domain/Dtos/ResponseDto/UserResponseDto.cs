@@ -9,11 +9,12 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
     public class UserResponseDto
     {
-        private string ProfilePicture { get; set; }
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
-        private string Specialization { get; set; }
-        private string Description { get; set; }
-        private ApplicationStatus Status { get; set; }
+        public string ProfilePicture { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Specialization { get; set; }
+        public string Description { get; set; }
+        public UserRole Role { get; set; }
+        public ApplicationStatus Status { get; set; }
     }
 }

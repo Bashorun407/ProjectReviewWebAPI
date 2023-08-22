@@ -8,9 +8,9 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class RatingRequestDto
     {
-        private string ProjectId { get; set; }
-        private int StarRating { get; set; }
-        private int RateCount { get; set; }
-        private double AverageRating { get; set; }
+        public string ProjectId { get; set; }
+        public int StarRating { get; set; }
+        public int RateCount { get; set; }
+        public double AverageRating { get; set; }
     }
 }

@@ -9,16 +9,17 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class UserRequestDto
     {
-        private string ProfilePicture { get; set; }
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
-        private DateOnly DateOfBirth { get; set; }
-        private string PhoneNumber { get; set; }
-        private string UserName { get; set; }
-        private string Email { get; set; }
-        private string Password { get; set; }
-        private string Specialization { get; set; }
-        private string Description { get; set; }
-        private ApplicationStatus Status { get; set; }
+        public string ProfilePicture { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string DateOfBirth { get; set; }
+        public string PhoneNumber { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Specialization { get; set; }
+        public string Description { get; set; }
+        public UserRole Role { get; set; }
+        public ApplicationStatus Status { get; set; }
     }
 }

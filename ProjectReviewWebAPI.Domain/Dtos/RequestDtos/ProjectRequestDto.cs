@@ -9,15 +9,15 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class ProjectRequestDto
     {
-        private string CoverImage { get; set; }
-        private string ProjectName { get; set; }
-        private string ProjectDescription { get; set; }
-        private string Category { get; set; }
+        public string CoverImage { get; set; }
+        public string ProjectName { get; set; }
+        public string ProjectDescription { get; set; }
+        public string Category { get; set; }
         [Column(TypeName = "Money")]
-        private double Budget { get; set; }
-        private string ProjectOwner { get; set; }
+        public double Budget { get; set; }
+        public string ProjectOwner { get; set; }
 
-        private DateOnly StartDate { get; set; }
-        private DateOnly EndDate { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
     }
 }

@@ -9,13 +9,14 @@ namespace ProjectReviewWebAPI.Infrastructure.UoW.Abstraction
 {
     public interface IUnitOfWork
     {
-        public IClienttRepository ClienttRepository { get; }
+
         public ICommentRepository CommentRepository { get; }
         public IProjectRepository ProjectRepository { get; }
         public IRatingRepository RatingRepository { get; }
-        public IUserRepository ServiceProvoderRepository { get; }
+        public IUserRepository UserRepository { get; }
         public ITransactionRepository TransactionRepository { get; }
 
-        Task SaveAsyn();
+        Task SaveAsync();
+        void Dispose();
     }
 }

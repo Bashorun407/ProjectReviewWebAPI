@@ -9,12 +9,12 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
     public class ProjectResponseDto
     {
-        private string CoverImage { get; set; }
-        private string ProjectName { get; set; }
-        private string Category { get; set; }
-        private string ProjectOwner { get; set; }
+        public string CoverImage { get; set; }
+        public string ProjectName { get; set; }
+        public string Category { get; set; }
+        public string ProjectOwner { get; set; }
 
-        private DateOnly StartDate { get; set; }
-        private DateOnly EndDate { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +9,8 @@ using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Infrastructure.UoW.Implementation;
 using System.Text;
 using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Application.Services.Implementations;
 
 namespace ProjectReview.WebAPI.Extensions
 {
