@@ -37,8 +37,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    ApplicationStatus = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -65,7 +66,11 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -75,36 +80,11 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CoverImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Category = table.Column<int>(type: "int", nullable: false),
-                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Budget = table.Column<decimal>(type: "Money", nullable: false),
-                    ProjectOwner = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectOwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceProviderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProjectStatus = table.Column<int>(type: "int", nullable: false),
-                    ProjectApprovalStatus = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ratings",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -117,7 +97,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OtherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -239,13 +220,46 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CoverImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Category = table.Column<int>(type: "int", nullable: false),
+                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Budget = table.Column<decimal>(type: "Money", nullable: false),
+                    ProjectOwner = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectOwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceProviderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProjectStatus = table.Column<int>(type: "int", nullable: false),
+                    ProjectApprovalStatus = table.Column<int>(type: "int", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Projects_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8eab1114-1e70-4ea5-8a00-52e70d8edc76", null, "Admin", "ADMIN" },
-                    { "946c608e-1edd-4f9c-bd6e-ed09f6e7fc45", null, "User", "USER" }
+                    { "51ad328a-8402-45a0-86a0-12866a65a662", null, "Admin", "ADMIN" },
+                    { "aba018d2-1f07-4870-98ea-f0297f60c2fa", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -286,6 +300,11 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_CommentId",
+                table: "Projects",
+                column: "CommentId");
         }
 
         /// <inheritdoc />
@@ -307,9 +326,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
@@ -323,6 +339,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
         }
     }
 }

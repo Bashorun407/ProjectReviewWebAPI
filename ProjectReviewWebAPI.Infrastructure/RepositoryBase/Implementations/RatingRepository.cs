@@ -30,9 +30,11 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return new PagedList<Rating>(result, count, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<Rating> GetRatingByProjectId(string projectId)
+        public async Task<Rating> GetRatingByUserId(string userId)
         {
-            return await _ratings.FindAsync();
+            var rate =  _ratings.Where(c=> c.UserId.Equals(userId)).FirstOrDefault();
+
+            return rate;
         }
     }
 }

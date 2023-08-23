@@ -12,6 +12,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface IRatingRepository : IRepository<Rating>
     {
         Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter);
-        Task<Rating> GetRatingByProjectId(string projectId);
+        Task<Rating> GetRatingByUserId(string userId);
     }
 }

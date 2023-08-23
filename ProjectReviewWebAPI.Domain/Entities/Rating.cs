@@ -10,13 +10,13 @@ namespace ProjectReviewWebAPI.Domain.Entities
     public class Rating : BaseEntity
     {
         [ForeignKey(nameof(User))]
-        private string UserId { get; set; }
-        private int StarRating { get; set; }
-        private int RateCount { get; set; }
-        private double AverageRating { get; set; }
+        public string UserId { get; set; }
+        public int StarRating { get; set; }
+        public int RateCount { get; set; }
+        public double AverageRating { get; set; }
 
         //Navigational property
-        private List<User> Users { get; set; }
+        public List<User> Users { get; set; }
 
     }
 }
