@@ -15,6 +15,8 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     {
         Task<StandardResponse<TransactionResponseDto>> AddTransaction(TransactionRequestDto transactionResquestDto);
         Task<StandardResponse<(IEnumerable<TransactionResponseDto> transactions, MetaData pagingData)>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter);
-        Task<StandardResponse<TransactionResponseDto>> GetTransactionByProjectId(TransactionRequestDto transactionRequestDto);
+        Task<StandardResponse<TransactionResponseDto>> GetTransactionByProjectId(string projectId);
+        Task<StandardResponse<TransactionResponseDto>> GetTransactionByInvoiceCode(string invoiceCode);
+
     }
 }
