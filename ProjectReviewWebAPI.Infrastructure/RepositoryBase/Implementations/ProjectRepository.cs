@@ -32,9 +32,15 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         }
 
-        public async Task<PagedList<Project>> GetProjectByCategory(ProjectRequestInputParameter parameter)
+        public Task<PagedList<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<PagedList<Project>> GetByCategory(ProjectRequestInputParameter parameter)
         {
             var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
+                .Where(c=> c.Category.Equals(parameter.SearchTerm))
                 .ToListAsync();
 
             var count = await _projects.CountAsync();
@@ -42,14 +48,54 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<Project> GetProjectById(string projectId)
+        public async Task<Project> GetById(int id)
+        {
+            return await _projects.FindAsync(id);
+        }
+
+        public async Task<Project> GetByProjectId(string projectId)
         {
             return  await _projects.FindAsync(projectId);
         }
 
-        public async Task<PagedList<Project>> GetProjectByProjectName(ProjectRequestInputParameter parameter)
+        public async Task<PagedList<Project>> GetByProjectName(ProjectRequestInputParameter parameter)
         {
-            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize).ToListAsync();
+            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
+                .Where(c=> c.ProjectName.Equals(parameter.SearchTerm))
+                .ToListAsync();
+            var count = await _projects.CountAsync();
+
+            return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);
+        }
+
+        public async Task<PagedList<Project>> GetByProjectOwnerId(ProjectRequestInputParameter parameter)
+        {
+            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
+                .Where(c=> c.ProjectOwnerId.Equals(parameter.SearchTerm))
+                .ToListAsync();
+
+            var count = await _projects.CountAsync();
+
+            return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);
+        }
+
+        public async Task<PagedList<Project>> GetByProjectStatus(ProjectRequestInputParameter parameter)
+        {
+            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
+                .Where(c => c.ProjectStatus.Equals(parameter.SearchTerm))
+                .ToListAsync();
+
+            var count = await _projects.CountAsync();
+
+            return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);
+        }
+
+        public async Task<PagedList<Project>> GetByServiceProviderId(ProjectRequestInputParameter parameter)
+        {
+            var result = await _projects.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
+                .Where(c=> c.ServiceProviderId.Equals(parameter.SearchTerm))
+                .ToListAsync();
+
             var count = await _projects.CountAsync();
 
             return new PagedList<Project>(result, count, parameter.PageNumber, parameter.PageSize);

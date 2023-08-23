@@ -32,15 +32,59 @@ namespace ProjectReview.WebAPI.Controllers
 
 
         [Authorize]
-        [HttpGet("{id}/id")]
-        public async Task<IActionResult> GetUserById(string id)
+        [HttpGet("id/{id}")]
+        public async Task<IActionResult> GetById(string id)
         {
             var result = await _userService.GetById(id);
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpGet("userId/{id}")]
+        public async Task<IActionResult> GetByUserId(string userId)
+        {
+            var result = await _userService.GetByUserId(userId);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("email/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var result = await _userService.GetByEmail(email);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("phoneNumber/{phoneNumber}")]
+        public async Task<IActionResult> GetUserByPhoneNumber(string phoneNumber)
+        {
+            var result = await _userService.GetByPhoneNumber(phoneNumber);
+            return Ok(result);
+        }
+
+        // GET: api/<UserController>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetUsersByRole([FromQuery] UserRequestInputParameter parameter)
+        {
+            var result = await _userService.GetByRole(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result.Data.users);
+        }
+
+        // GET: api/<UserController>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] UserRequestInputParameter parameter)
+        {
+            var result = await _userService.GetBySpecialization(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result.Data.users);
+        }
+
         // [Authorize]
-        [HttpPost("{id}/image")]
+        [HttpPost("image/{id}")]
         public IActionResult UploadProfilePic(string id, IFormFile file)
         {
             var result = _userService.UploadProfileImage(id, file);
@@ -61,7 +105,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // DELETE api/<UserController>/5
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

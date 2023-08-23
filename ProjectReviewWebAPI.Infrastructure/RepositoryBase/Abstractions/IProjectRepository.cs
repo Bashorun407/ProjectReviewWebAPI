@@ -12,8 +12,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface IProjectRepository : IRepository<Project>
     {
         Task<PagedList<Project>> GetAllProjects(ProjectRequestInputParameter parameter);
-        Task<PagedList<Project>> GetProjectByProjectName(ProjectRequestInputParameter parameterName);
-        Task<Project> GetProjectById(string projectId);
-        Task<PagedList<Project>> GetProjectByCategory(ProjectRequestInputParameter category);
+        Task<PagedList<Project>> GetByProjectName(ProjectRequestInputParameter parameterName);
+        Task<Project> GetById(int id);
+        Task<Project> GetByProjectId(string projectId);
+        Task<PagedList<Project>> GetByCategory(ProjectRequestInputParameter category);
+        Task<PagedList<Project>> GetByProjectOwnerId(ProjectRequestInputParameter parameter);
+        Task<PagedList<Project>> GetByServiceProviderId(ProjectRequestInputParameter parameter);
+        Task<PagedList<Project>> GetByProjectStatus(ProjectRequestInputParameter parameter);
+        Task<PagedList<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter);
     }
 }

@@ -17,8 +17,9 @@ namespace ProjectReviewWebAPI.Domain.Entities
         private string DateOfBirth { get; set; }
         public string Specialization { get; set; }
         public string Description { get; set; }
+        public string UserId { get; set; }
         public UserRole Role { get; set; }
-        public ApplicationStatus Status { get; set; }
+        public ApplicationStatus ApplicationStatus { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 

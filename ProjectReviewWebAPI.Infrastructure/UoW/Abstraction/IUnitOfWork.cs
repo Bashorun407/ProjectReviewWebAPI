@@ -15,6 +15,7 @@ namespace ProjectReviewWebAPI.Infrastructure.UoW.Abstraction
         public IRatingRepository RatingRepository { get; }
         public IUserRepository UserRepository { get; }
         public ITransactionRepository TransactionRepository { get; }
+        
 
         Task SaveAsync();
         void Dispose();

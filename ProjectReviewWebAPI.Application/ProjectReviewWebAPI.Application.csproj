@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectReviewWebAPI.Infrastructure\ProjectReviewWebAPI.Infrastructure.csproj" />
+    <ProjectReference Include="..\ProjectReviewWebAPI.Utility\ProjectReviewWebAPI.Utility.csproj" />
   </ItemGroup>
 
 </Project>

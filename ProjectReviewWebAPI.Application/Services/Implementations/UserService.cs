@@ -9,6 +9,7 @@ using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
+using ProjectReviewWebAPI.Utility.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             _logger.LogInformation("Creating user.");
             var user = _mapper.Map<User>(userRequestDto);
 
+            //Setting the userId of user
+            user.UserId = Utilities.GenerateUniqueId();
             _logger.LogInformation("Adding user to database");
             await _unitOfWork.UserRepository.CreateAsync(user);
             await _unitOfWork.SaveAsync();
@@ -44,7 +47,6 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var userDto = _mapper.Map<UserResponseDto>(user);
 
-            //return new StandardResponse<UserResponseDto>(201, true, "Created user successfully", userDto);
             return StandardResponse<UserResponseDto>.Success("User created successfully", userDto, 201);
 
         }
@@ -52,7 +54,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<UserResponseDto>> DeleteUser(string id)
         {
             _logger.LogInformation($"Checking for user with id: {id} ");
-            var user = await _unitOfWork.UserRepository.GetUserById(id);
+            var user = await _unitOfWork.UserRepository.GetById(id);
 
             if(user is null)
             {
@@ -78,9 +80,22 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
+        public async Task<StandardResponse<UserResponseDto>> GetByEmail(string email)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByEmail(email);
+
+            if(user is null)
+            {
+                return StandardResponse<UserResponseDto>.Failed($"User with email: {email} not found", 99);
+            }
+            var userDto = _mapper.Map<UserResponseDto>(user);
+
+            return StandardResponse<UserResponseDto>.Success("User by email found", userDto, 200);
+        }
+
         public async Task<StandardResponse<UserResponseDto>> GetById(string id)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(id);
+            var user = await _unitOfWork.UserRepository.GetById(id);
 
             if (user is null)
             {
@@ -92,10 +107,54 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success("Successfully retrieved a user", userDto, 200);
         }
 
+        public async Task<StandardResponse<UserResponseDto>> GetByPhoneNumber(string phoneNumber)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByPhoneNumber(phoneNumber);
+
+            if( user is null)
+            {
+                return StandardResponse<UserResponseDto>.Failed($"User with phone number: {phoneNumber} does not exist", 99);
+            }
+
+            var userDto = _mapper.Map<UserResponseDto>(user);
+
+            return StandardResponse<UserResponseDto>.Success($"User with phone number: {phoneNumber} found.", userDto, 200);
+        }
+
+        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetByRole(UserRequestInputParameter parameter)
+        {
+            var result = await _unitOfWork.UserRepository.GetUsersByUserRole(parameter);
+            var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+
+            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Users by role specified found", (usersDto, result.MetaData), 200);
+        }
+
+        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetBySpecialization(UserRequestInputParameter parameter)
+        {
+            var result = await _unitOfWork.UserRepository.GetUsersBySpecialization(parameter);
+
+            var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+
+            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Users by specialization specified found", (usersDto, result.MetaData), 200);
+        }
+
+        public async Task<StandardResponse<UserResponseDto>> GetByUserId(string userId)
+        {
+            var user = await _unitOfWork.UserRepository.GetByUserId(userId);
+            if(user is null)
+            {
+                return StandardResponse<UserResponseDto>.Failed($"User with id: {userId} does not exist", 99);
+            }
+
+            var userDto = _mapper.Map<UserResponseDto>(user);
+
+            return StandardResponse<UserResponseDto>.Success($"User with id: {userId} found", userDto, 200);
+        }
+
         public async Task<StandardResponse<UserResponseDto>> UpdateUser(string id, UserRequestDto userRequestDto)
         {
             _logger.LogInformation($"Checking for user with id: {id}");
-            var userExists = await _unitOfWork.UserRepository.GetUserById(id);
+            var userExists = await _unitOfWork.UserRepository.GetById(id);
 
             if(userExists is null)
             {

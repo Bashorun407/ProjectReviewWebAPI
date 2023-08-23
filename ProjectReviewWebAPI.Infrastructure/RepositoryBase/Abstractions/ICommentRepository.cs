@@ -12,6 +12,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface ICommentRepository : IRepository<Comment>
     {
         Task<PagedList<Comment>> GetAllComments(CommentRequestInputParameter parameter);
+        //Task<PagedList<Comment>> GetAllCommentByCondition(CommentRequestInputParameter parameter);
         Task<PagedList<Comment>> GetCommentByProjectId(CommentRequestInputParameter parameter);
         Task<PagedList<Comment>> GetCommentByUsername(CommentRequestInputParameter parameter);
 

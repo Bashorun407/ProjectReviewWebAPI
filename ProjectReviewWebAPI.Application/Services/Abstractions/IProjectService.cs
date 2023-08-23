@@ -13,11 +13,16 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
 {
     public interface IProjectService
     {
-        Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectResponseDto projectResponseDto);
+        Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto);
         Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetAllProjectsAsync(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetProjectsByProjectOwnerIdAsync(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetProjectsByServiceProviderIdAsync(ProjectRequestInputParameter paramter);
-        Task<StandardResponse<ProjectResponseDto>> GetProjectByProjectId(string projectId);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetProjectsByCategory(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectName(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectOwnerIdAsync(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByServiceProviderIdAsync(ProjectRequestInputParameter paramter);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectStatus(ProjectRequestInputParameter paramter);
+        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByApprovalStatus(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<ProjectResponseDto>> GetById(int id);
+        Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId);
         Task<StandardResponse<ProjectResponseDto>> UpdateProject(int id, ProjectRequestDto projectRequestDto);
         Task<StandardResponse<ProjectResponseDto>> DeleteProject(int id);
     }
