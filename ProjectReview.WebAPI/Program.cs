@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectReview.WebAPI.Extensions;
 using ProjectReviewWebAPI.Application;
+using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Application.Services.Implementations;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.ConfigureIdentity();
 builder.Services.ResolveDependencyInjection();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureSwaggerAuth();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 
 builder.Services.AddControllers();

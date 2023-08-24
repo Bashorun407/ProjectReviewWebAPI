@@ -22,7 +22,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<UserController>
         [Authorize(Roles ="Admin")]
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsers([FromQuery] UserRequestInputParameter parameter)
         {
             var result = await _userService.GetAllUsers(parameter);
@@ -65,7 +65,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<UserController>
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetAll")]
+        [HttpGet("usersByRole")]
         public async Task<IActionResult> GetUsersByRole([FromQuery] UserRequestInputParameter parameter)
         {
             var result = await _userService.GetByRole(parameter);
@@ -75,7 +75,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<UserController>
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetAll")]
+        [HttpGet("getBySpecializatiion")]
         public async Task<IActionResult> GetUsersBySpecialization([FromQuery] UserRequestInputParameter parameter)
         {
             var result = await _userService.GetBySpecialization(parameter);

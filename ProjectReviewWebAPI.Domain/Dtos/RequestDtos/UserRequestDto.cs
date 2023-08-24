@@ -19,6 +19,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public string Password { get; set; }
         public string Specialization { get; set; }
         public string Description { get; set; }
+        public string UserId { get; set; }
         public UserRole Role { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
     }

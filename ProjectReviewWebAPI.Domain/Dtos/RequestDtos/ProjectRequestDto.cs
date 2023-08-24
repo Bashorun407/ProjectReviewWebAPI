@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectReviewWebAPI.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public string CoverImage { get; set; }
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
-        public string Category { get; set; }
+        public Category Category { get; set; }
         [Column(TypeName = "Money")]
         public double Budget { get; set; }
-        public string ProjectOwner { get; set; }
+        public string ProjectOwnerID { get; set; }
 
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

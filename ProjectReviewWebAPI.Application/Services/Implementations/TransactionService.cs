@@ -8,6 +8,7 @@ using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
+using ProjectReviewWebAPI.Utility.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,17 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<TransactionResponseDto>> AddTransaction(TransactionRequestDto transactionResquestDto)
         {
+            //Checking if entered email is valid
+            if(!Utilities.IsValidEmail(transactionResquestDto.Email))
+            {
+                return StandardResponse<TransactionResponseDto>.Failed("Email is invalid", 99);
+            }
+
             _logger.LogInformation($"Creating transaction");
             var transaction = _mapper.Map<Transaction>(transactionResquestDto);
+
+            //Setting the internally generated invoice code of the transaction
+            transaction.InvoiceCode = Utilities.GenerateUniqueId();
             await _unitOfWork.TransactionRepository.CreateAsync(transaction);
             _logger.LogInformation("Saving new transaction to database");
             await _unitOfWork.SaveAsync();

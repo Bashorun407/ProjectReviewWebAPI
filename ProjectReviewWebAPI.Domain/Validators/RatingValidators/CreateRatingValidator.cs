@@ -10,6 +10,10 @@ namespace ProjectReviewWebAPI.Domain.Validators.RatingValidators
 {
     public class CreateRatingValidator : AbstractValidator<RatingRequestDto>
     {
-
+        public CreateRatingValidator()
+        {
+            RuleFor(d => d.UserId).NotEmpty().WithMessage("User ID field is required");
+            RuleFor(d => d.StarRating).NotEmpty().GreaterThanOrEqualTo(1).WithMessage("Rating field must be between 1 and 5");
+        }
     }
 }

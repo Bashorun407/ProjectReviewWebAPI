@@ -5,8 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Utility.Utility;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -44,8 +47,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<IdentityResult> RegisterUser(UserRequestDto userRequestDto, string role)
         {
+            userRequestDto.UserId = Utilities.GenerateUniqueId();
             var user = _mapper.Map<User>(userRequestDto);
-            user.UserName = user.Email;
+            //user.UserName = user.Email;
+            //Setting the internally generated userId of user
+           
             var result = await _userManager.CreateAsync(user, userRequestDto.Password);
             if (result.Succeeded)
             {

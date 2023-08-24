@@ -14,7 +14,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
 {
     public interface IUserService
     {
-        Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto);
+        //Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto);
         Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter);
         Task<StandardResponse<UserResponseDto>> GetById(string id);
         Task<StandardResponse<UserResponseDto>> GetByUserId(string userId);

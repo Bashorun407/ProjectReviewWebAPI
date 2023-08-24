@@ -51,13 +51,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "51ad328a-8402-45a0-86a0-12866a65a662",
+                            Id = "8a72901c-0076-457c-af8b-da81c474c0d2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "aba018d2-1f07-4870-98ea-f0297f60c2fa",
+                            Id = "eb83ccbb-ea1b-4e35-90c6-ca0779a60fe5",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -276,11 +276,24 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("RateCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StarRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -400,6 +413,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RatingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -430,6 +446,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RatingId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -492,9 +510,21 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .HasForeignKey("CommentId");
                 });
 
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.User", b =>
+                {
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.Rating", null)
+                        .WithMany("Users")
+                        .HasForeignKey("RatingId");
+                });
+
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Comment", b =>
                 {
                     b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

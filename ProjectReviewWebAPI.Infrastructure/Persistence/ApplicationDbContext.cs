@@ -22,6 +22,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Persistence
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
         }
+
+        public DbSet<ProfilePhoto> ProfilePhotos { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Rating> Ratings { get; set; }

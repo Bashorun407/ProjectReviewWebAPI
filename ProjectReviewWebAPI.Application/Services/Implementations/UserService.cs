@@ -33,12 +33,21 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             _logger = logger;
         }
 
-        public async Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto)
+/*        public async Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto)
         {
+            
+            //Checking if entered email is valid
+            if (!Utilities.IsEmailValid(userRequestDto.Email))
+            {
+                return StandardResponse<UserResponseDto>.Failed("Email is invalid", 99);
+            }
+            
+            //Hashing password
+            //userRequestDto.Password = Utilities.GenerateHash(userRequestDto.Password);
             _logger.LogInformation("Creating user.");
             var user = _mapper.Map<User>(userRequestDto);
 
-            //Setting the userId of user
+            //Setting the internally generated userId of user
             user.UserId = Utilities.GenerateUniqueId();
             _logger.LogInformation("Adding user to database");
             await _unitOfWork.UserRepository.CreateAsync(user);
@@ -49,7 +58,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             return StandardResponse<UserResponseDto>.Success("User created successfully", userDto, 201);
 
-        }
+        }*/
 
         public async Task<StandardResponse<UserResponseDto>> DeleteUser(string id)
         {
@@ -160,6 +169,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             {
                 _logger.LogError($"User with id: {id} does not exist.");
                 return StandardResponse<UserResponseDto>.Failed($"User with id: {id} does not exist.");
+            }
+
+            //Checking if entered email is valid
+            if (!Utilities.IsEmailValid(userRequestDto.Email))
+            {
+                return StandardResponse<UserResponseDto>.Failed("Email is invalid", 99);
             }
 
             var user = _mapper.Map<User>(userRequestDto);

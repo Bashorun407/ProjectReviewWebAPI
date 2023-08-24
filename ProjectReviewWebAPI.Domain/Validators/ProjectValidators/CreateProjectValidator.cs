@@ -10,6 +10,10 @@ namespace ProjectReviewWebAPI.Domain.Validators.ProjectValidators
 {
     public class CreateProjectValidator : AbstractValidator<ProjectRequestDto>
     {
-
+        public CreateProjectValidator()
+        {
+            RuleFor(d => d.ProjectName).NotEmpty().WithMessage("Name field is required");
+            RuleFor(d => d.ProjectDescription).NotEmpty().WithMessage("Project description field is required");
+        }
     }
 }

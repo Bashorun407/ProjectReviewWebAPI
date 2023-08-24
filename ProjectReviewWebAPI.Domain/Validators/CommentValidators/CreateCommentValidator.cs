@@ -10,5 +10,10 @@ namespace ProjectReviewWebAPI.Domain.Validators.CommentValidators
 {
     public class CreateCommentValidator : AbstractValidator<CommentRequestDto>
     {
+        public CreateCommentValidator()
+        {
+            RuleFor(d => d.UserName).NotEmpty().WithMessage("UserName field is required");
+            RuleFor(d => d.Comments).NotEmpty().WithMessage("Comment field is required");
+        }
     }
 }

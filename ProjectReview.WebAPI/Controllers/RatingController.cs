@@ -39,7 +39,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // POST api/<RatingController>
-        [HttpPost]
+        [HttpPost("addRating")]
         public async Task<IActionResult> AddRating([FromBody] RatingRequestDto ratingRequestDto)
         {
             var result = await _ratingService.AddRating(ratingRequestDto);
