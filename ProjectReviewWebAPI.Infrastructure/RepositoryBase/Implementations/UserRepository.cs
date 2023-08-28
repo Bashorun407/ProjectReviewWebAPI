@@ -45,7 +45,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
         {
             //return await _users.Where(c=> c.PhoneNumber.Equals(phoneNumber)).FirstOrDefaultAsync();
 
-            return await FindByCondition(c => c.PhoneNumber == phoneNumber, trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(c => c.PhoneNumber == phoneNumber, trackChanges).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetByUserId(string userId, bool trackChanges)

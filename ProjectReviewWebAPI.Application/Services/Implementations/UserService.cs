@@ -221,9 +221,6 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return null;
         }
 
-        Task<StandardResponse<IEnumerable<UserResponseDto>>> IUserService.GetByRole(UserRequestInputParameter parameter)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
