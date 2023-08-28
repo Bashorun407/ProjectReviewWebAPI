@@ -20,7 +20,10 @@ namespace ProjectReviewWebAPI.Infrastructure.UoW.Implementation
 
         private readonly ApplicationDbContext _context;
 
-        //Implementation starts here....
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
 
         public ICommentRepository CommentRepository => _commentRepository ?? new CommentRepository(_context);

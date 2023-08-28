@@ -14,14 +14,32 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
     public class RatingRepository : Repository<Rating>, IRatingRepository
     {
+        private readonly ApplicationDbContext _context;
         private readonly DbSet<Rating> _ratings;
 
         public RatingRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
             _ratings = context.Set<Rating>();
         }
 
-        public async Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter)
+        public async Task<IEnumerable<Rating>> GetAll(bool trackChanges)
+        {
+           var result =  FindAll(trackChanges);
+
+            return result;
+        }
+
+        public async Task<Rating> GetRatingByUserId(string userId, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).SingleOrDefaultAsync();
+
+            return result;
+        }
+
+
+
+        /*public async Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter)
         {
             var result = await _ratings.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
                 .ToListAsync();
@@ -36,5 +54,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
             return rate;
         }
+*/
     }
 }

@@ -24,9 +24,9 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetAllTransaction(TransactionRequestInputParameter parameter)
         {
             var result = await _transactionService.GetAllTransactionsAsync(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
 
-            return Ok(result.Data.transactions);
+            return Ok(result);
         }
 
         // GET api/<TransactionController>/5

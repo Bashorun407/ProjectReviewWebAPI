@@ -52,18 +52,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<TransactionResponseDto>.Success("New transaction added", transactionDto, 201); ;
         }
 
-        public async Task<StandardResponse<(IEnumerable<TransactionResponseDto> transactions, MetaData pagingData)>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.TransactionRepository.GetAllTransaction(parameter);
+            var result = await _unitOfWork.TransactionRepository.GetAll(false);
 
             var transactionsDto = _mapper.Map<IEnumerable<TransactionResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<TransactionResponseDto>, MetaData)>.Success("All transactions", (transactionsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<TransactionResponseDto>>.Success("All transactions", transactionsDto, 200);
         }
 
         public async Task<StandardResponse<TransactionResponseDto>> GetTransactionByInvoiceCode(string invoiceCode)
         {
-            var transaction = await _unitOfWork.TransactionRepository.GetTransactionByInvoiceCode(invoiceCode);
+            var transaction = await _unitOfWork.TransactionRepository.GetTransactionByInvoiceCode(invoiceCode, false);
             if(transaction is null)
             {
                 return StandardResponse<TransactionResponseDto>.Failed($"Transaction with invoice code: {invoiceCode} does exist.", 99);
@@ -77,7 +77,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<TransactionResponseDto>> GetTransactionByProjectId(string projectId)
         {
 
-            var transaction = await _unitOfWork.TransactionRepository.GetTransactionByProjectId(projectId);
+            var transaction = await _unitOfWork.TransactionRepository.GetTransactionByProjectId(projectId, false);
             if (transaction is null)
             {
                 return StandardResponse<TransactionResponseDto>.Failed($"Transaction with project id: {projectId} does exist.", 99);

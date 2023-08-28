@@ -44,29 +44,29 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<CommentResponseDto>.Success("Comment successful", commentDto, 201);
         }
 
-        public async Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetAllComments(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments(CommentRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.CommentRepository.GetAllComments(parameter);
+            var result = await _unitOfWork.CommentRepository.GetAll(false);
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<CommentResponseDto>, MetaData)>.Success("All Comments retrieved", (commentsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All Comments retrieved", commentsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetCommentsByProjectId(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByProjectId(CommentRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(parameter);
+            var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(parameter.SearchTerm, false);
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<CommentResponseDto>, MetaData)>.Success("All comments by projectId", (commentsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by projectId", commentsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetCommentsByUsername(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(CommentRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(parameter);
+            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(parameter.SearchTerm, false);
 
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<CommentResponseDto>, MetaData)>.Success("All comments by specified username", (commentsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by specified username", commentsDto, 200);
         }
     }
 }

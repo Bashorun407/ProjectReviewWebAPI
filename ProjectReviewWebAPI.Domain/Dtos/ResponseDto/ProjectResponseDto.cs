@@ -14,7 +14,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
         public string ProjectName { get; set; }
         public Category Category { get; set; }
         public string ProjectOwner { get; set; }
-
+        public string ProjectId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

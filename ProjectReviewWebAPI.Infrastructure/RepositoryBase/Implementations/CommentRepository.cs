@@ -15,13 +15,36 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
     public class CommentRepository : Repository<Comment>, ICommentRepository
     {
         private readonly DbSet<Comment> _comments;
+        private readonly ApplicationDbContext _context;
 
         public CommentRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
             _comments = context.Set<Comment>();
         }
 
-        public async Task<PagedList<Comment>> GetAllComments(CommentRequestInputParameter parameter)
+        public async Task<IEnumerable<Comment>> GetAll(bool trackChanges)
+        {
+            var result =  FindAll(trackChanges);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentByProjectId(string projectId, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.Equals(projectId), trackChanges).ToListAsync();
+
+            return result;
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentByUsername(string username, bool trackChanges)
+        {
+           var result = await FindByCondition(c => c.Equals(username), trackChanges).ToListAsync();
+
+            return result;
+        }
+
+        /*public async Task<PagedList<Comment>> GetAllComments(CommentRequestInputParameter parameter)
         {
             var result = await _comments.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
                 .ToListAsync();
@@ -52,5 +75,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
             return new PagedList<Comment>(result, count, parameter.PageNumber, parameter.PageSize);
         }
+*/
     }
 }

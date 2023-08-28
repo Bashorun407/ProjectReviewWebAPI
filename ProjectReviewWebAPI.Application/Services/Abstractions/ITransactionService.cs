@@ -14,9 +14,13 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     public interface ITransactionService
     {
         Task<StandardResponse<TransactionResponseDto>> AddTransaction(TransactionRequestDto transactionResquestDto);
-        Task<StandardResponse<(IEnumerable<TransactionResponseDto> transactions, MetaData pagingData)>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter);
+        Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter);
         Task<StandardResponse<TransactionResponseDto>> GetTransactionByProjectId(string projectId);
         Task<StandardResponse<TransactionResponseDto>> GetTransactionByInvoiceCode(string invoiceCode);
+
+/*        Task<StandardResponse<(IEnumerable<TransactionResponseDto> transactions, MetaData pagingData)>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter);
+        Task<StandardResponse<TransactionResponseDto>> GetTransactionByProjectId(string projectId);
+        Task<StandardResponse<TransactionResponseDto>> GetTransactionByInvoiceCode(string invoiceCode);*/
 
     }
 }

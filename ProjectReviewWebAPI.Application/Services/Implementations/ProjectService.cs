@@ -52,7 +52,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<ProjectResponseDto>> DeleteProject(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.GetById(id, false);
             if(project is null)
             {
                 return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);
@@ -68,27 +68,27 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<ProjectResponseDto>.Success("Project was deleted successfully", projectDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetAllProjectsAsync(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetAllProjects(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetAll(false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("All projects", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByApprovalStatus(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("Projects by Approval status ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by Approval status ", projectsDto, 200);
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> GetById(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.GetById(id, false);
 
             if(project is null)
             {
@@ -101,7 +101,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId)
         {
-            var project = await _unitOfWork.ProjectRepository.GetByProjectId(projectId);
+            var project = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);
 
             if (project is null)
             {
@@ -113,54 +113,54 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectName(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByProjectName(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByProjectName(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("Projects by project name ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by project name ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectOwnerIdAsync(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectOwnerIdAsync(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByProjectOwnerId(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByProjectOwnerId(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("Projects by project name ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by project name ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectStatus(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByProjectStatus(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByProjectStatus(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("Projects by completion status ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by completion status ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByServiceProviderIdAsync(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByServiceProviderId(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByServiceProvider(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("All projects by ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetProjectsByCategory(ProjectRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(ProjectRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByCategory(parameter);
+            var result = await _unitOfWork.ProjectRepository.GetByCategory(parameter.SearchTerm, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<ProjectResponseDto>, MetaData)>.Success("All projects by ", (projectsDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> UpdateProject(int id, ProjectRequestDto projectRequestDto)
         {
-            var projectExists = _unitOfWork.ProjectRepository.GetById(id);
+            var projectExists = _unitOfWork.ProjectRepository.GetById(id, false);
             if (projectExists is null)
             {
                 return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);

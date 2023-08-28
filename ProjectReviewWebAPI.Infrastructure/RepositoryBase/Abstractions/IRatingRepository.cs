@@ -11,7 +11,11 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 {
     public interface IRatingRepository : IRepository<Rating>
     {
-        Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter);
-        Task<Rating> GetRatingByUserId(string userId);
+
+        Task<IEnumerable<Rating>> GetAll(bool trackChanges);
+        Task<Rating>GetRatingByUserId(string userId, bool trackChanges);
+
+/*        Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter);
+        Task<Rating> GetRatingByUserId(string userId);*/
     }
 }

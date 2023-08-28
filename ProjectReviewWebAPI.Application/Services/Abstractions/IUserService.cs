@@ -15,13 +15,14 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     public interface IUserService
     {
         //Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto);
-        Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter);
+        //Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllUsers();
         Task<StandardResponse<UserResponseDto>> GetById(string id);
         Task<StandardResponse<UserResponseDto>> GetByUserId(string userId);
         Task<StandardResponse<UserResponseDto>> GetByEmail(string email);
         Task<StandardResponse<UserResponseDto>> GetByPhoneNumber(string phoneNumber);
-        Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetBySpecialization(UserRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetByRole(UserRequestInputParameter parameter);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(UserRequestInputParameter parameter);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRequestInputParameter parameter);
         Task<StandardResponse<UserResponseDto>> UpdateUser(string id,  UserRequestDto userRequestDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
         Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);

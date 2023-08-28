@@ -24,8 +24,8 @@ namespace ProjectReview.WebAPI.Controllers
         public  async Task<IActionResult> GetAllComments([FromQuery] CommentRequestInputParameter parameter)
         {
             var result = await _commentService.GetAllComments(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.comments);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<CommentController>
@@ -33,9 +33,9 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetCommentsByProjectId([FromQuery] CommentRequestInputParameter parameter)
         {
             var result = await _commentService.GetCommentsByProjectId(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             
-            return Ok(result.Data.comments);
+            return Ok(result);
         }
 
         // GET api/<CommentController>/5
@@ -43,9 +43,9 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetCommentsByUsername([FromQuery] CommentRequestInputParameter parameter)
         {
             var result = await _commentService.GetCommentsByUsername(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.comments));
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.comments));
 
-            return Ok(result.Data.comments);
+            return Ok(result);
         }
 
         // POST api/<CommentController>

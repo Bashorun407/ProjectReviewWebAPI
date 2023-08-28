@@ -24,9 +24,9 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetAllRatings([FromQuery] RatingRequestInputParameter parameter)
         {
             var result = await _ratingService.GetAllRatingsAsync(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             
-            return Ok(result.Data.ratings);
+            return Ok(result);
         }
 
         // GET api/<RatingController>/5

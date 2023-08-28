@@ -25,8 +25,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetAllProjects([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetAllProjectsAsync(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -34,8 +34,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByProjectName([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetByProjectName(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -43,8 +43,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByCategory([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetProjectsByCategory(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -53,8 +53,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByProjectOwnerId([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetByProjectOwnerIdAsync(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -63,8 +63,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByServiceProviderId([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetByServiceProviderIdAsync(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -72,8 +72,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetByProjectStatus(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<ProjectController>
@@ -82,8 +82,8 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> GetByApprovalStatus([FromQuery] ProjectRequestInputParameter parameter)
         {
             var result = await _projectService.GetByApprovalStatus(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.projects);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET api/<ProjectController>/5

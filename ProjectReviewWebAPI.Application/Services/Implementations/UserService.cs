@@ -63,7 +63,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<UserResponseDto>> DeleteUser(string id)
         {
             _logger.LogInformation($"Checking for user with id: {id} ");
-            var user = await _unitOfWork.UserRepository.GetById(id);
+            var user = await _unitOfWork.UserRepository.GetById(id, false);
 
             if(user is null)
             {
@@ -79,19 +79,34 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with id: {id} has been deleted.", userDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter)
+        /*        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter)
+                {
+                    var result = await _unitOfWork.UserRepository.GetAllUsers(parameter);
+
+                    var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+
+                    return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Successfully retrieved all users", (userDtos, result.MetaData), 200);
+
+                }*/
+
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllUsers()
         {
-            var result = await _unitOfWork.UserRepository.GetAllUsers(parameter);
+            var parameter = new UserRequestInputParameter();
 
-            var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var result = await _unitOfWork.UserRepository.GetAllUsers(false);
+            if (result != null)
+            {
+                var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Successfully retrieved all users", (userDtos, result.MetaData), 200);
+                return StandardResponse<IEnumerable<UserResponseDto>>.Success("Successfully retrieved all users", userDtos, 200);
+            }
+            return null;
 
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByEmail(string email)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByEmail(email);
+            var user = await _unitOfWork.UserRepository.GetUserByEmail(email, false);
 
             if(user is null)
             {
@@ -104,7 +119,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<UserResponseDto>> GetById(string id)
         {
-            var user = await _unitOfWork.UserRepository.GetById(id);
+            var user = await _unitOfWork.UserRepository.GetById(id, false);
 
             if (user is null)
             {
@@ -118,7 +133,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<UserResponseDto>> GetByPhoneNumber(string phoneNumber)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByPhoneNumber(phoneNumber);
+            var user = await _unitOfWork.UserRepository.GetUserByPhoneNumber(phoneNumber, false);
 
             if( user is null)
             {
@@ -130,26 +145,26 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with phone number: {phoneNumber} found.", userDto, 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetByRole(UserRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.UserRepository.GetUsersByUserRole(parameter);
+            var result = await _unitOfWork.UserRepository.GetByUserRole(parameter.SearchTerm, false);
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Users by role specified found", (usersDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by role specified found", (usersDto), 200);
         }
 
-        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetBySpecialization(UserRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(UserRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.UserRepository.GetUsersBySpecialization(parameter);
+            var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter.SearchTerm, false);
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Users by specialization specified found", (usersDto, result.MetaData), 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by specialization specified found", usersDto, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByUserId(string userId)
         {
-            var user = await _unitOfWork.UserRepository.GetByUserId(userId);
+            var user = await _unitOfWork.UserRepository.GetByUserId(userId, false);
             if(user is null)
             {
                 return StandardResponse<UserResponseDto>.Failed($"User with id: {userId} does not exist", 99);
@@ -163,7 +178,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<UserResponseDto>> UpdateUser(string id, UserRequestDto userRequestDto)
         {
             _logger.LogInformation($"Checking for user with id: {id}");
-            var userExists = await _unitOfWork.UserRepository.GetById(id);
+            var userExists = await _unitOfWork.UserRepository.GetById(id, false);
 
             if(userExists is null)
             {
@@ -204,6 +219,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<(bool, string)>.Success("Successfully uploaded image", (false, url), 204);*/
 
             return null;
+        }
+
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> IUserService.GetByRole(UserRequestInputParameter parameter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -11,8 +11,12 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 {
     public interface ITransactionRepository : IRepository<Transaction>
     {
-        Task<PagedList<Transaction>> GetAllTransaction(TransactionRequestInputParameter parameter);
+
+        Task<IEnumerable<Transaction>> GetAll(bool trackChanges);
+        Task<Transaction> GetTransactionByProjectId(string projectId, bool trackChanges);
+        Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode, bool trackChanges);
+/*        Task<PagedList<Transaction>> GetAllTransaction(TransactionRequestInputParameter parameter);
         Task<Transaction> GetTransactionByProjectId(string projectId);
-        Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode);
+        Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode);*/
     }
 }

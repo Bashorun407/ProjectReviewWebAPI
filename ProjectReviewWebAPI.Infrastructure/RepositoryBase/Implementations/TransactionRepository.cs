@@ -14,14 +14,38 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
     public class TransactionRepository : Repository<Transaction>, ITransactionRepository
     {
+        private readonly ApplicationDbContext _context;
         private readonly DbSet<Transaction> _transactions;
 
         public TransactionRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
             _transactions = context.Set<Transaction>();
         }
 
-        public async Task<PagedList<Transaction>> GetAllTransaction(TransactionRequestInputParameter parameter)
+        public async Task<IEnumerable<Transaction>> GetAll(bool trackChanges)
+        {
+            var result =  FindAll(trackChanges);
+            return result;
+        }
+
+        public async Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode, bool trackChanges)
+        {
+            var result = await FindByCondition( c => c.InvoiceCode.Equals(invoiceCode), trackChanges).SingleOrDefaultAsync();
+
+            return result;
+        }
+
+        public async Task<Transaction> GetTransactionByProjectId(string projectId, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.ProjectId.Equals(projectId), trackChanges).SingleOrDefaultAsync();
+
+            return result;
+        }
+
+
+
+        /*public async Task<PagedList<Transaction>> GetAllTransaction(TransactionRequestInputParameter parameter)
         {
             var result = await _transactions.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize).ToListAsync();
             var count = await _transactions.CountAsync();
@@ -38,6 +62,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
         public async Task<Transaction> GetTransactionByProjectId(string projectId)
         {
             return await _transactions.FindAsync(projectId);
-        }
+        }*/
     }
 }

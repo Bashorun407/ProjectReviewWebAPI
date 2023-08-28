@@ -21,13 +21,13 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<UserController>
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpGet("getAll")]
-        public async Task<IActionResult> GetAllUsers([FromQuery] UserRequestInputParameter parameter)
+        public async Task<IActionResult> GetAllUsers()
         {
-            var result = await _userService.GetAllUsers(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.users);
+            var result = await _userService.GetAllUsers();
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data));
+            return Ok(result);
         }
 
 
@@ -47,7 +47,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+       //[Authorize]
         [HttpGet("email/{email}")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
@@ -55,7 +55,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("phoneNumber/{phoneNumber}")]
         public async Task<IActionResult> GetUserByPhoneNumber(string phoneNumber)
         {
@@ -64,23 +64,23 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<UserController>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("usersByRole")]
         public async Task<IActionResult> GetUsersByRole([FromQuery] UserRequestInputParameter parameter)
         {
             var result = await _userService.GetByRole(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.users);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // GET: api/<UserController>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("getBySpecializatiion")]
         public async Task<IActionResult> GetUsersBySpecialization([FromQuery] UserRequestInputParameter parameter)
         {
             var result = await _userService.GetBySpecialization(parameter);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result.Data.users);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
         }
 
         // [Authorize]
@@ -105,7 +105,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // DELETE api/<UserController>/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

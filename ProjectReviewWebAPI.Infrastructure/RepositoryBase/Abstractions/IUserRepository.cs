@@ -1,4 +1,5 @@
-﻿using ProjectReviewWebAPI.Domain.Entities;
+﻿using ProjectReviewWebAPI.Domain.Dtos;
+using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System;
@@ -11,14 +12,22 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<PagedList<User>> GetAllUsers(UserRequestInputParameter parameter);
-        Task<User> GetById(string id);
-        Task<User> GetByUserId(string userId);
+        //Task<PagedList<User>> GetAllUsers(UserRequestInputParameter parameter);
+        //Task<PagedList<User>> GetAllUsers();
 
-        Task<User> GetUserByPhoneNumber(string phoneNumber);
-        Task<User> GetUserByEmail(string email);
-        Task<PagedList<User>> GetUsersBySpecialization(UserRequestInputParameter parameter);
-        Task<PagedList<User>> GetUsersByUserRole(UserRequestInputParameter parameter);
-        Task<PagedList<User>> GetByApplicationStatus(UserRequestInputParameter parameter);
+        /*        Task<PagedList<User>> GetUsersBySpecialization(UserRequestInputParameter parameter);
+                Task<PagedList<User>> GetUsersByUserRole(UserRequestInputParameter parameter);
+                Task<PagedList<User>> GetByApplicationStatus(UserRequestInputParameter parameter);*/
+
+        Task<IEnumerable<User>> GetAllUsers(bool trackChanges);
+        //Task<StandardResponse<IEnumerable<User>>> GetAllUsers();
+        Task<User> GetById(string id, bool trackChanges);
+        Task<User> GetByUserId(string userId, bool trackChanges);
+
+        Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges);
+        Task<User> GetUserByEmail(string email, bool trackChanges);
+        Task<IEnumerable<User>> GetBySpecialization(string specialization, bool trackChanges);
+        Task<IEnumerable<User>> GetByUserRole(string role, bool trackChanges);
+        Task<IEnumerable<User>> GetByApplicationStatus(string applicationStatus, bool trackChanges);
     }
 }

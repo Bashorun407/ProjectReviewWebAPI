@@ -22,7 +22,7 @@ namespace ProjectReview.WebAPI.Extensions
         public static void ResolveDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
