@@ -31,7 +31,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -39,7 +39,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("userId/{id}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {

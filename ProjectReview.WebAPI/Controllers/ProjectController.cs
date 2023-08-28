@@ -48,7 +48,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<ProjectController>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("projectOwnerId")]
         public async Task<IActionResult> GetByProjectOwnerId([FromQuery] ProjectRequestInputParameter parameter)
         {
@@ -58,7 +58,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<ProjectController>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("serviceProvider")]
         public async Task<IActionResult> GetByServiceProviderId([FromQuery] ProjectRequestInputParameter parameter)
         {
@@ -77,7 +77,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<ProjectController>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("approvalStatus")]
         public async Task<IActionResult> GetByApprovalStatus([FromQuery] ProjectRequestInputParameter parameter)
         {
