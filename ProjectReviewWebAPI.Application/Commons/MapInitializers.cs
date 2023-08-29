@@ -17,13 +17,16 @@ namespace ProjectReviewWebAPI.Application.Commons
             CreateMap<Comment, CommentResponseDto>();
             CreateMap<CommentRequestDto, Comment>();
             CreateMap<Project,  ProjectResponseDto>();
+            CreateMap<ProjectUpdateDto, Project>();
             CreateMap<CommentRequestDto, Project>();
             CreateMap<Rating, RatingResponseDto>();
             CreateMap<RatingRequestDto, Rating>();
             CreateMap<Transaction, TransactionResponseDto>();
             CreateMap<TransactionRequestDto, Transaction>();
             CreateMap<User, UserResponseDto>();
-            CreateMap<UserRequestDto, User>();
+            //CreateMap<UserRequestDto, User>();
+            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserUpdateDto, User>();
         }
     }
 }

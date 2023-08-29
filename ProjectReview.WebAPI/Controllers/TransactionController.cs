@@ -21,9 +21,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<TransactionController>
         [HttpGet("allTransactions")]
-        public async Task<IActionResult> GetAllTransaction(TransactionRequestInputParameter parameter)
+        public async Task<IActionResult> GetAllTransaction()
         {
-            var result = await _transactionService.GetAllTransactionsAsync(parameter);
+            var result = await _transactionService.GetAllTransactionsAsync();
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
 
             return Ok(result);
@@ -54,16 +54,5 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-/*        // PUT api/<TransactionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<TransactionController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
     }
 }

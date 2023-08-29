@@ -1,5 +1,6 @@
 ﻿using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System;
@@ -26,8 +27,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 
         Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges);
         Task<User> GetUserByEmail(string email, bool trackChanges);
-        Task<IEnumerable<User>> GetBySpecialization(string specialization, bool trackChanges);
-        Task<IEnumerable<User>> GetByUserRole(string role, bool trackChanges);
-        Task<IEnumerable<User>> GetByApplicationStatus(string applicationStatus, bool trackChanges);
+        Task<IEnumerable<User>> GetBySpecialization(Specialization specialization, bool trackChanges);
+        Task<IEnumerable<User>> GetByUserRole(UserRole role, bool trackChanges);
+        Task<IEnumerable<User>> GetByUserType(UserType type, bool trackChanges);
+        Task<IEnumerable<User>> GetByApplicationStatus(ApplicationStatus applicationStatus, bool trackChanges);
     }
 }

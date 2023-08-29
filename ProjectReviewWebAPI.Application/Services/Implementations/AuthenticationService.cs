@@ -27,13 +27,16 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _config;
         private User _user;
+        private readonly IEmailService _emailService;
 
-        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper, UserManager<User> userManager, IConfiguration config)
+
+        public AuthenticationService(ILogger<AuthenticationService> logger, IMapper mapper, UserManager<User> userManager, IConfiguration config, IEmailService emailService)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
             _config = config;
+            _emailService = emailService;
         }
 
         public async Task<string> CreateToken()
@@ -45,18 +48,24 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<IdentityResult> RegisterUser(UserRequestDto userRequestDto, string role)
+        public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto, string role)
         {
-            userRequestDto.UserId = Utilities.GenerateUniqueId();
-            var user = _mapper.Map<User>(userRequestDto);
-            //user.UserName = user.Email;
-            //Setting the internally generated userId of user
            
-            var result = await _userManager.CreateAsync(user, userRequestDto.Password);
+            var user = _mapper.Map<User>(userRegisterDto);
+            //assigning a unique UserId to each user
+            user.UserId = Utilities.GenerateUniqueId();
+            user.Specialization = Domain.Enums.Specialization.None;
+
+            var result = await _userManager.CreateAsync(user, userRegisterDto.Password);
+            //Send an email to notify user
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, role);
             }
+
+            //user.UserName = user.Email;
+            _emailService.SendEmailAsync(user.Email, "Successful Register Notification", 
+                $"Dear {user.FirstName} {user.LastName}, \nYou have successfully registered on BookReev.\nYour unique id is: {user.UserId}. \n Thank you!");
             return result;
         }
 

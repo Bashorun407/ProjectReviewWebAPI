@@ -25,7 +25,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<IEnumerable<Transaction>> GetAll(bool trackChanges)
         {
-            var result =  FindAll(trackChanges);
+            var result =  FindAll(trackChanges).OrderByDescending(c => c.Amount);
             return result;
         }
 

@@ -22,12 +22,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<TransactionService> _logger;
+        private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
+        private readonly IProjectService _projectService;
 
-        public TransactionService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<TransactionService> logger)
+        public TransactionService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<TransactionService> logger, IEmailService emailService, IUserService userService, IProjectService projectService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _emailService = emailService;
+            _userService = userService;
+            _projectService = projectService;
         }
 
         public async Task<StandardResponse<TransactionResponseDto>> AddTransaction(TransactionRequestDto transactionResquestDto)
@@ -47,12 +53,28 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             _logger.LogInformation("Saving new transaction to database");
             await _unitOfWork.SaveAsync();
 
+            //To retrieve user details from project database
+            var result = _projectService.GetByProjectId(transaction.ProjectId);
+            var project = _mapper.Map<Project>(result);
+
+            //Using the project details to retrieve project owner details from user database
+            var projectOwnerRes = _userService.GetByUserId(project.ProjectOwnerId);
+            var projectOwner = _mapper.Map<User>(projectOwnerRes);
+            //email notification to project-owner 
+            _emailService.SendEmailAsync(projectOwner.Email, "Project Payment Notification", $"Dear {projectOwner.FirstName},\n You have successfully paid for project-id :{project.ProjectId}.\n Thank You.");
+
+            //Using the project details to retrieve service-provider details from the database
+            var serviceProviderRes = _userService.GetByUserId(project.ServiceProviderId);
+            var serviceProvider = _mapper.Map<User>(serviceProviderRes);
+            //email notification to service-provider 
+            _emailService.SendEmailAsync(projectOwner.Email, "Project Commencement Notification", $"Dear {serviceProvider.FirstName},\n You can commence with project-id :{project.ProjectId}");
+
             var transactionDto = _mapper.Map<TransactionResponseDto>(transaction);
 
             return StandardResponse<TransactionResponseDto>.Success("New transaction added", transactionDto, 201); ;
         }
 
-        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync()
         {
             var result = await _unitOfWork.TransactionRepository.GetAll(false);
 

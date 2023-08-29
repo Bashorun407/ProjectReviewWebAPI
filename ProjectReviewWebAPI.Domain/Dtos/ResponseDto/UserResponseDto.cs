@@ -14,7 +14,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
         public string LastName { get; set; }
         public string Specialization { get; set; }
         public string Description { get; set; }
-        public UserRole Role { get; set; }
+        public UserType Role { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
     }
 }

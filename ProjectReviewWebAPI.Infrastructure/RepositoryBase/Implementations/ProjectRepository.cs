@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
@@ -30,13 +31,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetByApprovalStatus(string approvalStatus, bool trackChanges)
+        public async Task<IEnumerable<Project>> GetByApprovalStatus(ProjectApprovalStatus approvalStatus, bool trackChanges)
         {
             var result = await FindByCondition(c => c.ProjectApprovalStatus.Equals(approvalStatus), trackChanges).ToListAsync();
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetByCategory(string category, bool trackChanges)
+        public async Task<IEnumerable<Project>> GetByCategory(Category category, bool trackChanges)
         {
             var result = await FindByCondition(c => c.Category.Equals(category), trackChanges).ToListAsync();
 
@@ -71,9 +72,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetByProjectStatus(string projectStatus, bool trackChanges)
+        public async Task<IEnumerable<Project>> GetByProjectStatus(ProjectCompletionStatus projectStatus, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.ProjectStatus.Equals(projectStatus), trackChanges).ToListAsync();
+            var result = await FindByCondition(c => c.ProjectCompletionStatus.Equals(projectStatus), trackChanges).ToListAsync();
 
             return result;
         }

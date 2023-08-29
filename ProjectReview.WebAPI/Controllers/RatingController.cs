@@ -21,9 +21,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<RatingController>
         [HttpGet("allRatings")]
-        public async Task<IActionResult> GetAllRatings([FromQuery] RatingRequestInputParameter parameter)
+        public async Task<IActionResult> GetAllRatings()
         {
-            var result = await _ratingService.GetAllRatingsAsync(parameter);
+            var result = await _ratingService.GetAllRatingsAsync();
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             
             return Ok(result);
@@ -47,16 +47,5 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-/*        // PUT api/<RatingController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RatingController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
     }
 }

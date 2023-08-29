@@ -21,28 +21,28 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<CommentController>
         [HttpGet("allComments")]
-        public  async Task<IActionResult> GetAllComments([FromQuery] CommentRequestInputParameter parameter)
+        public  async Task<IActionResult> GetAllComments()
         {
-            var result = await _commentService.GetAllComments(parameter);
+            var result = await _commentService.GetAllComments();
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         // GET: api/<CommentController>
-        [HttpGet("commentsByProjectId")]
-        public async Task<IActionResult> GetCommentsByProjectId([FromQuery] CommentRequestInputParameter parameter)
+        [HttpGet("commentsByProjectId/{projectId}")]
+        public async Task<IActionResult> GetCommentsByProjectId(string projectId)
         {
-            var result = await _commentService.GetCommentsByProjectId(parameter);
+            var result = await _commentService.GetCommentsByProjectId(projectId);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             
             return Ok(result);
         }
 
         // GET api/<CommentController>/5
-        [HttpGet("commentsByUserName")]
-        public async Task<IActionResult> GetCommentsByUsername([FromQuery] CommentRequestInputParameter parameter)
+        [HttpGet("commentsByUserName/{username}")]
+        public async Task<IActionResult> GetCommentsByUsername([FromQuery] string username)
         {
-            var result = await _commentService.GetCommentsByUsername(parameter);
+            var result = await _commentService.GetCommentsByUsername(username);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.comments));
 
             return Ok(result);
@@ -57,16 +57,5 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-/*        // PUT api/<CommentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CommentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
     }
 }

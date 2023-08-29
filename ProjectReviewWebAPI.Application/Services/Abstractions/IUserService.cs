@@ -2,6 +2,7 @@
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System;
@@ -21,9 +22,11 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<UserResponseDto>> GetByUserId(string userId);
         Task<StandardResponse<UserResponseDto>> GetByEmail(string email);
         Task<StandardResponse<UserResponseDto>> GetByPhoneNumber(string phoneNumber);
-        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(UserRequestInputParameter parameter);
-        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRequestInputParameter parameter);
-        Task<StandardResponse<UserResponseDto>> UpdateUser(string id,  UserRequestDto userRequestDto);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(Specialization specialization);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(ApplicationStatus applicationStatus);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRole userRole);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(UserType userType);
+        Task<StandardResponse<UserResponseDto>> UpdateUser(string id,  UserUpdateDto userUpdateDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
         Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);
 

@@ -22,9 +22,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // POST api/<AuthenticationController>
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRequestDto userRequestDto)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
-            var result = await _authenticationService.RegisterUser(userRequestDto, role: "User");
+            var result = await _authenticationService.RegisterUser(userRegisterDto, role: "User");
 
             if(!result.Succeeded)
             {
@@ -41,9 +41,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] UserRequestDto requestDto)
+        public async Task<IActionResult> RegisterAdmin([FromBody] UserRegisterDto userRegisterDto)
         {
-            var result = await _authenticationService.RegisterUser(requestDto, role: "Admin");
+            var result = await _authenticationService.RegisterUser(userRegisterDto, role: "Admin");
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)

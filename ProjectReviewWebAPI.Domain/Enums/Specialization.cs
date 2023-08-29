@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Enums
 {
-    public enum UserRole
+    public enum Specialization
     {
-        REGULAR = 1, ADMIN
+        None = 1, Writer, Editor, Researcher, Reviewer, Proof_Reader, Proof_Writer, Copyrighting
     }
 }

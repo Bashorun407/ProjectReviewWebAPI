@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System.Text.Json;
 
@@ -22,66 +23,66 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
-        public async Task<IActionResult> GetAllProjects([FromQuery] ProjectRequestInputParameter parameter)
+        public async Task<IActionResult> GetAllProjects()
         {
-            var result = await _projectService.GetAllProjectsAsync(parameter);
+            var result = await _projectService.GetAllProjectsAsync();
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         // GET: api/<ProjectController>
-        [HttpGet("projectName")]
-        public async Task<IActionResult> GetByProjectName([FromQuery] ProjectRequestInputParameter parameter)
+        [HttpGet("projectName/{projectName}")]
+        public async Task<IActionResult> GetByProjectName(string projectName)
         {
-            var result = await _projectService.GetByProjectName(parameter);
+            var result = await _projectService.GetByProjectName(projectName);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         // GET: api/<ProjectController>
-        [HttpGet("projectCategory")]
-        public async Task<IActionResult> GetByCategory([FromQuery] ProjectRequestInputParameter parameter)
+        [HttpGet("projectCategory/{category}")]
+        public async Task<IActionResult> GetByCategory(Category category)
         {
-            var result = await _projectService.GetProjectsByCategory(parameter);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
-        }
-
-        // GET: api/<ProjectController>
-        //[Authorize(Roles = "Admin")]
-        [HttpGet("projectOwnerId")]
-        public async Task<IActionResult> GetByProjectOwnerId([FromQuery] ProjectRequestInputParameter parameter)
-        {
-            var result = await _projectService.GetByProjectOwnerIdAsync(parameter);
+            var result = await _projectService.GetProjectsByCategory(category);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
-        [HttpGet("serviceProvider")]
-        public async Task<IActionResult> GetByServiceProviderId([FromQuery] ProjectRequestInputParameter parameter)
+        [HttpGet("projectOwnerId/{ownerId}")]
+        public async Task<IActionResult> GetByProjectOwnerId(string ownerId)
         {
-            var result = await _projectService.GetByServiceProviderIdAsync(parameter);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
-        }
-
-        // GET: api/<ProjectController>
-        [HttpGet("projectStatus")]
-        public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] ProjectRequestInputParameter parameter)
-        {
-            var result = await _projectService.GetByProjectStatus(parameter);
+            var result = await _projectService.GetByProjectOwnerIdAsync(ownerId);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
-        [HttpGet("approvalStatus")]
-        public async Task<IActionResult> GetByApprovalStatus([FromQuery] ProjectRequestInputParameter parameter)
+        [HttpGet("serviceProvider/{providerId}")]
+        public async Task<IActionResult> GetByServiceProviderId(string providerId)
         {
-            var result = await _projectService.GetByApprovalStatus(parameter);
+            var result = await _projectService.GetByServiceProviderIdAsync(providerId);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
+        }
+
+        // GET: api/<ProjectController>
+        [HttpGet("projectStatus/{status}")]
+        public async Task<IActionResult> GetByProjectCompletionStatus(ProjectCompletionStatus status)
+        {
+            var result = await _projectService.GetByProjectStatus(status);
+            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            return Ok(result);
+        }
+
+        // GET: api/<ProjectController>
+        //[Authorize(Roles = "Admin")]
+        [HttpGet("approvalStatus/{status}")]
+        public async Task<IActionResult> GetByApprovalStatus(ProjectApprovalStatus status)
+        {
+            var result = await _projectService.GetByApprovalStatus(status);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -96,12 +97,6 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-     /*   // GET api/<ProjectController>/5
-        [HttpGet("projectId/{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }*/
 
         // POST api/<ProjectController>
         [HttpPost("createProject")]
@@ -115,9 +110,9 @@ namespace ProjectReview.WebAPI.Controllers
         // PUT api/<ProjectController>/5
         [Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectRequestDto projectRequestDto)
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
-            var result = await _projectService.UpdateProject(id, projectRequestDto);
+            var result = await _projectService.UpdateProject(id, projectUpdateDto);
 
             return Ok(result);
         }

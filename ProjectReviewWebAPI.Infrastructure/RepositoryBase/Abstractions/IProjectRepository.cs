@@ -1,4 +1,5 @@
 ﻿using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System;
@@ -18,9 +19,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
         Task<Project> GetByProjectId(string projectId, bool trackChanges);
         Task<IEnumerable<Project>> GetByProjectOwnerId(string projectOwnerId, bool trackChanges);
         Task<IEnumerable<Project>> GetByServiceProvider(string serviceProviderId, bool trackChanges);
-        Task<IEnumerable<Project>> GetByCategory(string category, bool trackChanges);
-        Task<IEnumerable<Project>> GetByProjectStatus(string projectStatus, bool trackChanges);
-        Task<IEnumerable<Project>> GetByApprovalStatus(string approvalStatus, bool trackChanges);
+        Task<IEnumerable<Project>> GetByCategory(Category category, bool trackChanges);
+        Task<IEnumerable<Project>> GetByProjectStatus(ProjectCompletionStatus projectStatus, bool trackChanges);
+        Task<IEnumerable<Project>> GetByApprovalStatus(ProjectApprovalStatus approvalStatus, bool trackChanges);
  
 
 

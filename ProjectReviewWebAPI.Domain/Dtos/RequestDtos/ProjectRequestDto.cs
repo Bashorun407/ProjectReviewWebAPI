@@ -18,7 +18,5 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public double Budget { get; set; }
         public string ProjectOwnerID { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
     }
 }

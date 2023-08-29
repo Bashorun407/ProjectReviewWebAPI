@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Entities;
+using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
@@ -43,7 +44,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges)
         {
-            //return await _users.Where(c=> c.PhoneNumber.Equals(phoneNumber)).FirstOrDefaultAsync();
 
             return await FindByCondition(c => c.PhoneNumber == phoneNumber, trackChanges).FirstOrDefaultAsync();
         }
@@ -53,24 +53,31 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await FindByCondition(c => c.UserId == userId, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<User>> GetBySpecialization(string specialization, bool trackChanges)
+        public async Task<IEnumerable<User>> GetBySpecialization(Specialization specialization, bool trackChanges)
         {
            var result = await FindByCondition(c => c.Specialization.Equals(specialization), trackChanges).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetByUserRole(string role, bool trackChanges)
+        public async Task<IEnumerable<User>> GetByUserRole(UserRole role, bool trackChanges)
         {
             var result = await FindByCondition(c => c.Role.Equals(role), trackChanges).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetByApplicationStatus(string applicationStatus, bool trackChanges)
+        public async Task<IEnumerable<User>> GetByApplicationStatus(ApplicationStatus applicationStatus, bool trackChanges)
         {
             var result = await FindByCondition(c => c.ApplicationStatus.Equals(applicationStatus), trackChanges).ToListAsync();
 
+            return result;
+        }
+
+        public async Task<IEnumerable<User>> GetByUserType(UserType type, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserType.Equals(type), trackChanges).OrderByDescending(c => c.ChargeRate).ToListAsync();
+            
             return result;
         }
 

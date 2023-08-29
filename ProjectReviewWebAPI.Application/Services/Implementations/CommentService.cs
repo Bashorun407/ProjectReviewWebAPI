@@ -44,7 +44,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<CommentResponseDto>.Success("Comment successful", commentDto, 201);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments()
         {
             var result = await _unitOfWork.CommentRepository.GetAll(false);
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
@@ -52,17 +52,17 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All Comments retrieved", commentsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByProjectId(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByProjectId(string projectId)
         {
-            var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(parameter.SearchTerm, false);
+            var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(projectId, false);
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
             return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by projectId", commentsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(CommentRequestInputParameter parameter)
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username)
         {
-            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(parameter.SearchTerm, false);
+            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(username, false);
 
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 

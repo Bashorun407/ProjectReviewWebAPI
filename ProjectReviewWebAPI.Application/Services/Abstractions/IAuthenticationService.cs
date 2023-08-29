@@ -10,7 +10,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
 {
     public interface IAuthenticationService
     {
-        Task<IdentityResult> RegisterUser(UserRequestDto userRequestDto, string role);
+        Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto, string role);
         Task<bool> ValidateUser(UserLoginDto userLoginDto);
         Task<string> CreateToken();
     }
