@@ -108,7 +108,7 @@ namespace ProjectReview.WebAPI.Controllers
         // PUT api/<UserController>/5
         //[Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateDto userUpdateDto)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateRequestDto userUpdateDto)
         {
             var result = await _userService.UpdateUser(id, userUpdateDto);
             return Ok(result);

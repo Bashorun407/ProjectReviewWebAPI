@@ -26,7 +26,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(ApplicationStatus applicationStatus);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRole userRole);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(UserType userType);
-        Task<StandardResponse<UserResponseDto>> UpdateUser(string id,  UserUpdateDto userUpdateDto);
+        Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id,  UserUpdateRequestDto userUpdateDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
         Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);
 

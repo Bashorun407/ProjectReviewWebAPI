@@ -14,19 +14,27 @@ namespace ProjectReviewWebAPI.Application.Commons
     {
         public MapInitializers()
         {
-            CreateMap<Comment, CommentResponseDto>();
+
             CreateMap<CommentRequestDto, Comment>();
-            CreateMap<Project,  ProjectResponseDto>();
+            CreateMap<Comment, CommentResponseDto>();
+
+            CreateMap<ProjectRequestDto, Project>();
             CreateMap<ProjectUpdateDto, Project>();
-            CreateMap<CommentRequestDto, Project>();
-            CreateMap<Rating, RatingResponseDto>();
+            CreateMap<Project, ProjectResponseDto>();
+
             CreateMap<RatingRequestDto, Rating>();
-            CreateMap<Transaction, TransactionResponseDto>();
+            CreateMap<Rating, RatingResponseDto>();
+
             CreateMap<TransactionRequestDto, Transaction>();
-            CreateMap<User, UserResponseDto>();
-            //CreateMap<UserRequestDto, User>();
+            CreateMap<Transaction, TransactionResponseDto>();
+
             CreateMap<UserRegisterDto, User>();
-            CreateMap<UserUpdateDto, User>();
+            CreateMap<User, UserResponseDto>();
+
+            CreateMap<UserUpdateRequestDto, User>();
+            CreateMap<User, UserUpdateResponseDto>();
+
+
         }
     }
 }

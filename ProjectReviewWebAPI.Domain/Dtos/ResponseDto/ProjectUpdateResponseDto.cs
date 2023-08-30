@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectReviewWebAPI.Domain.Enums
+namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public enum ProjectApprovalStatus
+    public class ProjectUpdateResponseDto
     {
-        NotApproved = 1, AdjustProject, Approved
+
     }
 }

@@ -19,7 +19,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public double Budget { get; set; }
         public string ProjectOwner { get; set; }
 
-        [ForeignKey(nameof(User))]
+        //[ForeignKey(nameof(User))]
         public string ProjectOwnerId { get; set; } 
         public string? ServiceProviderId { get; set; }
         public DateTime? StartDate { get; set; } 
@@ -28,6 +28,6 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public ProjectApprovalStatus ProjectApprovalStatus { get; set; }
 
         //Navigation Property
-        public User User { get; set; }
+        //public User User { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230830142547_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "85199cff-ffa4-432d-8dcd-93333c5f8fd7",
+                            Id = "439d45be-7177-460d-9382-2339d3e8cfa8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d9d9ccb2-844e-4a51-a46a-f62cbd32ee71",
+                            Id = "83a7e6f1-3531-46d3-a74d-de3569e4c13d",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -328,9 +331,11 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Ratings");
                 });
@@ -537,6 +542,17 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasOne("ProjectReviewWebAPI.Domain.Entities.Comment", null)
                         .WithMany("Projects")
                         .HasForeignKey("CommentId");
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
+                {
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Comment", b =>

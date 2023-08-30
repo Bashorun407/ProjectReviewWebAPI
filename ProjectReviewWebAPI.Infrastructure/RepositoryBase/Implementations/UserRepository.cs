@@ -39,7 +39,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<User> GetById(string id, bool trackChanges)
         {
-            return await FindByCondition(c => c.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(c => c.Id==id, trackChanges).SingleOrDefaultAsync();
         }
 
         public async Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges)

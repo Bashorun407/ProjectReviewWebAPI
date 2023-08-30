@@ -10,7 +10,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
 {
     public class Rating : BaseEntity
     {
-        [ForeignKey(nameof(User))]
+        //[ForeignKey(nameof(User))]
         public string UserId { get; set; }
         [Range(1, 5)]
         public int StarRating { get; set; }
@@ -18,7 +18,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public double AverageRating { get; set; }
 
         //Navigational property
-        public User Users { get; set; }
+        //public User Users { get; set; }
 
     }
 }

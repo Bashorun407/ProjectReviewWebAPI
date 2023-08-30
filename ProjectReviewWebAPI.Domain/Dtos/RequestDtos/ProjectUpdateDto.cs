@@ -14,5 +14,6 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public DateTime EndDate { get; set; }
         public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
         public ProjectApprovalStatus ProjectApprovalStatus { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.Now;
     }
 }

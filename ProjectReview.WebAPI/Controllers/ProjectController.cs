@@ -108,7 +108,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // PUT api/<ProjectController>/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
@@ -118,7 +118,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // DELETE api/<ProjectController>/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

@@ -25,12 +25,16 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<ProjectService> _logger;
+        private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
-        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger)
+        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger, IEmailService emailService, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _emailService = emailService;
+            _userService = userService;
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto)
@@ -46,6 +50,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             await _unitOfWork.SaveAsync();
             _logger.LogInformation($"Project with project Id: {project.ProjectId} successfully saved to database");
 
+            //Sends email notification to projectOwner that project has been created
+            var productOwner = await _unitOfWork.UserRepository.GetByUserId(project.ProjectOwnerId, false);
+            var owner = _mapper.Map<User>(productOwner);
+            _emailService.SendEmailAsync(owner.Email, "Project Creation Notification", $"Dear {owner.LastName}, {owner.FirstName},\nYou have successfully created a project with project-id: {project.ProjectId}.\nThank you for your patronage.");
+
+
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
 
             return StandardResponse<ProjectResponseDto>.Success("Project successfully created", projectDto, 201);
@@ -59,12 +69,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
                 return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);
             }
 
-            var projectDto = _mapper.Map<ProjectResponseDto>(project);
-
             _logger.LogInformation("Project is about to be deleted");
             _unitOfWork.ProjectRepository.Delete(project);
             await _unitOfWork.SaveAsync();
             _logger.LogInformation($" Project with project id: {project.Id} has been deleted");
+
+            var projectDto = _mapper.Map<ProjectResponseDto>(project);
 
             return StandardResponse<ProjectResponseDto>.Success("Project was deleted successfully", projectDto, 200);
         }
@@ -72,6 +82,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()
         {
             var result = await _unitOfWork.ProjectRepository.GetAll(false);
+
+            if(result is null)
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -161,20 +176,28 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<ProjectResponseDto>> UpdateProject(int id, ProjectUpdateDto projectUpdateDto)
         {
-            var projectExists = _unitOfWork.ProjectRepository.GetById(id, false);
+            var projectExists = await _unitOfWork.ProjectRepository.GetById(id, false);
             if (projectExists is null)
             {
                 return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);
             }
 
-            var project = _mapper.Map<Project>(projectUpdateDto);
-            project.ModifiedAt = DateTime.Now;
+            var updatedEntity = _mapper.Map(projectUpdateDto, projectExists);
 
             _logger.LogInformation("Project is about to be updated");
-             _unitOfWork.ProjectRepository.Update(project);
+             _unitOfWork.ProjectRepository.Update(updatedEntity);
             await _unitOfWork.SaveAsync();
-            _logger.LogInformation($" Project with project id: {project.Id} has been updated");
-            var projectDto = _mapper.Map<ProjectResponseDto>(project);
+            
+            _logger.LogInformation($" Project with project id: {updatedEntity.Id} has been updated");
+            var projectDto = _mapper.Map<ProjectResponseDto>(updatedEntity);
+
+            if (projectUpdateDto.ProjectCompletionStatus.Equals(ProjectCompletionStatus.Completed))
+            {
+                var productOwner = await _unitOfWork.UserRepository.GetByUserId(projectExists.ProjectOwnerId, false);
+
+                //Sends email notification to projectOwner that project has been completed
+                _emailService.SendEmailAsync(productOwner.Email, "Project Completion Notification", $"Dear {productOwner.LastName}, {productOwner.FirstName},\nYour project with project id: {projectExists.ProjectId} has been completed successfully.");
+            }
 
             return StandardResponse<ProjectResponseDto>.Success("Project was updated successfully", projectDto, 200);
         }

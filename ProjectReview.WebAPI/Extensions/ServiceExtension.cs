@@ -22,6 +22,10 @@ namespace ProjectReview.WebAPI.Extensions
         public static void ResolveDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICommentService,  CommentService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IRatingService,  RatingService>();
+            services.AddScoped<ITransactionService, TransactionService>();  
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
