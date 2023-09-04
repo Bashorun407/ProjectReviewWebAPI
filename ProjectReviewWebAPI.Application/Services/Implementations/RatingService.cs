@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
@@ -33,9 +34,42 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation("New rating for service provider");
             var rate = _mapper.Map<Rating>(ratingRequestDto);
-            await _unitOfWork.RatingRepository.CreateAsync(rate);
+
+            //Check if a rating has been done for that user prior.
+            var findRate = await _unitOfWork.RatingRepository.FindByCondition(c => c.UserId.Equals(rate.UserId), false).SingleOrDefaultAsync();
+            
+            if (findRate == null)
+            {
+                //If there was no rating for a, create a new rating
+                rate.RateCount = 1; //Incrementing the count
+                rate.AverageRating = rate.StarRating;
+
+                await _unitOfWork.RatingRepository.CreateAsync(rate);
+                await _unitOfWork.SaveAsync();
+
+                _logger.LogInformation("Saved new rate to database");
+                var newRate = _mapper.Map<RatingResponseDto>(rate);
+
+                return StandardResponse<RatingResponseDto>.Success("Thanks for the new review", newRate, 201);
+
+            }
+
+            //Obtaining current data for average and count
+            double currentAverage = rate.AverageRating;
+            int currentCount = rate.RateCount;
+
+            //Getting new values
+            findRate.StarRating = rate.StarRating;
+            findRate.RateCount = findRate.RateCount + 1;
+
+            //To calculate the new average: Product of former average and former count summed with new rating and all
+            //...divided with new count (i.e. former count + 1
+            findRate.AverageRating =((currentAverage * currentCount) + rate.StarRating) / (currentCount + 1);
+
+            //Updating with the new rate
+            _unitOfWork.RatingRepository.Update(findRate);
             await _unitOfWork.SaveAsync();
-            _logger.LogInformation("Saved new rate to database");
+            _logger.LogInformation("Updated rate to database");
             var rateDto = _mapper.Map<RatingResponseDto>(rate);
 
             return StandardResponse<RatingResponseDto>.Success("Thanks for reviewing", rateDto, 201);

@@ -15,6 +15,6 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string Comments { get; set; }
 
         //Navigational Property
-        public List<Project> Projects { get; set; }
+       // public List<Project> Projects { get; set; }
     }
 }
