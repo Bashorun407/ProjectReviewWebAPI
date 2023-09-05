@@ -22,6 +22,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
         Task<IEnumerable<Project>> GetByCategory(Category category, bool trackChanges);
         Task<IEnumerable<Project>> GetByProjectStatus(ProjectCompletionStatus projectStatus, bool trackChanges);
         Task<IEnumerable<Project>> GetByApprovalStatus(ProjectApprovalStatus approvalStatus, bool trackChanges);
+        Task<IEnumerable<Project>> GetCommentsByProjectId(string projectId, bool trackChanges);
  
 
 

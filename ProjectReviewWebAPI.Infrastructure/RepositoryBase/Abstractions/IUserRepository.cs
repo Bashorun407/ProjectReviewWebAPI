@@ -31,5 +31,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
         Task<IEnumerable<User>> GetByUserRole(UserRole role, bool trackChanges);
         Task<IEnumerable<User>> GetByUserType(UserType type, bool trackChanges);
         Task<IEnumerable<User>> GetByApplicationStatus(ApplicationStatus applicationStatus, bool trackChanges);
+        Task<IEnumerable<User>> GetAllServiceProvidersWithRating(bool trackChanges);
+        Task<IEnumerable<User>> GetAllProjectsByUserId(string userId, bool trackChanges);
+        Task<User> GetUserRatingByUserId(string userId, bool trackChanges);
+        
     }
 }

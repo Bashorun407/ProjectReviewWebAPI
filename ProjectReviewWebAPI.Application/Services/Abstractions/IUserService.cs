@@ -26,6 +26,9 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(ApplicationStatus applicationStatus);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRole userRole);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(UserType userType);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllProjectsByUserId(string userId);
+        Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders();
+        Task<StandardResponse<UserResponseDto>> GetRatingByUserId(string userId);
         Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id,  UserUpdateRequestDto userUpdateDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
         Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);

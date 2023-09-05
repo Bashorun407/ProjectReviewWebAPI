@@ -79,6 +79,21 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<ProjectResponseDto>.Success("Project was deleted successfully", projectDto, 200);
         }
 
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllCommentsByProjectId(string projectId)
+        {
+            var result = await _unitOfWork.ProjectRepository.GetCommentsByProjectId(projectId, false);
+
+            if(result is null)
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no comments by project id: {projectId} yet", 99);
+            }
+
+
+            var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
+
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All comments on project specified", projectsDto, 200);
+        }
+
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()
         {
             var result = await _unitOfWork.ProjectRepository.GetAll(false);

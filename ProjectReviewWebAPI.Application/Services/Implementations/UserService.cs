@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
@@ -183,6 +184,50 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllProjectsByUserId(string userId)
+        {
+            var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(userId, false);
+
+            if (result is null)
+            {
+                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"There are no projects with userId: {userId}", 99);
+            }
+
+            var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+
+
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Projects with user id: {userId}: ", usersDto, 200);
+
+        }
+
+        public async Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders()
+        {
+            var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(false);
+
+            if (result == null)
+            {
+                return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Failed("There are no service providers yet", 99);
+            }
+
+            var usersDto = _mapper.Map<IEnumerable<ServiceProviderResponseDto>>(result);
+
+            return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Success("All Service providers ", usersDto, 200);
+        }
+
+        public async Task<StandardResponse<UserResponseDto>> GetRatingByUserId(string userId)
+        {
+            var result = await _unitOfWork.UserRepository.GetUserRatingByUserId(userId, false);
+
+            if (result == null)
+            {
+                return StandardResponse<UserResponseDto>.Failed("There are no service providers yet", 99);
+            }
+
+            var userDto = _mapper.Map<UserResponseDto>(result);
+
+            return StandardResponse<UserResponseDto>.Success("All Service providers ", userDto, 200);
+        }
+
         public async Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id, UserUpdateRequestDto userUpdateDto)
         {
             _logger.LogInformation($"Checking for user with id: {id}");
@@ -217,6 +262,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
+
         public Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file)
         {
             /*var user = await _unitOfWork.UserEntityRepository.GetUserById(userId);
@@ -235,6 +281,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             return null;
         }
+
+
 
 
         /*        public async Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto)

@@ -9,12 +9,10 @@ namespace ProjectReviewWebAPI.Domain.Entities
 {
     public class Comment : BaseEntity
     {
-       // [ForeignKey(nameof(Project))]
+       [ForeignKey(nameof(Project))]
         public string ProjectId { get; set; }
         public string UserName { get; set; }
         public string Comments { get; set; }
 
-        //Navigational Property
-       // public List<Project> Projects { get; set; }
     }
 }

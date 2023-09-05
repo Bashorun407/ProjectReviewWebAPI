@@ -10,15 +10,16 @@ namespace ProjectReviewWebAPI.Domain.Entities
 {
     public class Rating : BaseEntity
     {
-        //[ForeignKey(nameof(User))]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         [Range(1, 5)]
+        [Required(ErrorMessage = "Data entry has to be integer"), Column(Order = 2)]
         public int StarRating { get; set; }
         public int RateCount { get; set; }
         public double AverageRating { get; set; }
 
         //Navigational property
-        //public User Users { get; set; }
+        public User Users { get; set; }
 
     }
 }

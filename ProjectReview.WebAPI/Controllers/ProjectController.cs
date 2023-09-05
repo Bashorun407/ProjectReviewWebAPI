@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System.Text.Json;
@@ -21,6 +23,13 @@ namespace ProjectReview.WebAPI.Controllers
             _projectService = projectService;
         }
 
+        [HttpGet("allCommentsByProjectId/{projectId}")]
+        public async Task<IActionResult> GetAllCommentsByProjectId(string projectId)
+        {
+            var result = await _projectService.GetAllCommentsByProjectId(projectId);
+
+            return Ok(result);
+        }
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
         public async Task<IActionResult> GetAllProjects()

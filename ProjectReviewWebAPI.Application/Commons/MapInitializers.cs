@@ -33,7 +33,7 @@ namespace ProjectReviewWebAPI.Application.Commons
 
             CreateMap<UserUpdateRequestDto, User>();
             CreateMap<User, UserUpdateResponseDto>();
-
+            CreateMap<User, ServiceProviderResponseDto>();
 
         }
     }

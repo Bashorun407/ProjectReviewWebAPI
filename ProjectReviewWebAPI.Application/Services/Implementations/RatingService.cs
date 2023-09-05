@@ -55,8 +55,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             }
 
             //Obtaining current data for average and count
-            double currentAverage = rate.AverageRating;
-            int currentCount = rate.RateCount;
+            double currentAverage = findRate.AverageRating;
+            int currentCount = findRate.RateCount;
 
             //Getting new values
             findRate.StarRating = rate.StarRating;

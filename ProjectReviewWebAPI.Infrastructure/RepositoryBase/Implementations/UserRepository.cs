@@ -27,7 +27,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<IEnumerable<User>> GetAllUsers(bool trackChanges)
         {
-            var result = FindAll(trackChanges);
+            var result = FindAll(trackChanges).OrderBy(c => c.LastName);
 
             return result;
         }
@@ -80,6 +80,29 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             
             return result;
         }
+
+        public async Task<IEnumerable<User>> GetAllProjectsByUserId(string userId, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
+            
+            return result;
+        }
+
+        public async Task<User> GetUserRatingByUserId(string userId, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
+        public async Task<IEnumerable<User>> GetAllServiceProvidersWithRating(bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserType.Equals(UserType.SERVICE_PROVIDER), trackChanges).OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Ratings).ToListAsync();
+
+            return result;
+        }
+
 
 
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System.Text.Json;
@@ -93,6 +95,30 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("getAllProjectsByUserId/{userId}")]
+        public async Task<IActionResult> GetAllProjectsByUserId(string userId)
+        {
+            var result = await _userService.GetAllProjectsByUserId(userId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("allServiceProviders")]
+        public async Task<IActionResult> GetAllServiceProviders()
+        {
+            var result = await _userService.GetAllServiceProviders();
+
+            return Ok(result);
+        }
+
+
+        [HttpGet("ratingsByUserId/{userId}")]
+        public async Task<IActionResult> GetRatingByUserId(string userId)
+        {
+            var result = await _userService.GetRatingByUserId(userId);
+
+            return Ok(result);
+        }
         // [Authorize]
         [HttpPost("image/{id}")]
         public IActionResult UploadProfilePic(string id, IFormFile file)
