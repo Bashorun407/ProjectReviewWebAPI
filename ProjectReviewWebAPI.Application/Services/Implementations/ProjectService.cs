@@ -79,7 +79,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<ProjectResponseDto>.Success("Project was deleted successfully", projectDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllCommentsByProjectId(string projectId)
+/*        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllCommentsByProjectId(string projectId)
         {
             var result = await _unitOfWork.ProjectRepository.GetCommentsByProjectId(projectId, false);
 
@@ -92,7 +92,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All comments on project specified", projectsDto, 200);
-        }
+        }*/
 
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()
         {

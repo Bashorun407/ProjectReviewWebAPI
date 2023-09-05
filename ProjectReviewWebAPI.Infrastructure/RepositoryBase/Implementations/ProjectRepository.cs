@@ -86,12 +86,12 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetCommentsByProjectId(string projectId, bool trackChanges)
+        /*public async Task<IEnumerable<Project>> GetCommentsByProjectId(string projectId, bool trackChanges)
         {
             var result = await FindByCondition(c => c.ProjectId.Equals(projectId), trackChanges).Include(c => c.Comments).ToListAsync();
 
             return result;
-        }
+        }*/
 
 
         /*        public async Task<PagedList<Project>> GetAllProjects(ProjectRequestInputParameter parameter)

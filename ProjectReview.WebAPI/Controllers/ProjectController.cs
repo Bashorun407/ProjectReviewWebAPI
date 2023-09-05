@@ -23,13 +23,14 @@ namespace ProjectReview.WebAPI.Controllers
             _projectService = projectService;
         }
 
-        [HttpGet("allCommentsByProjectId/{projectId}")]
+/*        [HttpGet("allCommentsByProjectId/{projectId}")]
         public async Task<IActionResult> GetAllCommentsByProjectId(string projectId)
         {
             var result = await _projectService.GetAllCommentsByProjectId(projectId);
 
             return Ok(result);
-        }
+        }*/
+
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
         public async Task<IActionResult> GetAllProjects()
