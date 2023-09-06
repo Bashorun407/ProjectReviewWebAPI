@@ -30,15 +30,15 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET api/<TransactionController>/5
-        [HttpGet("invoiceCode/{id}")]
-        public async Task<IActionResult> GetByInvoiceCode(string invoiceCode)
+        [HttpGet("invoiceCode/{invoiceCode}")]
+        public async Task<IActionResult> GetByInvoiceCode( string invoiceCode)
         {
             var result = await _transactionService.GetTransactionByInvoiceCode(invoiceCode);
 
             return Ok(result);
         }
 
-        [HttpGet("projectId/{id}")]
+        [HttpGet("projectId/{projectId}")]
         public async Task<IActionResult> GetByProjectId(string projectId)
         {
             var result = await _transactionService.GetTransactionByProjectId(projectId);

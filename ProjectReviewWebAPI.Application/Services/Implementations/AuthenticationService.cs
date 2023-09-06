@@ -55,6 +55,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             //assigning a unique UserId to each user
             user.UserId = Utilities.GenerateUniqueId();
             user.Specialization = Domain.Enums.Specialization.None;
+            user.Role = Domain.Enums.UserRole.REGULAR;
+            user.UserType = Domain.Enums.UserType.CLIENT;
 
             var result = await _userManager.CreateAsync(user, userRegisterDto.Password);
             //Send an email to notify user
@@ -64,7 +66,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             }
 
             //user.UserName = user.Email;
-            _emailService.SendEmailAsync(user.Email, "Successful Register Notification", 
+            _emailService.SendEmailAsync(user.Email, "ProReev Register Notification", 
                 $"Dear {user.FirstName} {user.LastName}, \nYou have successfully registered on BookReev.\nYour unique id is: {user.UserId}. \n Thank you!");
             return result;
         }

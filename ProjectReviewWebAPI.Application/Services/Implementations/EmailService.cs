@@ -1,4 +1,5 @@
-﻿using ProjectReviewWebAPI.Application.Services.Abstractions;
+﻿using Microsoft.Extensions.Configuration;
+using ProjectReviewWebAPI.Application.Services.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,20 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 {
     public class EmailService : IEmailService
     {
+        public IConfiguration configuration { get; }
+
+        //private EmailSettings _emailSettings { get; }
+        public EmailService(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var mail = "bobolah411cush@gmail.com";
-            var pw = "encesyxlhgbsmqem";
+
+            var emailSettings = configuration.GetSection("EmailSettings");
+            var mail = emailSettings["email"];
+            var pw = emailSettings["password"];
 
             var client = new SmtpClient("smtp.gmail.com", 587)
             {

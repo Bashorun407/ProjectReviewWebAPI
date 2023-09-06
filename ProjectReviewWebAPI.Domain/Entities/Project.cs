@@ -29,6 +29,5 @@ namespace ProjectReviewWebAPI.Domain.Entities
 
         //Navigation Property
         public User User { get; set; } //This may not be important due to my implimentation on Rating class
-        public IEnumerable<Comment> Comments { get; set; }
     }
 }

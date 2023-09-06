@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
@@ -9,7 +8,6 @@ using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
-using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using ProjectReviewWebAPI.Utility.Utility;
 
@@ -25,12 +23,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly IEmailService _emailService;
 
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserService> logger, IEmailService emailService)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserService> logger, IEmailService emailService, IPhotoService photoService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
             _emailService = emailService;
+            _photoService = photoService;
         }
 
 
@@ -263,24 +262,35 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file)
+        public async  Task<StandardResponse<(string, bool)>> UploadProfileImage(string userId, IFormFile file)
         {
-            /*var user = await _unitOfWork.UserEntityRepository.GetUserById(userId);
-            if (user is null)
+            var result = await  _unitOfWork.UserRepository.GetById(userId, false);
+           
+            if (result is null)
             {
                 _logger.LogWarning($"No user with id {userId}");
-                return StandardResponse<(bool, string)>.Failed("No user found", 406);
-            }
-            string url = _photoService.AddPhotoForUser(userId, file);
-            if (string.IsNullOrWhiteSpace(url))
-                return StandardResponse<(bool, string)>.Failed("Failed to upload", 500);
-            user.ImageURL = url;
-            _unitOfWork.UserEntityRepository.Update(user);
-            await _unitOfWork.SaveAsync();
-            return StandardResponse<(bool, string)>.Success("Successfully uploaded image", (false, url), 204);*/
 
-            return null;
+                return StandardResponse<(string, bool)>.Failed("user not found", 99);
+               
+            }
+
+            var user = _mapper.Map<User>(result);
+
+            string url =  _photoService.AddPhotoForUser(file);
+
+            if (string.IsNullOrWhiteSpace(url))
+
+                return StandardResponse<(string, bool)>.Failed("Failed to upload", 500);
+
+            user.ProfilePicture = url;
+
+            _unitOfWork.UserRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+            return StandardResponse<(string, bool)>.Success("Successfully uploaded image", (url, true), 204);
+
+          
         }
+
 
 
 

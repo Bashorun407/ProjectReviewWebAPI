@@ -21,7 +21,7 @@ namespace ProjectReview.WebAPI.Controllers
 
 
         // POST api/<AuthenticationController>
-        [HttpPost("Register")]
+        [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
             var result = await _authenticationService.RegisterUser(userRegisterDto, role: "User");

@@ -4,13 +4,7 @@ using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
-using ProjectReviewWebAPI.Shared.RequestParameter.Common;
-using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
@@ -83,14 +77,14 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<IEnumerable<User>> GetAllProjectsByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
+            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
             
             return result;
         }
 
         public async Task<User> GetUserRatingByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
+            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
 
             return result;
 
@@ -102,7 +96,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
             return result;
         }
-
 
 
 

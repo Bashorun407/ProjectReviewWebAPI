@@ -32,7 +32,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<Rating> GetRatingByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).SingleOrDefaultAsync();
+            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).SingleOrDefaultAsync();
 
             return result;
         }

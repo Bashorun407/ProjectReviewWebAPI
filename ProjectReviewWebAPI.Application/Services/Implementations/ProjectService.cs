@@ -51,8 +51,9 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             _logger.LogInformation($"Project with project Id: {project.ProjectId} successfully saved to database");
 
             //Sends email notification to projectOwner that project has been created
-            var productOwner = await _unitOfWork.UserRepository.GetByUserId(project.ProjectOwnerId, false);
+            var productOwner = await _unitOfWork.UserRepository.GetById(project.ProjectOwnerId, false);
             var owner = _mapper.Map<User>(productOwner);
+
             _emailService.SendEmailAsync(owner.Email, "Project Creation Notification", $"Dear {owner.LastName}, {owner.FirstName},\nYou have successfully created a project with project-id: {project.ProjectId}.\nThank you for your patronage.");
 
 

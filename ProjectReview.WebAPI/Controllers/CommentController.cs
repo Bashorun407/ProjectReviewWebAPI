@@ -29,7 +29,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<CommentController>
-        [HttpGet("commentsByProjectId/{projectId}")]
+        [HttpGet("projectId/{projectId}")]
         public async Task<IActionResult> GetCommentsByProjectId(string projectId)
         {
             var result = await _commentService.GetCommentsByProjectId(projectId);
@@ -39,8 +39,8 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET api/<CommentController>/5
-        [HttpGet("commentsByUserName/{username}")]
-        public async Task<IActionResult> GetCommentsByUsername([FromQuery] string username)
+        [HttpGet("username/{username}")]
+        public async Task<IActionResult> GetCommentsByUsername(string username)
         {
             var result = await _commentService.GetCommentsByUsername(username);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.comments));

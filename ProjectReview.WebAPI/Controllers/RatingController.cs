@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace ProjectReview.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("rating-api/[controller]")]
     [ApiController]
     public class RatingController : ControllerBase
     {

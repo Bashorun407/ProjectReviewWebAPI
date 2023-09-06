@@ -27,6 +27,7 @@ namespace ProjectReview.WebAPI.Extensions
             services.AddScoped<IRatingService,  RatingService>();
             services.AddScoped<ITransactionService, TransactionService>();  
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 

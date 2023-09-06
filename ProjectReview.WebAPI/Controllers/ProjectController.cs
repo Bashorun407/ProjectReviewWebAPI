@@ -12,7 +12,7 @@ using System.Text.Json;
 
 namespace ProjectReview.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("project-api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -23,14 +23,6 @@ namespace ProjectReview.WebAPI.Controllers
             _projectService = projectService;
         }
 
-/*        [HttpGet("allCommentsByProjectId/{projectId}")]
-        public async Task<IActionResult> GetAllCommentsByProjectId(string projectId)
-        {
-            var result = await _projectService.GetAllCommentsByProjectId(projectId);
-
-            return Ok(result);
-        }*/
-
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
         public async Task<IActionResult> GetAllProjects()
@@ -40,14 +32,14 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/<ProjectController>
+/*        // GET: api/<ProjectController>
         [HttpGet("projectName/{projectName}")]
         public async Task<IActionResult> GetByProjectName(string projectName)
         {
             var result = await _projectService.GetByProjectName(projectName);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
-        }
+        }*/
 
         // GET: api/<ProjectController>
         [HttpGet("projectCategory/{category}")]
@@ -99,7 +91,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET api/<ProjectController>/5
 
-        [HttpGet("{id}")]
+        [HttpGet("project/{id}")]
         public async Task<IActionResult> GetByProjectId(string id)
         {
             var result = await _projectService.GetByProjectId(id);
