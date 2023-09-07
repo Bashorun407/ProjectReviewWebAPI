@@ -15,7 +15,6 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
     {
         public IConfiguration configuration { get; }
 
-        //private EmailSettings _emailSettings { get; }
         public EmailService(IConfiguration configuration)
         {
             this.configuration = configuration;
