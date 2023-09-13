@@ -21,9 +21,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<CommentController>
         [HttpGet("allComments")]
-        public  async Task<IActionResult> GetAllComments()
+        public  async Task<IActionResult> GetAllComments([FromQuery] int pageNumber)
         {
-            var result = await _commentService.GetAllComments();
+            var result = await _commentService.GetAllComments(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }

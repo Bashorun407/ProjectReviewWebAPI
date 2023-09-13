@@ -21,9 +21,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<TransactionController>
         [HttpGet("allTransactions")]
-        public async Task<IActionResult> GetAllTransaction()
+        public async Task<IActionResult> GetAllTransaction([FromQuery] int pageNumber)
         {
-            var result = await _transactionService.GetAllTransactionsAsync();
+            var result = await _transactionService.GetAllTransactionsAsync(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
 
             return Ok(result);

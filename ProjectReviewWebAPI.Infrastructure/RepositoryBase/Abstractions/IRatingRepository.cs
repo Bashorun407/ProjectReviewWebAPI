@@ -12,7 +12,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface IRatingRepository : IRepository<Rating>
     {
 
-        Task<IEnumerable<Rating>> GetAll(bool trackChanges);
+        Task<IEnumerable<Rating>> GetAll(RatingRequestInputParameter parameter, bool trackChanges);
         Task<Rating>GetRatingByUserId(string userId, bool trackChanges);
 
 /*        Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter);

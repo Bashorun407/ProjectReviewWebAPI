@@ -25,9 +25,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
-        public async Task<IActionResult> GetAllProjects()
+        public async Task<IActionResult> GetAllProjects([FromQuery] int pageNumber)
         {
-            var result = await _projectService.GetAllProjectsAsync();
+            var result = await _projectService.GetAllProjectsAsync(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -43,9 +43,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         [HttpGet("projectCategory/{category}")]
-        public async Task<IActionResult> GetByCategory(Category category)
+        public async Task<IActionResult> GetByCategory([FromQuery] int pageNumber, Category category)
         {
-            var result = await _projectService.GetProjectsByCategory(category);
+            var result = await _projectService.GetProjectsByCategory(pageNumber, category);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -72,9 +72,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         [HttpGet("projectStatus/{status}")]
-        public async Task<IActionResult> GetByProjectCompletionStatus(ProjectCompletionStatus status)
+        public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] int pageNumber, ProjectCompletionStatus status)
         {
-            var result = await _projectService.GetByProjectStatus(status);
+            var result = await _projectService.GetByProjectStatus(pageNumber, status);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -82,9 +82,9 @@ namespace ProjectReview.WebAPI.Controllers
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
         [HttpGet("approvalStatus/{status}")]
-        public async Task<IActionResult> GetByApprovalStatus(ProjectApprovalStatus status)
+        public async Task<IActionResult> GetByApprovalStatus( [FromQuery] int pageNumber, ProjectApprovalStatus status)
         {
-            var result = await _projectService.GetByApprovalStatus(status);
+            var result = await _projectService.GetByApprovalStatus(pageNumber, status);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -112,7 +112,7 @@ namespace ProjectReview.WebAPI.Controllers
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdateDto)
+        public async Task<IActionResult> UpdateProject(string id, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
             var result = await _projectService.UpdateProject(id, projectUpdateDto);
 
@@ -121,10 +121,10 @@ namespace ProjectReview.WebAPI.Controllers
 
         // DELETE api/<ProjectController>/5
         //[Authorize(Roles = "Admin")]
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteProject(int id)
+        [HttpDelete("delete/{projectId}")]
+        public async Task<IActionResult> DeleteProject(string projectId)
         {
-            var result = await _projectService.DeleteProject(id);
+            var result = await _projectService.DeleteProject(projectId);
 
             return Ok(result);
         }

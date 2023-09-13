@@ -21,9 +21,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<RatingController>
         [HttpGet("allRatings")]
-        public async Task<IActionResult> GetAllRatings()
+        public async Task<IActionResult> GetAllRatings([FromQuery] int pageNumber)
         {
-            var result = await _ratingService.GetAllRatingsAsync();
+            var result = await _ratingService.GetAllRatingsAsync(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             
             return Ok(result);

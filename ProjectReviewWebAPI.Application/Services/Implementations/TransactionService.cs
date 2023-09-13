@@ -74,9 +74,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<TransactionResponseDto>.Success("New transaction added", transactionDto, 201); ;
         }
 
-        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync()
+        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync(int pageNumber)
         {
-            var result = await _unitOfWork.TransactionRepository.GetAll(false);
+            var parameter = new TransactionRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+
+            var result = await _unitOfWork.TransactionRepository.GetAll(parameter, false);
 
             var transactionsDto = _mapper.Map<IEnumerable<TransactionResponseDto>>(result);
 

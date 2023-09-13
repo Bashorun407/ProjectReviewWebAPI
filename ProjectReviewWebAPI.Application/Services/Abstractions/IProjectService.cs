@@ -15,26 +15,17 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     public interface IProjectService
     {
         Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync();
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(Category category);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(string projectName);
+        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync(int pageNumber);
+        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category);
+        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(int pageNumber, string projectName);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectOwnerIdAsync(string projectOwnerId);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(ProjectCompletionStatus completionStatus);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(ProjectApprovalStatus approvalStatus);
-/*        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllCommentsByProjectId(string projectId);*/
+        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(int pageNumber, ProjectCompletionStatus completionStatus);
+        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectApprovalStatus approvalStatus);
         Task<StandardResponse<ProjectResponseDto>> GetById(int id);
         Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId);
-        Task<StandardResponse<ProjectResponseDto>> UpdateProject(int id, ProjectUpdateDto projectUpdateDto);
-        Task<StandardResponse<ProjectResponseDto>> DeleteProject(int id);
+        Task<StandardResponse<ProjectResponseDto>> UpdateProject(string id, ProjectUpdateDto projectUpdateDto);
+        Task<StandardResponse<ProjectResponseDto>> DeleteProject(string id);
 
-
-/*        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetAllProjectsAsync(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetProjectsByCategory(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectName(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectOwnerIdAsync(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByServiceProviderIdAsync(ProjectRequestInputParameter paramter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByProjectStatus(ProjectRequestInputParameter paramter);
-        Task<StandardResponse<(IEnumerable<ProjectResponseDto> projects, MetaData pagingData)>> GetByApprovalStatus(ProjectRequestInputParameter parameter);*/
     }
 }

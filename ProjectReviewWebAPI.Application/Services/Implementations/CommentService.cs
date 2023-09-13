@@ -44,9 +44,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<CommentResponseDto>.Success("Comment successful", commentDto, 201);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments()
+        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments(int pageNumber)
         {
-            var result = await _unitOfWork.CommentRepository.GetAll(false);
+            var parameter = new CommentRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+
+            var result = await _unitOfWork.CommentRepository.GetAll(parameter, false);
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
             return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All Comments retrieved", commentsDto, 200);

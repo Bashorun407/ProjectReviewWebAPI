@@ -78,14 +78,14 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<IEnumerable<User>> GetAllProjectsByUserId(UserRequestInputParameter param, string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
             
             return result;
         }
 
         public async Task<User> GetUserRatingByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
 
             return result;
 
@@ -107,7 +107,8 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
 
 
-        /*        public async Task<PagedList<User>> GetUsersBySpecialization(UserRequestInputParameter parameter)
+        /*        
+                public async Task<PagedList<User>> GetUsersBySpecialization(UserRequestInputParameter parameter)
                 {
                     var result = await _users.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
                         .Where(c=> c.Specialization.Equals(parameter.SearchTerm))
@@ -117,33 +118,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
                     return new PagedList<User>(result, count, parameter.PageNumber, parameter.PageSize);
                 }
-
-
-                public async Task<PagedList<User>> GetUsersByUserRole(UserRequestInputParameter parameter)
-                {
-                    var result = await _users.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
-                        .Where(c=> c.Role.Equals(parameter.SearchTerm))
-                        .ToListAsync();
-                    var count = await _users.CountAsync();
-
-                    return new PagedList<User>(result, count, parameter.PageNumber, parameter.PageSize);
-                }
-
-                public async Task<User> GetByUserId(string userId)
-                {
-                    return await _users.FindAsync(userId);
-                }
-
-                public async Task<PagedList<User>> GetByApplicationStatus(UserRequestInputParameter parameter)
-                {
-                    var result = await _users.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
-                        .Where(c=> c.ApplicationStatus.Equals(parameter.SearchTerm))
-                        .ToListAsync();
-
-                    var count = await _users.CountAsync();
-
-                    return new PagedList<User>(result, count, parameter.PageNumber, parameter.PageSize);
-                }*/
+        */
 
     }
 }

@@ -23,9 +23,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _transactions = context.Set<Transaction>();
         }
 
-        public async Task<IEnumerable<Transaction>> GetAll(bool trackChanges)
+        public async Task<IEnumerable<Transaction>> GetAll(TransactionRequestInputParameter parameter, bool trackChanges)
         {
-            var result =  FindAll(trackChanges).OrderByDescending(c => c.Amount);
+            var result =  FindAll(trackChanges).OrderByDescending(c => c.Amount).Skip((parameter.PageNumber - 1) * parameter.PageSize)
+                .Take(parameter.PageSize);
             return result;
         }
 

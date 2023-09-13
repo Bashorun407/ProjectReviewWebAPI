@@ -23,8 +23,8 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<UserController>
         //[Authorize(Roles ="Admin")]
-        [HttpGet("getAll/{pageNumber}")]
-        public async Task<IActionResult> GetAllUsers(int pageNumber)
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAllUsers( [FromQuery] int pageNumber)
         {
             var result = await _userService.GetAllUsers(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data));
@@ -41,8 +41,8 @@ namespace ProjectReview.WebAPI.Controllers
         }*/
 
         //[Authorize]
-        [HttpGet("userId/{id}")]
-        public async Task<IActionResult> GetByUserId([FromQuery] string userId)
+        [HttpGet("userId/{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId)
         {
             var result = await _userService.GetByUserId(userId);
             return Ok(result);

@@ -62,12 +62,14 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<ProjectResponseDto>.Success("Project successfully created", projectDto, 201);
         }
 
-        public async Task<StandardResponse<ProjectResponseDto>> DeleteProject(int id)
+        public async Task<StandardResponse<ProjectResponseDto>> DeleteProject(string projectId)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id, false);
-            if(project is null)
+            //var project = await _unitOfWork.ProjectRepository.GetById(id, false);
+            var project = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);
+
+            if(project == null)
             {
-                return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);
+                return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {projectId} does not exist", 99);
             }
 
             _logger.LogInformation("Project is about to be deleted");
@@ -80,24 +82,14 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<ProjectResponseDto>.Success("Project was deleted successfully", projectDto, 200);
         }
 
-/*        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllCommentsByProjectId(string projectId)
+
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync(int pageNumber)
         {
-            var result = await _unitOfWork.ProjectRepository.GetCommentsByProjectId(projectId, false);
+            var parameter = new ProjectRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
 
-            if(result is null)
-            {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no comments by project id: {projectId} yet", 99);
-            }
-
-
-            var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
-
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All comments on project specified", projectsDto, 200);
-        }*/
-
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()
-        {
-            var result = await _unitOfWork.ProjectRepository.GetAll(false);
+            var result = await _unitOfWork.ProjectRepository.GetAll(parameter, false);
 
             if(result is null)
             {
@@ -109,9 +101,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(ProjectApprovalStatus approvalStatus)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectApprovalStatus approvalStatus)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(approvalStatus, false);
+            var parameter = new ProjectRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+            var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter, approvalStatus, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -145,9 +140,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(string projectName)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(int pageNumber, string projectName)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByProjectName(projectName, false);
+            var parameter = new ProjectRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+
+            var result = await _unitOfWork.ProjectRepository.GetByProjectName(parameter, projectName, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -163,9 +162,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by project name ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(ProjectCompletionStatus completionStatus)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(int pageNumber, ProjectCompletionStatus completionStatus)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByProjectStatus(completionStatus, false);
+            var parameter = new ProjectRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+
+            var result = await _unitOfWork.ProjectRepository.GetByProjectStatus(parameter, completionStatus, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -181,18 +184,25 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(Category category)
+        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category)
         {
-            var result = await _unitOfWork.ProjectRepository.GetByCategory(category, false);
+            var parameter = new ProjectRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+
+            var result = await _unitOfWork.ProjectRepository.GetByCategory(parameter, category, false);
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<ProjectResponseDto>> UpdateProject(int id, ProjectUpdateDto projectUpdateDto)
+        public async Task<StandardResponse<ProjectResponseDto>> UpdateProject(string id, ProjectUpdateDto projectUpdateDto)
         {
-            var projectExists = await _unitOfWork.ProjectRepository.GetById(id, false);
+            //var checkProject = await _unitOfWork.ProjectRepository.GetByProjectId
+            var projectExists = await _unitOfWork.ProjectRepository.GetByProjectId(id, false);
+            
+            
             if (projectExists is null)
             {
                 return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {id} does not exist", 99);

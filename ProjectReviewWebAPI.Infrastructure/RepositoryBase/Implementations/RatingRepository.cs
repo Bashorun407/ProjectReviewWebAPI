@@ -23,9 +23,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _ratings = context.Set<Rating>();
         }
 
-        public async Task<IEnumerable<Rating>> GetAll(bool trackChanges)
+        public async Task<IEnumerable<Rating>> GetAll(RatingRequestInputParameter parameter, bool trackChanges)
         {
-           var result =  FindAll(trackChanges).OrderByDescending(c => c.StarRating);
+           var result =  FindAll(trackChanges).OrderByDescending(c => c.StarRating).Skip((parameter.PageNumber - 1) * parameter.PageSize)
+                .Take(parameter.PageSize);
 
             return result;
         }

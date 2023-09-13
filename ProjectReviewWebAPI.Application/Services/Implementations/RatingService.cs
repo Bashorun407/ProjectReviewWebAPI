@@ -75,9 +75,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<RatingResponseDto>.Success("Thanks for reviewing", rateDto, 201);
         }
 
-        public async Task<StandardResponse<IEnumerable<RatingResponseDto>>> GetAllRatingsAsync()
+        public async Task<StandardResponse<IEnumerable<RatingResponseDto>>> GetAllRatingsAsync(int pageNumber)
         {
-            var result = await _unitOfWork.RatingRepository.GetAll(false);
+            var parameter = new RatingRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 10;
+            var result = await _unitOfWork.RatingRepository.GetAll(parameter, false);
             var ratesDto = _mapper.Map<IEnumerable<RatingResponseDto>>(result);
 
             return StandardResponse<IEnumerable<RatingResponseDto>>.Success("All ratings", ratesDto, 200);

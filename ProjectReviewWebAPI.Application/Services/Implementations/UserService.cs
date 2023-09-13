@@ -36,9 +36,10 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<UserResponseDto>> DeleteUser(string id)
         {
             _logger.LogInformation($"Checking for user with id: {id} ");
-            var user = await _unitOfWork.UserRepository.GetById(id, false);
+            //var user = await _unitOfWork.UserRepository.GetById(id, false);
+            var user = await _unitOfWork.UserRepository.GetByUserId(id, false);
 
-            if(user is null)
+            if(user == null)
             {
                 _logger.LogError($"user with id: {id} does not exist");
                 return StandardResponse<UserResponseDto>.Failed("User not found in the database");
@@ -57,7 +58,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
 
             var result = await _unitOfWork.UserRepository.GetAllUsers(parameter, false);
             if (result == null)
@@ -75,7 +76,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
             var user = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
 
             if (user is null)
@@ -134,7 +135,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
             var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, role, false);
 
             if (result is null)
@@ -151,7 +152,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
             var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, specialization, false);
 
             if (result is null)
@@ -182,7 +183,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
 
             var result = await _unitOfWork.UserRepository.GetByUserType(parameter, userType, false);
 
@@ -202,7 +203,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
 
             var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, userId, false);
 
@@ -222,13 +223,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 10;
 
             var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(parameter, false);
 
             if (result == null)
             {
-                return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Failed("There are no service providers yet", 99);
+                return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Failed("There are no service providers yet");
             }
 
             var usersDto = _mapper.Map<IEnumerable<ServiceProviderResponseDto>>(result);
@@ -267,7 +268,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id, UserUpdateRequestDto userUpdateDto)
         {
             _logger.LogInformation($"Checking for user with id: {id}");
-            var userExists = await _unitOfWork.UserRepository.GetById(id, false);
+            //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
 
             if(userExists is null)
             {
@@ -328,46 +330,5 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
           
         }
 
-
-
-
-
-
-        /*        public async Task<StandardResponse<UserResponseDto>> CreateUser(UserRequestDto userRequestDto)
-        {
-
-            //Checking if entered email is valid
-            if (!Utilities.IsEmailValid(userRequestDto.Email))
-            {
-                return StandardResponse<UserResponseDto>.Failed("Email is invalid", 99);
-            }
-
-            //Hashing password
-            //userRequestDto.Password = Utilities.GenerateHash(userRequestDto.Password);
-            _logger.LogInformation("Creating user.");
-            var user = _mapper.Map<User>(userRequestDto);
-
-            //Setting the internally generated userId of user
-            user.UserId = Utilities.GenerateUniqueId();
-            _logger.LogInformation("Adding user to database");
-            await _unitOfWork.UserRepository.CreateAsync(user);
-            await _unitOfWork.SaveAsync();
-            _logger.LogInformation($"Saved user with id: {user.Id} to database successfully");
-
-            var userDto = _mapper.Map<UserResponseDto>(user);
-
-            return StandardResponse<UserResponseDto>.Success("User created successfully", userDto, 201);
-
-        }*/
-
-        /*        public async Task<StandardResponse<(IEnumerable<UserResponseDto> users, MetaData pagingData)>> GetAllUsers(UserRequestInputParameter parameter)
-        {
-            var result = await _unitOfWork.UserRepository.GetAllUsers(parameter);
-
-            var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
-
-            return StandardResponse<(IEnumerable<UserResponseDto>, MetaData)>.Success("Successfully retrieved all users", (userDtos, result.MetaData), 200);
-
-        }*/
     }
 }
