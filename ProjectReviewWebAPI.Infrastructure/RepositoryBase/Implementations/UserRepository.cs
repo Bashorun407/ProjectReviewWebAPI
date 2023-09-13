@@ -4,7 +4,7 @@ using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
-
+using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 
 namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
@@ -19,9 +19,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _users = _context.Set<User>();
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers(bool trackChanges)
+        public async Task<IEnumerable<User>> GetAllUsers(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = FindAll(trackChanges).OrderBy(c => c.LastName);
+            var result = FindAll(trackChanges).OrderBy(c => c.LastName).Skip((parameter.PageNumber - 1) * parameter.PageSize)
+                .Take(parameter.PageSize);
 
             return result;
         }
@@ -47,35 +48,35 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await FindByCondition(c => c.UserId == userId, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<User>> GetBySpecialization(Specialization specialization, bool trackChanges)
+        public async Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, Specialization specialization, bool trackChanges)
         {
            var result = await FindByCondition(c => c.Specialization.Equals(specialization), trackChanges).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetByUserRole(UserRole role, bool trackChanges)
+        public async Task<IEnumerable<User>> GetByUserRole(UserRequestInputParameter param, UserRole role, bool trackChanges)
         {
             var result = await FindByCondition(c => c.Role.Equals(role), trackChanges).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetByApplicationStatus(ApplicationStatus applicationStatus, bool trackChanges)
+        public async Task<IEnumerable<User>> GetByApplicationStatus(UserRequestInputParameter param, ApplicationStatus applicationStatus, bool trackChanges)
         {
             var result = await FindByCondition(c => c.ApplicationStatus.Equals(applicationStatus), trackChanges).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetByUserType(UserType type, bool trackChanges)
+        public async Task<IEnumerable<User>> GetByUserType(UserRequestInputParameter param, UserType type, bool trackChanges)
         {
             var result = await FindByCondition(c => c.UserType.Equals(type), trackChanges).OrderByDescending(c => c.ChargeRate).ToListAsync();
             
             return result;
         }
 
-        public async Task<IEnumerable<User>> GetAllProjectsByUserId(string userId, bool trackChanges)
+        public async Task<IEnumerable<User>> GetAllProjectsByUserId(UserRequestInputParameter param, string userId, bool trackChanges)
         {
             var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
             
@@ -90,9 +91,16 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         }
 
-        public async Task<IEnumerable<User>> GetAllServiceProvidersWithRating(bool trackChanges)
+        public async Task<IEnumerable<User>> GetAllServiceProvidersWithRating(UserRequestInputParameter param, bool trackChanges)
         {
             var result = await FindByCondition(c => c.UserType.Equals(UserType.SERVICE_PROVIDER), trackChanges).OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Ratings).ToListAsync();
+
+            return result;
+        }
+
+        public async Task<User> GetByUsername(string username, bool trackChanges)
+        {
+            var result = await FindByCondition(c => c.UserName.Equals(username), trackChanges).FirstOrDefaultAsync();
 
             return result;
         }

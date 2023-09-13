@@ -20,19 +20,20 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
                 Task<PagedList<User>> GetUsersByUserRole(UserRequestInputParameter parameter);
                 Task<PagedList<User>> GetByApplicationStatus(UserRequestInputParameter parameter);*/
 
-        Task<IEnumerable<User>> GetAllUsers(bool trackChanges);
+        Task<IEnumerable<User>> GetAllUsers(UserRequestInputParameter param, bool trackChanges);
         //Task<StandardResponse<IEnumerable<User>>> GetAllUsers();
         Task<User> GetById(string id, bool trackChanges);
         Task<User> GetByUserId(string userId, bool trackChanges);
+        Task<User> GetByUsername(string username, bool trackChanges);
 
         Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges);
         Task<User> GetUserByEmail(string email, bool trackChanges);
-        Task<IEnumerable<User>> GetBySpecialization(Specialization specialization, bool trackChanges);
-        Task<IEnumerable<User>> GetByUserRole(UserRole role, bool trackChanges);
-        Task<IEnumerable<User>> GetByUserType(UserType type, bool trackChanges);
-        Task<IEnumerable<User>> GetByApplicationStatus(ApplicationStatus applicationStatus, bool trackChanges);
-        Task<IEnumerable<User>> GetAllServiceProvidersWithRating(bool trackChanges);
-        Task<IEnumerable<User>> GetAllProjectsByUserId(string userId, bool trackChanges);
+        Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, Specialization specialization, bool trackChanges);
+        Task<IEnumerable<User>> GetByUserRole(UserRequestInputParameter param, UserRole role, bool trackChanges);
+        Task<IEnumerable<User>> GetByUserType(UserRequestInputParameter param, UserType type, bool trackChanges);
+        Task<IEnumerable<User>> GetByApplicationStatus(UserRequestInputParameter param, ApplicationStatus applicationStatus, bool trackChanges);
+        Task<IEnumerable<User>> GetAllServiceProvidersWithRating(UserRequestInputParameter param, bool trackChanges);
+        Task<IEnumerable<User>> GetAllProjectsByUserId(UserRequestInputParameter param, string userId, bool trackChanges);
         Task<User> GetUserRatingByUserId(string userId, bool trackChanges);
         
     }

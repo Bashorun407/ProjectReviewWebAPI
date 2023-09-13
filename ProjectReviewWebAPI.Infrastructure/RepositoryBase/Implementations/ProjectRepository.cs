@@ -58,6 +58,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
+
         public async Task<IEnumerable<Project>> GetByProjectName(string name, bool trackChanges)
         {
             var result = await FindByCondition(c => c.ProjectName.Equals(name), trackChanges).ToListAsync();

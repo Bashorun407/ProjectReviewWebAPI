@@ -23,10 +23,10 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<UserController>
         //[Authorize(Roles ="Admin")]
-        [HttpGet("getAll")]
-        public async Task<IActionResult> GetAllUsers()
+        [HttpGet("getAll/{pageNumber}")]
+        public async Task<IActionResult> GetAllUsers(int pageNumber)
         {
-            var result = await _userService.GetAllUsers();
+            var result = await _userService.GetAllUsers(pageNumber);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data));
             return Ok(result);
         }
@@ -48,21 +48,21 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-       //[Authorize]
+   /*    //[Authorize]
         [HttpGet("email/{email}")]
         public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
         {
             var result = await _userService.GetByEmail(email);
             return Ok(result);
-        }
+        }*/
 
-        //[Authorize]
+    /*    //[Authorize]
         [HttpGet("phoneNumber/{phoneNumber}")]
         public async Task<IActionResult> GetUserByPhoneNumber([FromQuery] string phoneNumber)
         {
             var result = await _userService.GetByPhoneNumber(phoneNumber);
             return Ok(result);
-        }
+        }*/
 
 /*        // GET: api/<UserController>
         //[Authorize(Roles = "Admin")]
@@ -76,9 +76,9 @@ namespace ProjectReview.WebAPI.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("usersByType/{type}")]
-        public async Task<IActionResult> GetUsersByUserType(UserType type)
+        public async Task<IActionResult> GetUsersByUserType([FromQuery]int pageNumber, UserType type)
         {
-            var result = await _userService.GetByUserType(type);
+            var result = await _userService.GetByUserType(pageNumber, type);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
@@ -86,25 +86,33 @@ namespace ProjectReview.WebAPI.Controllers
         // GET: api/<UserController>
         //[Authorize(Roles = "Admin")]
         [HttpGet("specializatiion/{specialization}")]
-        public async Task<IActionResult> GetUsersBySpecialization(Specialization specialization)
+        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] int pageNumber, Specialization specialization)
         {
-            var result = await _userService.GetBySpecialization(specialization);
+            var result = await _userService.GetBySpecialization(pageNumber, specialization);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
 
         [HttpGet("allProjectsByUser/{userId}")]
-        public async Task<IActionResult> GetAllProjectsByUserId(string userId)
+        public async Task<IActionResult> GetAllProjectsByUserId([FromQuery]int pageNumber, string userId)
         {
-            var result = await _userService.GetAllProjectsByUserId(userId);
+            var result = await _userService.GetAllProjectsByUserId(pageNumber, userId);
 
             return Ok(result);
         }
 
         [HttpGet("allServiceProviders")]
-        public async Task<IActionResult> GetAllServiceProviders()
+        public async Task<IActionResult> GetAllServiceProviders([FromQuery]int pageNumber)
         {
-            var result = await _userService.GetAllServiceProviders();
+            var result = await _userService.GetAllServiceProviders(pageNumber);
+
+            return Ok(result);
+        }
+
+        [HttpGet("userByUsername/{username}")]
+        public async Task<IActionResult> GetByUsername(string username)
+        {
+            var result = await _userService.GetByUsername(username);
 
             return Ok(result);
         }

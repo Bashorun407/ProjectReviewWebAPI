@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 
@@ -24,18 +25,22 @@ namespace ProjectReview.WebAPI.Controllers
         [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
-            var result = await _authenticationService.RegisterUser(userRegisterDto, role: "User");
+            var result = await _authenticationService.RegisterUser(userRegisterDto);
 
-            if(!result.Succeeded)
+            if(!result.identity.Succeeded)
             {
-                foreach(var error in result.Errors)
+                foreach(var error in result.identity.Errors)
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
                 return BadRequest(ModelState);
             }
 
-            return StatusCode(201);
+            string encodedToken = System.Text.Encodings.Web.UrlEncoder.Default.Encode(result.emailToken);
+            string callback_url = Request.Scheme + "://" + Request.Host + $"/api/authentication/confirm-email/{userRegisterDto.Email}/{encodedToken}";
+
+            _authenticationService.SendConfirmationEmail(userRegisterDto.Email, callback_url);
+            return StatusCode(201, "Account created successfully. Please confirm your email");
         }
 
 
@@ -43,10 +48,10 @@ namespace ProjectReview.WebAPI.Controllers
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] UserRegisterDto userRegisterDto)
         {
-            var result = await _authenticationService.RegisterUser(userRegisterDto, role: "Admin");
-            if (!result.Succeeded)
+            var result = await _authenticationService.RegisterAdmin(userRegisterDto);
+            if (!result.identity.Succeeded)
             {
-                foreach (var error in result.Errors)
+                foreach (var error in result.identity.Errors)
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }

@@ -53,11 +53,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllUsers()
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllUsers(int pageNumber)
         {
             var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
 
-            var result = await _unitOfWork.UserRepository.GetAllUsers(false);
+            var result = await _unitOfWork.UserRepository.GetAllUsers(parameter, false);
             if (result == null)
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed("There are no users yet", 99);
@@ -69,9 +71,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(ApplicationStatus applicationStatus)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(int pageNumber, ApplicationStatus applicationStatus)
         {
-            var user = await _unitOfWork.UserRepository.GetByApplicationStatus(applicationStatus, false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+            var user = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
 
             if (user is null)
             {
@@ -125,9 +130,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with phone number: {phoneNumber} found.", userDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(UserRole role)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(int pageNumber, UserRole role)
         {
-            var result = await _unitOfWork.UserRepository.GetByUserRole(role, false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+            var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, role, false);
 
             if (result is null)
             {
@@ -139,9 +147,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by role specified found", usersDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(Specialization specialization)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, Specialization specialization)
         {
-            var result = await _unitOfWork.UserRepository.GetBySpecialization(specialization, false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+            var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, specialization, false);
 
             if (result is null)
             {
@@ -167,9 +178,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with id: {userId} found", userDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(UserType userType)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(int pageNumber, UserType userType)
         {
-            var result = await _unitOfWork.UserRepository.GetByUserType(userType, false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+
+            var result = await _unitOfWork.UserRepository.GetByUserType(parameter, userType, false);
 
             if (result is null)
             {
@@ -183,9 +198,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllProjectsByUserId(string userId)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllProjectsByUserId(int pageNumber, string userId)
         {
-            var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(userId, false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+
+            var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, userId, false);
 
             if (result is null)
             {
@@ -199,9 +218,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders()
+        public async Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders(int pageNumber)
         {
-            var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(false);
+            var parameter = new UserRequestInputParameter();
+            parameter.PageNumber = pageNumber;
+            parameter.PageSize = 2;
+
+            var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(parameter, false);
 
             if (result == null)
             {
@@ -219,12 +242,26 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (result == null)
             {
-                return StandardResponse<UserResponseDto>.Failed("There are no service providers yet", 99);
+                return StandardResponse<UserResponseDto>.Failed($"There are no rating by this id: {userId}", 99);
             }
 
             var userDto = _mapper.Map<UserResponseDto>(result);
 
-            return StandardResponse<UserResponseDto>.Success("All Service providers ", userDto, 200);
+            return StandardResponse<UserResponseDto>.Success($"Rating by user id: {userId} ", userDto, 200);
+        }
+
+        public async Task<StandardResponse<UserResponseDto>> GetByUsername(string username)
+        {
+            var result = await _unitOfWork.UserRepository.GetByUsername(username, false);
+
+            if (result == null)
+            {
+                return StandardResponse<UserResponseDto>.Failed($"There is no user with username {username} ", 99);
+            }
+
+            var userDto = _mapper.Map<UserResponseDto>(result);
+
+            return StandardResponse<UserResponseDto>.Success($"User with username {username}", userDto, 200);
         }
 
         public async Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id, UserUpdateRequestDto userUpdateDto)
@@ -290,6 +327,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
           
         }
+
 
 
 

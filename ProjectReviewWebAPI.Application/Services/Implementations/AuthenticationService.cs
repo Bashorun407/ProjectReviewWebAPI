@@ -48,7 +48,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         }
 
-        public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto, string role)
+        public async Task<(IdentityResult identity, string emailToken)> RegisterUser(UserRegisterDto userRegisterDto)
         {
            
             var user = _mapper.Map<User>(userRegisterDto);
@@ -59,16 +59,37 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             user.UserType = Domain.Enums.UserType.CLIENT;
 
             var result = await _userManager.CreateAsync(user, userRegisterDto.Password);
+            string token = string.Empty;
             //Send an email to notify user
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, role);
+                await _userManager.AddToRoleAsync(user, "User");
+                token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             }
+            
+            return (result, token);
+        }
+        
+        public async Task<(IdentityResult identity, string emailToken)> RegisterAdmin(UserRegisterDto userRegisterDto)
+        {
+           
+            var user = _mapper.Map<User>(userRegisterDto);
+            //assigning a unique UserId to each user
+            user.UserId = Utilities.GenerateUniqueId();
+            user.Specialization = Domain.Enums.Specialization.None;
+            user.Role = Domain.Enums.UserRole.REGULAR;
+            user.UserType = Domain.Enums.UserType.CLIENT;
 
-            //user.UserName = user.Email;
-            _emailService.SendEmailAsync(user.Email, "ProReev Register Notification", 
-                $"Dear {user.FirstName} {user.LastName}, \nYou have successfully registered on BookReev.\nYour unique id is: {user.UserId}. \n Thank you!");
-            return result;
+            var result = await _userManager.CreateAsync(user, userRegisterDto.Password);
+            string token = string.Empty;
+            //Send an email to notify user
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Admin");
+                token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            }
+            
+            return (result, token);
         }
 
         public async Task<bool> ValidateUser(UserLoginDto userLoginDto)
@@ -116,5 +137,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return tokenOptions;
         }
 
+        public void SendConfirmationEmail(string email, string callback_url)
+        {
+            string title = "Confirm Email";
+            string body = $"Hello, \nKindly confirm your email by clicking this: {callback_url}";
+            _emailService.SendEmailAsync(email, title, body);
+        }
+
+        public void SendResetPasswordEmail(string email, string callback_url)
+        {
+            string title = "Confirm Password";
+            string body = $"Hello, \nKindly confirm your password.";
+            _emailService.SendEmailAsync(email, title, body);
+        }
     }
 }
