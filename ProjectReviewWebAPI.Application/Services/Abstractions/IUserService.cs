@@ -34,7 +34,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<UserUpdateResponseDto>> ServiceProviderUpdate(string id, UserServiceProviderUpdateDto userUpdateDto);
         Task<StandardResponse<UserUpdateResponseDto>> JobRoleUpdate(string id, UserAdminUpdateDto userUpdateDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
-        Task<StandardResponse<(string, bool)>> UploadProfileImage(string userId, IFormFile file);
+        Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);
 
     }
 }

@@ -9,7 +9,6 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class ProjectUpdateDto
     {
-        public string CoverImage { get; set; }
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
 

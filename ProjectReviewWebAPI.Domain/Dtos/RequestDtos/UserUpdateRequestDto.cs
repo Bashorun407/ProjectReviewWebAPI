@@ -10,7 +10,6 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class UserUpdateRequestDto
     {
-        public string? ProfilePicture { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }

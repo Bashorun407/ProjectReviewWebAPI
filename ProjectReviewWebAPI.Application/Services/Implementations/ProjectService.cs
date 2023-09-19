@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
@@ -27,14 +28,39 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly ILogger<ProjectService> _logger;
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
+        private readonly IPhotoService _photoService;
 
-        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger, IEmailService emailService, IUserService userService)
+        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger, IEmailService emailService, IUserService userService, IPhotoService photoService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
             _emailService = emailService;
             _userService = userService;
+            _photoService = photoService;
+        }
+
+        public async Task<StandardResponse<ProjectResponseDto>> AddServiceProvider(string projectId, SelectServiceProviderDto serviceProviderDto)
+        {
+            var projectExist = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);
+
+            if (projectExist == null)
+            {
+                return StandardResponse<ProjectResponseDto>.Failed($"Project with id: {projectId} does not exist", 99);
+            }
+
+            var updatedEntity = _mapper.Map(serviceProviderDto, projectExist);
+            //This project will be updated
+            _unitOfWork.ProjectRepository.Update(updatedEntity);
+            await _unitOfWork.SaveAsync();
+
+            _logger.LogInformation($"A Service provider has been added to project with project-id: {projectId} ");
+
+            //Returning a ProjectResponseDto
+            var projectDto = _mapper.Map<ProjectResponseDto>(updatedEntity);
+
+            return StandardResponse<ProjectResponseDto>.Success("Project was updated successfully", projectDto, 200);
+
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> AdminProjectUpdate(string id, ProjectAdminUpdateDto projectUpdateDto)
@@ -114,7 +140,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.ProjectRepository.GetAll(parameter, false);
 
-            if(result is null)
+            if(!result.Any())
             {
                 return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
             }
@@ -131,6 +157,10 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
             var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter, approvalStatus, false);
 
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by Approval status ", projectsDto, 200);
@@ -171,6 +201,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.ProjectRepository.GetByProjectName(parameter, projectName, false);
 
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
+
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by project name ", projectsDto, 200);
@@ -179,6 +214,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectOwnerIdAsync(string projectOwnerId)
         {
             var result = await _unitOfWork.ProjectRepository.GetByProjectOwnerId(projectOwnerId, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -193,6 +233,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.ProjectRepository.GetByProjectStatus(parameter, completionStatus, false);
 
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
+
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
             return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by completion status ", projectsDto, 200);
@@ -201,6 +246,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId)
         {
             var result = await _unitOfWork.ProjectRepository.GetByServiceProvider(serviceProviderId, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -214,6 +264,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
 
             var result = await _unitOfWork.ProjectRepository.GetByCategory(parameter, category, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+            }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
@@ -277,6 +332,34 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             //_emailService.SendEmailAsync(productOwner.Email, "Project Completion Notification", $"Dear {productOwner.LastName}, {productOwner.FirstName},\nYour project with project id: {projectExists.ProjectId} has been completed successfully.");
 
             return StandardResponse<ProjectResponseDto>.Success("Project was updated successfully", projectDto, 200);
+        }
+
+        public async Task<StandardResponse<(bool, string)>> UploadProfileImage(string projectId, IFormFile file)
+        {
+            var result = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);
+
+            if (result is null)
+            {
+                _logger.LogWarning($"No project with id {projectId}");
+
+                return StandardResponse<(bool, string)>.Failed("project not found", 99);
+
+            }
+
+            var project = _mapper.Map<Project>(result);
+
+            string url = _photoService.AddPhotoForUser(file);
+
+            if (string.IsNullOrWhiteSpace(url))
+
+                return StandardResponse<(bool, string)>.Failed("Failed to upload", 500);
+
+            project.CoverImage = url;
+
+            _unitOfWork.ProjectRepository.Update(project);
+            await _unitOfWork.SaveAsync();
+            return StandardResponse<(bool, string)>.Success("Successfully uploaded image", (true, url), 204);
+
         }
     }
 }

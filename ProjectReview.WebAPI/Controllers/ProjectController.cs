@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Application.Services.Implementations;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
@@ -91,10 +92,10 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET api/<ProjectController>/5
 
-        [HttpGet("project/{id}")]
-        public async Task<IActionResult> GetByProjectId(string id)
+        [HttpGet("project/{projectId}")]
+        public async Task<IActionResult> GetByProjectId(string projectId)
         {
-            var result = await _projectService.GetByProjectId(id);
+            var result = await _projectService.GetByProjectId(projectId);
 
             return Ok(result);
         }
@@ -111,30 +112,40 @@ namespace ProjectReview.WebAPI.Controllers
 
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "Admin")]
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateProject(string id, [FromBody] ProjectUpdateDto projectUpdateDto)
+        [HttpPut("update/{projectId}")]
+        public async Task<IActionResult> UpdateProject(string projectId, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
-            var result = await _projectService.UpdateProject(id, projectUpdateDto);
+            var result = await _projectService.UpdateProject(projectId, projectUpdateDto);
 
             return Ok(result);
         }
 
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "Admin")]
-        [HttpPut("serviceProviderProjectUpdate/{id}")]
-        public async Task<IActionResult> ServiceProviderProjectUpdate(string id, [FromBody] ProjectServiceProviderUpdateDto projectUpdateDto)
+        [HttpPut("serviceProviderProjectUpdate/{projectId}")]
+        public async Task<IActionResult> ServiceProviderProjectUpdate(string projectId, [FromBody] ProjectServiceProviderUpdateDto projectUpdateDto)
         {
-            var result = await _projectService.ServiceProviderProjectUpdate(id, projectUpdateDto);
+            var result = await _projectService.ServiceProviderProjectUpdate(projectId, projectUpdateDto);
 
             return Ok(result);
         }
 
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "Admin")]
-        [HttpPut("adminProjectUpdate/{id}")]
-        public async Task<IActionResult> AdminProjectUpdate(string id, [FromBody] ProjectAdminUpdateDto projectUpdateDto)
+        [HttpPut("addServiceProvider/{projectId}")]
+        public async Task<IActionResult> AddServiceProvider(string projectId, [FromBody] SelectServiceProviderDto serviceProviderDto)
         {
-            var result = await _projectService.AdminProjectUpdate(id, projectUpdateDto);
+            var result = await _projectService.AddServiceProvider(projectId, serviceProviderDto);
+
+            return Ok(result);
+        }
+
+        // PUT api/<ProjectController>/5
+        //[Authorize(Roles = "Admin")]
+        [HttpPut("adminProjectUpdate/{projectId}")]
+        public async Task<IActionResult> AdminProjectUpdate(string projectId, [FromBody] ProjectAdminUpdateDto projectUpdateDto)
+        {
+            var result = await _projectService.AdminProjectUpdate(projectId, projectUpdateDto);
 
             return Ok(result);
         }
@@ -147,6 +158,18 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _projectService.DeleteProject(projectId);
 
             return Ok(result);
+        }
+
+        // [Authorize]
+        [HttpPost("image/{projectId}")]
+        public IActionResult UploadProfilePic(string projectId, IFormFile file)
+        {
+            var result = _projectService.UploadProfileImage(projectId, file);
+            if (result.Result.Succeeded)
+            {
+                return Ok(new { ImageUrl = result.Result.Data.Item2 });
+            }
+            return NotFound();
         }
     }
 }

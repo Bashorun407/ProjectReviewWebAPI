@@ -8,6 +8,6 @@ namespace ProjectReviewWebAPI.Domain.Enums
 {
     public enum ServiceProviderSpecialization
     {
-        None = 1, Writer, Editor, Researcher, Reviewer, Proof_Reader, Proof_Writer, Copyrighting
+        None = 1, Editor, Researcher, Reviewer, Proof_Reader, Proof_Writer, Copyrighting
     }
 }

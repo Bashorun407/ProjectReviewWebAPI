@@ -81,6 +81,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageNumber = pageNumber;
             parameter.PageSize = 10;
             var result = await _unitOfWork.RatingRepository.GetAll(parameter, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<RatingResponseDto>>.Failed($"There are no projects yet", 99);
+            }
             var ratesDto = _mapper.Map<IEnumerable<RatingResponseDto>>(result);
 
             return StandardResponse<IEnumerable<RatingResponseDto>>.Success("All ratings", ratesDto, 200);

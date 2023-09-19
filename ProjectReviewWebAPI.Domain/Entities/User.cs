@@ -23,6 +23,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public UserType UserType { get; set; }
         public ServiceProviderSpecialization Specialization { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
+        public ApplicationReviewStatus ApplicationReviewStatus { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }

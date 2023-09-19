@@ -51,6 +51,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
 
             var result = await _unitOfWork.CommentRepository.GetAll(parameter, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed("there are no comments yet", 99);
+            }
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
             return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All Comments retrieved", commentsDto, 200);
@@ -59,6 +64,12 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByProjectId(string projectId)
         {
             var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(projectId, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed($"There are no comments by projedt id: {projectId} yet", 99);
+            }
+
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
             return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by projectId", commentsDto, 200);
@@ -67,6 +78,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username)
         {
             var result = await _unitOfWork.CommentRepository.GetCommentByUsername(username, false);
+
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed($"there are no comments by user with username : {username} yet", 99);
+            }
 
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 

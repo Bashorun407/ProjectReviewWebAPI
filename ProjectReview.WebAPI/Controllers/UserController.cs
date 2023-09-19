@@ -125,6 +125,7 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
         // [Authorize]
         [HttpPost("image/{id}")]
         public IActionResult UploadProfilePic(string id, IFormFile file)

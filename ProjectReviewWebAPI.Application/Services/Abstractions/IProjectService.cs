@@ -1,4 +1,5 @@
-﻿using ProjectReviewWebAPI.Domain.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
@@ -15,6 +16,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     public interface IProjectService
     {
         Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto);
+        Task<StandardResponse<ProjectResponseDto>> AddServiceProvider(string projectId, SelectServiceProviderDto serviceProviderDto);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync(int pageNumber);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(int pageNumber, string projectName);
@@ -25,6 +27,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<ProjectResponseDto>> GetById(int id);
         Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId);
         Task<StandardResponse<ProjectResponseDto>> UpdateProject(string id, ProjectUpdateDto projectUpdateDto);
+        Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file);
         Task<StandardResponse<ProjectResponseDto>> ServiceProviderProjectUpdate(string id, ProjectServiceProviderUpdateDto projectUpdateDto);
         Task<StandardResponse<ProjectResponseDto>> AdminProjectUpdate(string id, ProjectAdminUpdateDto projectUpdateDto);
         Task<StandardResponse<ProjectResponseDto>> DeleteProject(string id);

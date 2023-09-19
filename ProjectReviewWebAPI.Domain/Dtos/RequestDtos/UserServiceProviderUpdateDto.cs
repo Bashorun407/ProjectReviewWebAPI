@@ -5,11 +5,12 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class UserServiceProviderUpdateDto
     {
-        public UserType UserType { get; set; }
+        //public UserType UserType { get; set; }
+        public ApplicationStatus ApplicationStatus { get; set; }
         public ServiceProviderSpecialization ServiceProviderSpecialization { get; set; }
         public string? Description { get; set; }
         [Column(TypeName = "Money")]
         public double ChargeRate { get; set; }
-        public ApplicationReviewStatus? ApplicationReviewStatus { get; set; }
+        //public ApplicationReviewStatus? ApplicationReviewStatus { get; set; }
     }
 }

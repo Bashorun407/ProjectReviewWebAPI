@@ -61,7 +61,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
 
             var result = await _unitOfWork.UserRepository.GetAllUsers(parameter, false);
-            if (result == null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed("There are no users yet", 99);
             }
@@ -77,14 +77,14 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
             parameter.PageSize = 10;
-            var user = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
+            var result = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
 
-            if (user is null)
+            if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with application status: {applicationStatus} not found", 99);
+                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"There are no users by the applicationStatus specified: {applicationStatus} yet", 99);
             }
 
-            var usersDto =  _mapper.Map<IEnumerable<UserResponseDto>>(user);
+            var usersDto =  _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
             return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by application status specified found", usersDto, 200);
 
@@ -138,7 +138,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
             var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, role, false);
 
-            if (result is null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with role: {role} does not exist", 99);
 
@@ -155,7 +155,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             parameter.PageSize = 10;
             var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, specialization, false);
 
-            if (result is null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with specialization: {specialization} does not exist", 99);
 
@@ -187,7 +187,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.UserRepository.GetByUserType(parameter, userType, false);
 
-            if (result is null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with user-type: {userType} does not exist", 99);
 
@@ -207,7 +207,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, userId, false);
 
-            if (result is null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"There are no projects with userId: {userId}", 99);
             }
@@ -215,7 +215,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Projects with user id: {userId}: ", usersDto, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Projects with user id: {userId}", usersDto, 200);
 
         }
 
@@ -227,7 +227,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(parameter, false);
 
-            if (result == null)
+            if (!result.Any())
             {
                 return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Failed("There are no service providers yet");
             }
@@ -248,7 +248,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var userDto = _mapper.Map<UserResponseDto>(result);
 
-            return StandardResponse<UserResponseDto>.Success($"Rating by user id: {userId} ", userDto, 200);
+            return StandardResponse<UserResponseDto>.Success($"Rating by user id: {userId} is: {result.Ratings}", userDto, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByUsername(string username)
@@ -301,15 +301,15 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public async  Task<StandardResponse<(string, bool)>> UploadProfileImage(string userId, IFormFile file)
+        public async  Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file)
         {
-            var result = await  _unitOfWork.UserRepository.GetById(userId, false);
+            var result = await  _unitOfWork.UserRepository.GetByUserId(userId, false);
            
             if (result is null)
             {
                 _logger.LogWarning($"No user with id {userId}");
 
-                return StandardResponse<(string, bool)>.Failed("user not found", 99);
+                return StandardResponse<(bool, string)>.Failed("user not found", 99);
                
             }
 
@@ -319,13 +319,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (string.IsNullOrWhiteSpace(url))
 
-                return StandardResponse<(string, bool)>.Failed("Failed to upload", 500);
+                return StandardResponse<(bool, string)>.Failed("Failed to upload", 500);
 
             user.ProfilePicture = url;
 
             _unitOfWork.UserRepository.Update(user);
             await _unitOfWork.SaveAsync();
-            return StandardResponse<(string, bool)>.Success("Successfully uploaded image", (url, true), 204);
+            return StandardResponse<(bool, string)>.Success("Successfully uploaded image", (true, url), 204);
 
           
         }
@@ -350,6 +350,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             _unitOfWork.UserRepository.Update(updatedEntity);
             await _unitOfWork.SaveAsync();
+
             var userDto = _mapper.Map<UserUpdateResponseDto>(updatedEntity);
 
             //Sends email notification to user
@@ -375,7 +376,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var updatedEntity = _mapper.Map(userUpdateDto, userExists);
 
 
-            _logger.LogInformation($"Updating user with id: {id}");
+            _logger.LogInformation($"Updating user job role with id: {id}");
 
             _unitOfWork.UserRepository.Update(updatedEntity);
             await _unitOfWork.SaveAsync();
@@ -384,7 +385,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             //Sends email notification to user
             _emailService.SendEmailAsync(updatedEntity.Email, "Update Notification", $"Hello {updatedEntity.FirstName}, \nYour details on BookReev has been successfully updated.");
 
-            return StandardResponse<UserUpdateResponseDto>.Success($"User with id: {id} has been updated successfully", userDto, 200);
+            return StandardResponse<UserUpdateResponseDto>.Success($"User with id: {id}'s job role has been updated successfully", userDto, 200);
         }
     }
 }

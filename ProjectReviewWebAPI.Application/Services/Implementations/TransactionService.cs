@@ -82,6 +82,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var result = await _unitOfWork.TransactionRepository.GetAll(parameter, false);
 
+            if (!result.Any())
+            {
+                return StandardResponse<IEnumerable<TransactionResponseDto>>.Failed($"There are no projects yet", 99);
+            }
+
             var transactionsDto = _mapper.Map<IEnumerable<TransactionResponseDto>>(result);
 
             return StandardResponse<IEnumerable<TransactionResponseDto>>.Success("All transactions", transactionsDto, 200);
