@@ -68,7 +68,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Successfully retrieved all users", userDtos, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"All users are :{userDtos.Count()}", userDtos, 200);
 
         }
 
@@ -86,7 +86,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var usersDto =  _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by application status specified found", usersDto, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by application status specified found are: {usersDto.Count()} ", usersDto, 200);
 
         }
 
@@ -145,7 +145,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             }
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by role specified found", usersDto, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by role specified found are : {usersDto.Count()}", usersDto, 200);
         }
 
         public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, ServiceProviderSpecialization specialization)
@@ -163,7 +163,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by specialization specified found", usersDto, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by specialization specified found are: {usersDto.Count()}", usersDto, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByUserId(string userId)
@@ -195,7 +195,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by user-type specified found", usersDto, 200);
+            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by user-type specified found are: {usersDto.Count()}", usersDto, 200);
 
         }
 
@@ -234,7 +234,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var usersDto = _mapper.Map<IEnumerable<ServiceProviderResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Success("All Service providers ", usersDto, 200);
+            return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Success($"All Service providers are: {usersDto.Count()}", usersDto, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetRatingByUserId(string userId)

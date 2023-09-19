@@ -58,22 +58,9 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             }
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All Comments retrieved", commentsDto, 200);
+            return StandardResponse<IEnumerable<CommentResponseDto>>.Success($"All Comments retrieved are: {commentsDto.Count()}", commentsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByProjectId(string projectId)
-        {
-            var result = await _unitOfWork.CommentRepository.GetCommentByProjectId(projectId, false);
-
-            if (!result.Any())
-            {
-                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed($"There are no comments by projedt id: {projectId} yet", 99);
-            }
-
-            var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
-
-            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by projectId", commentsDto, 200);
-        }
 
         public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username)
         {
@@ -86,7 +73,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<CommentResponseDto>>.Success("All comments by specified username", commentsDto, 200);
+            return StandardResponse<IEnumerable<CommentResponseDto>>.Success($"All comments by specified username are: {commentsDto.Count()}", commentsDto, 200);
         }
     }
 }

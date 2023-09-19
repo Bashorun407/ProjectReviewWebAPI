@@ -40,6 +40,7 @@ namespace ProjectReview.WebAPI.Controllers
             string encodedToken = System.Text.Encodings.Web.UrlEncoder.Default.Encode(result.emailToken);
             string callback_url = Request.Scheme + "://" + Request.Host + $"/api/authentication/confirm-email/{userRegisterDto.Email}/{encodedToken}";
 
+            //Sends email to user to confirm registration
             _authenticationService.SendConfirmationEmail(userRegisterDto.Email, callback_url);
             return StatusCode(201, "Account created successfully. Please confirm your email");
         }

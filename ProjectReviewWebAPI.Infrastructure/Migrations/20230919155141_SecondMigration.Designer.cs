@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230919155141_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28a6b2c8-7fd8-46bb-88fe-986a87bd827c",
+                            Id = "c787e650-eb75-4b4a-a769-fb50d5f456c5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "866f2e66-3510-4370-8e2f-683819ab17ca",
+                            Id = "66330d32-e164-46f4-80ac-0581d27cd228",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -329,10 +332,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -42,6 +42,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<ProjectResponseDto>> AddServiceProvider(string projectId, SelectServiceProviderDto serviceProviderDto)
         {
+            //Check if username exists in User database
+            var userExists = await _unitOfWork.UserRepository.GetByUsername(serviceProviderDto.ServiceProviderUsername, false);
+            if (userExists == null)
+            {
+                return StandardResponse<ProjectResponseDto>.Failed($"User with username: {serviceProviderDto.ServiceProviderUsername} does not exist", 99);
+            }
+
             var projectExist = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);
 
             if (projectExist == null)
@@ -89,19 +96,30 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto)
         {
             _logger.LogInformation("Creating a project");
+            //Check if there is a user by projectOwnerId from the projectRequestDto
+            var user = await _unitOfWork.UserRepository.GetByUserId(projectRequestDto.ProjectOwnerId, false);
+
+            if (user == null)
+            {
+                return StandardResponse<ProjectResponseDto>.Failed($"There is no user with: {projectRequestDto.ProjectOwnerId}", 99);
+            }
             var project = _mapper.Map<Project>(projectRequestDto);
 
             //setting unique projectId
             project.ProjectId = Utilities.GenerateUniqueId();
-
+            project.JobAcceptanceStatus = JobAcceptanceStatus.NOT_ACCEPTED;
+            project.ProjectStartApproval = ProjectStartApproval.NOT_APPROVED;
+            project.ProjectLevelApprovalStatus = ProjectLevelApprovalStatus.NOT_SATISFIED;
+            project.ProjectCompletionStatus = ProjectCompletionStatus.Pending;
+           
             await _unitOfWork.ProjectRepository.CreateAsync(project);
             _logger.LogInformation("Saving new project to database");
             await _unitOfWork.SaveAsync();
             _logger.LogInformation($"Project with project Id: {project.ProjectId} successfully saved to database");
 
             //Sends email notification to projectOwner that project has been created
-            var productOwner = await _unitOfWork.UserRepository.GetById(project.ProjectOwnerId, false);
-            var owner = _mapper.Map<User>(productOwner);
+            //var productOwner = await _unitOfWork.UserRepository.GetById(project.ProjectOwnerId, false);
+            var owner = _mapper.Map<User>(user);
 
             _emailService.SendEmailAsync(owner.Email, "Project Creation Notification", $"Dear {owner.LastName}, {owner.FirstName},\nYou have successfully created a project with project-id: {project.ProjectId}.\nThank you for your patronage.");
 
@@ -147,7 +165,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects", projectsDto, 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"All projects are: {projectsDto.Count()}", projectsDto, 200);
         }
 
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectLevelApprovalStatus approvalStatus)
@@ -159,11 +177,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by this approval status: {approvalStatus} yet", 99);
             }
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by Approval status ", projectsDto, 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"Projects by Approval status are: {projectsDto.Count()} ", projectsDto, 200);
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> GetById(int id)
@@ -203,7 +221,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by this name: {projectName} yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
@@ -217,7 +235,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by project ownerId {projectOwnerId} yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
@@ -235,27 +253,27 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by status: {completionStatus} yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("Projects by completion status ", projectsDto, 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"All projects by specified criteria are: {projectsDto.Count()} ", projectsDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId)
+/*        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId)
         {
             var result = await _unitOfWork.ProjectRepository.GetByServiceProvider(serviceProviderId, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by service-provider id: {serviceProviderId} yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
-        }
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"All projects by service-provider id: {serviceProviderId} ", projectsDto, 200);
+        }*/
 
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category)
         {
@@ -267,17 +285,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects by category: {category} yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success("All projects by ", projectsDto, 200);
+            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"All projects by category: {category} are {projectsDto.Count()} ", projectsDto, 200);
         }
 
         public async Task<StandardResponse<ProjectResponseDto>> ServiceProviderProjectUpdate(string id, ProjectServiceProviderUpdateDto projectUpdateDto)
         {
-            //var checkProject = await _unitOfWork.ProjectRepository.GetByProjectId
+
+
             var projectExists = await _unitOfWork.ProjectRepository.GetByProjectId(id, false);
 
 

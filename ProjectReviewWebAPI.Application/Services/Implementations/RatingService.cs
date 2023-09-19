@@ -22,6 +22,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<RatingService> _logger;
+        
 
         public RatingService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RatingService> logger)
         {
@@ -32,11 +33,19 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<RatingResponseDto>> AddRating(RatingRequestDto ratingRequestDto)
         {
+            //Check if ratingRequestDo.username exists in the database
+            var user = await _unitOfWork.UserRepository.GetByUsername(ratingRequestDto.Username, false);
+            if (user == null)
+            {
+                return StandardResponse<RatingResponseDto>.Failed($"User by this username: {ratingRequestDto.Username} does not exist ", 99);
+            }
+
             _logger.LogInformation("New rating for service provider");
             var rate = _mapper.Map<Rating>(ratingRequestDto);
+            rate.UserId = user.Id; //UserId of rate class is gotten from user.Id (which is from Identity class
 
             //Check if a rating has been done for that user prior.
-            var findRate = await _unitOfWork.RatingRepository.FindByCondition(c => c.UserId.Equals(rate.UserId), false).SingleOrDefaultAsync();
+            var findRate = await _unitOfWork.RatingRepository.FindByCondition(c => c.UserId.Equals(user.Id), false).SingleOrDefaultAsync();
             
             if (findRate == null)
             {
@@ -84,11 +93,11 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<RatingResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<IEnumerable<RatingResponseDto>>.Failed($"There are no ratings yet", 99);
             }
             var ratesDto = _mapper.Map<IEnumerable<RatingResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<RatingResponseDto>>.Success("All ratings", ratesDto, 200);
+            return StandardResponse<IEnumerable<RatingResponseDto>>.Success($"All ratings are: {ratesDto.Count()}", ratesDto, 200);
            
         }
 

@@ -32,16 +32,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentByProjectId(string projectId, bool trackChanges)
-        {
-            var result = await FindByCondition(c => c.Equals(projectId), trackChanges).ToListAsync();
-
-            return result;
-        }
 
         public async Task<IEnumerable<Comment>> GetCommentByUsername(string username, bool trackChanges)
         {
-           var result = await FindByCondition(c => c.Equals(username), trackChanges).ToListAsync();
+           var result = await FindByCondition(c => c.UserName.Equals(username), trackChanges).ToListAsync();
 
             return result;
         }

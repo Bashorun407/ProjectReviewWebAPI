@@ -22,7 +22,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<UserController>
-        //[Authorize(Roles ="Admin")]
+        //[Authorize(Roles = "User")]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsers( [FromQuery] int pageNumber)
         {
@@ -32,15 +32,16 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
 
-/*        //[Authorize]
-        [HttpGet("id/{id}")]
-        public async Task<IActionResult> GetById(string id)
-        {
-            var result = await _userService.GetById(id);
-            return Ok(result);
-        }*/
+        /*        //[Authorize]
+                [HttpGet("id/{id}")]
+                public async Task<IActionResult> GetById(string id)
+                {
+                    var result = await _userService.GetById(id);
+                    return Ok(result);
+                }*/
 
         //[Authorize]
+        //[Authorize(Roles = "User")]
         [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {
@@ -84,7 +85,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET: api/<UserController>
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpGet("specializatiion/{specialization}")]
         public async Task<IActionResult> GetUsersBySpecialization([FromQuery] int pageNumber, ServiceProviderSpecialization specialization)
         {
@@ -93,6 +94,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        //[Authorize(Roles = "User")]
         [HttpGet("allProjectsByUser/{userId}")]
         public async Task<IActionResult> GetAllProjectsByUserId([FromQuery]int pageNumber, string userId)
         {
@@ -109,6 +111,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        //[Authorize(Roles = "User")]
         [HttpGet("userByUsername/{username}")]
         public async Task<IActionResult> GetByUsername(string username)
         {
@@ -117,7 +120,7 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-
+        //[Authorize(Roles = "User")]
         [HttpGet("ratingsByUserl/{userId}")]
         public async Task<IActionResult> GetRatingByUserId(string userId)
         {
@@ -127,6 +130,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // [Authorize]
+        //[Authorize(Roles = "User")]
         [HttpPost("image/{id}")]
         public IActionResult UploadProfilePic(string id, IFormFile file)
         {
@@ -140,6 +144,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // PUT api/<UserController>/5
         //[Authorize]
+        //[Authorize(Roles = "User")]
         [HttpPut("userUpdate/{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateRequestDto userUpdateDto)
         {
@@ -149,6 +154,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // PUT api/<UserController>/5
         //[Authorize]
+        //[Authorize(Roles = "User")]
         [HttpPut("serviceProviderUpdate/{id}")]
         public async Task<IActionResult> ServiceProviderUpdate(string id, [FromBody] UserServiceProviderUpdateDto userUpdateDto)
         {
@@ -158,6 +164,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // PUT api/<UserController>/5
         //[Authorize]
+        //[Authorize(Roles = "User")]
         [HttpPut("jobRoleUpdate/{id}")]
         public async Task<IActionResult> JobRoleUpdate(string id, [FromBody] UserAdminUpdateDto userUpdateDto)
         {
@@ -166,7 +173,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // DELETE api/<UserController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpDelete("deleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

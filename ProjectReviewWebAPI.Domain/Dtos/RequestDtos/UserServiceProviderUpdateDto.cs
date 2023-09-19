@@ -7,7 +7,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
     {
         //public UserType UserType { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
-        public ServiceProviderSpecialization ServiceProviderSpecialization { get; set; }
+        public ServiceProviderSpecialization Specialization { get; set; }
         public string? Description { get; set; }
         [Column(TypeName = "Money")]
         public double ChargeRate { get; set; }

@@ -63,15 +63,16 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
-        [HttpGet("serviceProvider/{providerId}")]
-        public async Task<IActionResult> GetByServiceProviderId(string providerId)
-        {
-            var result = await _projectService.GetByServiceProviderIdAsync(providerId);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
-        }
+        /*  [HttpGet("serviceProvider/{providerId}")]
+          public async Task<IActionResult> GetByServiceProviderId(string providerId)
+          {
+              var result = await _projectService.GetByServiceProviderIdAsync(providerId);
+              //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+              return Ok(result);
+          }*/
 
         // GET: api/<ProjectController>
+        //[Authorize(Roles = "Admin")]
         [HttpGet("projectStatus/{status}")]
         public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] int pageNumber, ProjectCompletionStatus status)
         {
@@ -91,7 +92,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET api/<ProjectController>/5
-
+        //[Authorize(Roles = "User")]
         [HttpGet("project/{projectId}")]
         public async Task<IActionResult> GetByProjectId(string projectId)
         {
@@ -102,6 +103,7 @@ namespace ProjectReview.WebAPI.Controllers
 
 
         // POST api/<ProjectController>
+        //[Authorize(Roles = "User")]
         [HttpPost("createProject")]
         public async Task<IActionResult> CreateProject([FromBody] ProjectRequestDto projectRequstDto)
         {
@@ -111,7 +113,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // PUT api/<ProjectController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpPut("update/{projectId}")]
         public async Task<IActionResult> UpdateProject(string projectId, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
@@ -121,7 +123,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // PUT api/<ProjectController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpPut("serviceProviderProjectUpdate/{projectId}")]
         public async Task<IActionResult> ServiceProviderProjectUpdate(string projectId, [FromBody] ProjectServiceProviderUpdateDto projectUpdateDto)
         {
@@ -131,7 +133,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // PUT api/<ProjectController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpPut("addServiceProvider/{projectId}")]
         public async Task<IActionResult> AddServiceProvider(string projectId, [FromBody] SelectServiceProviderDto serviceProviderDto)
         {
@@ -141,7 +143,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // PUT api/<ProjectController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpPut("adminProjectUpdate/{projectId}")]
         public async Task<IActionResult> AdminProjectUpdate(string projectId, [FromBody] ProjectAdminUpdateDto projectUpdateDto)
         {
@@ -151,7 +153,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // DELETE api/<ProjectController>/5
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpDelete("delete/{projectId}")]
         public async Task<IActionResult> DeleteProject(string projectId)
         {
@@ -161,7 +163,8 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // [Authorize]
-        [HttpPost("image/{projectId}")]
+        //[Authorize(Roles = "User")]
+        [HttpPost("uploadImage/{projectId}")]
         public IActionResult UploadProfilePic(string projectId, IFormFile file)
         {
             var result = _projectService.UploadProfileImage(projectId, file);

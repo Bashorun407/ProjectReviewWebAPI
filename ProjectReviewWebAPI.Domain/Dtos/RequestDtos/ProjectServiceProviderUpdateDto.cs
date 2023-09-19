@@ -9,7 +9,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class ProjectServiceProviderUpdateDto
     {
-        public string ServiceProviderUsername { get; set; }
+        //public string ServiceProviderUsername { get; set; }
         public JobAcceptanceStatus JobAcceptanceStatus { get; set; }
         public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
         public DateTime? StartDate { get; set; }

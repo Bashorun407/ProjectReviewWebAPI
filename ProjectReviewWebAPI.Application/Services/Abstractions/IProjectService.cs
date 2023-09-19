@@ -21,7 +21,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(int pageNumber, string projectName);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectOwnerIdAsync(string projectOwnerId);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId);
+        //Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(int pageNumber, ProjectCompletionStatus completionStatus);
         Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectLevelApprovalStatus approvalStatus);
         Task<StandardResponse<ProjectResponseDto>> GetById(int id);

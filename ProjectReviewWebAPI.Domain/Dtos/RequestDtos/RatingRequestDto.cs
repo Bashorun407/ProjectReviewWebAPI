@@ -8,7 +8,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class RatingRequestDto
     {
-        public string UserId { get; set; }
+        public string Username { get; set; }
         public int StarRating { get; set; }
 /*        public int RateCount { get; set; }
         public double AverageRating { get; set; }*/

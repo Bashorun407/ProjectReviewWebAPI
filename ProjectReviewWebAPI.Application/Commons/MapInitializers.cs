@@ -20,6 +20,9 @@ namespace ProjectReviewWebAPI.Application.Commons
 
             CreateMap<ProjectRequestDto, Project>();
             CreateMap<ProjectUpdateDto, Project>();
+            CreateMap<ProjectServiceProviderUpdateDto, Project>();
+            CreateMap<SelectServiceProviderDto, Project>();
+            CreateMap<ProjectAdminUpdateDto,  Project>();
             CreateMap<Project, ProjectResponseDto>();
 
             CreateMap<RatingRequestDto, Rating>();

@@ -16,7 +16,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public string ProjectOwnerId { get; set; }
         public string ClientUsername { get; set; }
         public Category Category { get; set; }
-        public string ProjectOwnerID { get; set; }
+
 
     }
 }

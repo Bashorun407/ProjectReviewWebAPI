@@ -28,15 +28,6 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/<CommentController>
-        [HttpGet("projectId/{projectId}")]
-        public async Task<IActionResult> GetCommentsByProjectId(string projectId)
-        {
-            var result = await _commentService.GetCommentsByProjectId(projectId);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            
-            return Ok(result);
-        }
 
         // GET api/<CommentController>/5
         [HttpGet("username/{username}")]

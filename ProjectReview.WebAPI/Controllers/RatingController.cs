@@ -30,10 +30,10 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         // GET api/<RatingController>/5
-        [HttpGet("rateByUserId/{id}")]
-        public async Task<IActionResult> GetRatingByUserId(string id)
+        [HttpGet("rateByUsername/{username}")]
+        public async Task<IActionResult> GetRatingByUserId(string username)
         {
-            var result = await _ratingService.GetRatingByUserId(id);
+            var result = await _ratingService.GetRatingByUserId(username);
 
             return Ok(result);
         }

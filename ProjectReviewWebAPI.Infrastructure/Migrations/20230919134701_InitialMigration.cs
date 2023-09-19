@@ -42,6 +42,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Specialization = table.Column<int>(type: "int", nullable: false),
                     ApplicationStatus = table.Column<int>(type: "int", nullable: false),
+                    ApplicationReviewStatus = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -288,8 +289,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2d598cf6-b32e-415d-aa19-940f85abdf31", null, "User", "USER" },
-                    { "c1990f75-ee20-40b7-860c-82d290916f5c", null, "Admin", "ADMIN" }
+                    { "095d7e4e-1560-446c-afaf-0b357980b645", null, "Admin", "ADMIN" },
+                    { "9a64fa67-78f3-4345-ad85-d1d4cd94632d", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

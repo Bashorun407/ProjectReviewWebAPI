@@ -15,11 +15,9 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string ProjectName { get; set;}
         public string ProjectId { get; set;}
         public string ProjectDescription { get; set;}
-        //[Column(TypeName = "Money")]
-        //public double Budget { get; set; }
         public string ClientUsername { get; set; }
 
-        [ForeignKey(nameof(User))]
+        //[ForeignKey(nameof(User))]
         public string ProjectOwnerId { get; set; } 
         public string? ServiceProviderUsername{ get; set; }
         public JobAcceptanceStatus? JobAcceptanceStatus { get; set; }

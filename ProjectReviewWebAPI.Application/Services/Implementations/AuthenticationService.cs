@@ -54,7 +54,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
             user.UserId = Utilities.GenerateUniqueId();
-            user.Specialization = Domain.Enums.ServiceProviderSpecialization.None;
+            user.Specialization = Domain.Enums.ServiceProviderSpecialization.NONE;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;
 
@@ -76,7 +76,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
             user.UserId = Utilities.GenerateUniqueId();
-            user.Specialization = Domain.Enums.ServiceProviderSpecialization.None;
+            user.Specialization = Domain.Enums.ServiceProviderSpecialization.NONE;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;
 

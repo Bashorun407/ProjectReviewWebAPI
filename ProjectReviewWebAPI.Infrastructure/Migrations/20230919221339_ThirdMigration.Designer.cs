@@ -12,8 +12,8 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230915152427_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230919221339_ThirdMigration")]
+    partial class ThirdMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c1990f75-ee20-40b7-860c-82d290916f5c",
+                            Id = "28a6b2c8-7fd8-46bb-88fe-986a87bd827c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2d598cf6-b32e-415d-aa19-940f85abdf31",
+                            Id = "866f2e66-3510-4370-8e2f-683819ab17ca",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -284,7 +284,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<string>("ProjectOwnerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProjectStartApproval")
                         .HasColumnType("int");
@@ -295,9 +295,12 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectOwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -329,6 +332,10 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -386,6 +393,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApplicationReviewStatus")
                         .HasColumnType("int");
 
                     b.Property<int>("ApplicationStatus")
@@ -542,9 +552,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 {
                     b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("ProjectOwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
