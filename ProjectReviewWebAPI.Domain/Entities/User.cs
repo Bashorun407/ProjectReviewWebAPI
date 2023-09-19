@@ -15,15 +15,15 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string? ProfilePicture { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        private string? DateOfBirth { get; set; }
-        public string? Description { get; set; }
+        public string? DateOfBirth { get; set; }
         public string UserId { get; set; }
         [Column(TypeName = "Money")]
         public double ChargeRate { get; set; }
         public UserRole Role { get; set; }
         public UserType UserType { get; set; }
-        public Specialization Specialization { get; set; }
+        public ServiceProviderSpecialization Specialization { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
+        public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }
 

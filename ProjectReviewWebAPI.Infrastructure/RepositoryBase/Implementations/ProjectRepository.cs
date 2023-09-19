@@ -32,9 +32,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, ProjectApprovalStatus approvalStatus, bool trackChanges)
+        public async Task<IEnumerable<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, ProjectLevelApprovalStatus approvalStatus, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.ProjectApprovalStatus.Equals(approvalStatus), trackChanges).Skip((parameter.PageNumber - 1) * parameter.PageSize)
+            var result = await FindByCondition(c => c.ProjectLevelApprovalStatus.Equals(approvalStatus), trackChanges).Skip((parameter.PageNumber - 1) * parameter.PageSize)
                 .Take(parameter.PageSize).ToListAsync();
 
             return result;
@@ -84,9 +84,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<IEnumerable<Project>> GetByServiceProvider(string serviceProviderId, bool trackChanges)
+        public async Task<IEnumerable<Project>> GetByServiceProvider(string serviceProviderName, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.ServiceProviderId.Equals(serviceProviderId), trackChanges).ToListAsync();
+            var result = await FindByCondition(c => c.ServiceProviderUsername.Equals(serviceProviderName), trackChanges).ToListAsync();
 
             return result;
         }

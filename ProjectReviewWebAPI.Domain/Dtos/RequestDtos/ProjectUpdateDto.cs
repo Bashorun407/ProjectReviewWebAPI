@@ -9,11 +9,15 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
     public class ProjectUpdateDto
     {
-        public string? ServiceProviderId { get; set; }
+        public string CoverImage { get; set; }
+        public string ProjectName { get; set; }
+        public string ProjectDescription { get; set; }
+
+        /*public string? ServiceProviderId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
-        public ProjectApprovalStatus ProjectApprovalStatus { get; set; }
-        public DateTime ModifiedAt { get; set; } = DateTime.Now;
+        public ProjectLevelApprovalStatus ProjectApprovalStatus { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.Now;*/
     }
 }

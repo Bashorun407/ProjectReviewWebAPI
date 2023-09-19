@@ -23,7 +23,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<UserResponseDto>> GetByEmail(string email);
         Task<StandardResponse<UserResponseDto>> GetByPhoneNumber(string phoneNumber);
         Task<StandardResponse<UserResponseDto>> GetByUsername(string username);
-        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, Specialization specialization);
+        Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, ServiceProviderSpecialization specialization);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(int pageNumber, ApplicationStatus applicationStatus);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(int pageNumber, UserRole userRole);
         Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(int pageNumber, UserType userType);
@@ -31,6 +31,8 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders(int pageNumber);
         Task<StandardResponse<UserResponseDto>> GetRatingByUserId(string userId);
         Task<StandardResponse<UserUpdateResponseDto>> UpdateUser(string id,  UserUpdateRequestDto userUpdateDto);
+        Task<StandardResponse<UserUpdateResponseDto>> ServiceProviderUpdate(string id, UserServiceProviderUpdateDto userUpdateDto);
+        Task<StandardResponse<UserUpdateResponseDto>> JobRoleUpdate(string id, UserAdminUpdateDto userUpdateDto);
         Task<StandardResponse<UserResponseDto>> DeleteUser(string id);
         Task<StandardResponse<(string, bool)>> UploadProfileImage(string userId, IFormFile file);
 

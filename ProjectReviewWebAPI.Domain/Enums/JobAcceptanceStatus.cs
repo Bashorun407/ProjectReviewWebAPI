@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Enums
 {
-    public enum ProjectApprovalStatus
+    public enum JobAcceptanceStatus
     {
-        NotApproved = 1, AdjustProject, Approved
+        NOT_ACCEPTED = 1, ACCEPTED
     }
 }

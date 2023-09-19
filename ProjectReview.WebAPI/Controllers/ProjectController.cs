@@ -82,7 +82,7 @@ namespace ProjectReview.WebAPI.Controllers
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
         [HttpGet("approvalStatus/{status}")]
-        public async Task<IActionResult> GetByApprovalStatus( [FromQuery] int pageNumber, ProjectApprovalStatus status)
+        public async Task<IActionResult> GetByApprovalStatus( [FromQuery] int pageNumber, ProjectLevelApprovalStatus status)
         {
             var result = await _projectService.GetByApprovalStatus(pageNumber, status);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
@@ -115,6 +115,26 @@ namespace ProjectReview.WebAPI.Controllers
         public async Task<IActionResult> UpdateProject(string id, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
             var result = await _projectService.UpdateProject(id, projectUpdateDto);
+
+            return Ok(result);
+        }
+
+        // PUT api/<ProjectController>/5
+        //[Authorize(Roles = "Admin")]
+        [HttpPut("serviceProviderProjectUpdate/{id}")]
+        public async Task<IActionResult> ServiceProviderProjectUpdate(string id, [FromBody] ProjectServiceProviderUpdateDto projectUpdateDto)
+        {
+            var result = await _projectService.ServiceProviderProjectUpdate(id, projectUpdateDto);
+
+            return Ok(result);
+        }
+
+        // PUT api/<ProjectController>/5
+        //[Authorize(Roles = "Admin")]
+        [HttpPut("adminProjectUpdate/{id}")]
+        public async Task<IActionResult> AdminProjectUpdate(string id, [FromBody] ProjectAdminUpdateDto projectUpdateDto)
+        {
+            var result = await _projectService.AdminProjectUpdate(id, projectUpdateDto);
 
             return Ok(result);
         }

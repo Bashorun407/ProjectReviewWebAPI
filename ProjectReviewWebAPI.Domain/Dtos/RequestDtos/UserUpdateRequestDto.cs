@@ -12,14 +12,19 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
     {
         public string? ProfilePicture { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? Username { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public string? Description { get; set; }
+        public string? DateOfBirth { get; set; }
+        /*public string? Description { get; set; }
         [Column(TypeName = "Money")]
         public double ChargeRate { get; set; }
         public UserType UserType { get; set; }
-        public Specialization Specialization { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
+        public ServiceProviderSpecialization Specialization { get; set; }
+        public ApplicationStatus ApplicationStatus { get; set; }*/
+
+        //Newly added
+
         public DateTime ModifiedAt { get; set; } = DateTime.Now;
     }
 }

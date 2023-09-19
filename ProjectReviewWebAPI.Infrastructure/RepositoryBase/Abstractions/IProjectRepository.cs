@@ -21,7 +21,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
         Task<IEnumerable<Project>> GetByServiceProvider(string serviceProviderId, bool trackChanges);
         Task<IEnumerable<Project>> GetByCategory(ProjectRequestInputParameter parameter, Category category, bool trackChanges);
         Task<IEnumerable<Project>> GetByProjectStatus(ProjectRequestInputParameter parameter, ProjectCompletionStatus projectStatus, bool trackChanges);
-        Task<IEnumerable<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, ProjectApprovalStatus approvalStatus, bool trackChanges);
+        Task<IEnumerable<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, ProjectLevelApprovalStatus approvalStatus, bool trackChanges);
 
 
     }

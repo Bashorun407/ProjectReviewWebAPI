@@ -54,7 +54,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
             user.UserId = Utilities.GenerateUniqueId();
-            user.Specialization = Domain.Enums.Specialization.None;
+            user.Specialization = Domain.Enums.ServiceProviderSpecialization.None;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;
 
@@ -76,7 +76,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
             user.UserId = Utilities.GenerateUniqueId();
-            user.Specialization = Domain.Enums.Specialization.None;
+            user.Specialization = Domain.Enums.ServiceProviderSpecialization.None;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;
 
@@ -142,6 +142,26 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             string title = "Confirm Email";
             string body = $"Hello, \nKindly confirm your email by clicking this: {callback_url}";
             _emailService.SendEmailAsync(email, title, body);
+        }
+
+        public async Task<StandardResponse<string>> ConfirmEmailAddress(string email, string token)
+        {
+            string trimedToken = token.Replace(" ", "+");
+            User user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+               return StandardResponse<string>.Failed("User not found", 404);
+            }
+            if (user.EmailConfirmed)
+            {
+                return StandardResponse<string>.Failed($"Email: {user.Email} has already been confirmed", 404);
+            }
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, trimedToken);
+            if (!result.Succeeded)
+            {
+                return StandardResponse<string>.Failed($"Failed, unable to confirm your email: {user.Email}", 406);
+            }
+            return StandardResponse<string>.Success("Email confirmed",string.Empty, 200);
         }
 
         public void SendResetPasswordEmail(string email, string callback_url)

@@ -28,7 +28,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 
         Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges);
         Task<User> GetUserByEmail(string email, bool trackChanges);
-        Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, Specialization specialization, bool trackChanges);
+        Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, ServiceProviderSpecialization specialization, bool trackChanges);
         Task<IEnumerable<User>> GetByUserRole(UserRequestInputParameter param, UserRole role, bool trackChanges);
         Task<IEnumerable<User>> GetByUserType(UserRequestInputParameter param, UserType type, bool trackChanges);
         Task<IEnumerable<User>> GetByApplicationStatus(UserRequestInputParameter param, ApplicationStatus applicationStatus, bool trackChanges);

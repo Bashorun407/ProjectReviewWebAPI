@@ -51,13 +51,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ffd85c52-c272-4b15-a791-e0c981d5fd47",
+                            Id = "c1990f75-ee20-40b7-860c-82d290916f5c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "6eae82a7-6080-43cf-aa04-cd4bf2d0fcf4",
+                            Id = "2d598cf6-b32e-415d-aa19-940f85abdf31",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -187,10 +187,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -243,11 +239,12 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Budget")
-                        .HasColumnType("Money");
-
                     b.Property<int>("Category")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClientUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CoverImage")
                         .HasColumnType("nvarchar(max)");
@@ -258,13 +255,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("JobAcceptanceStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProjectApprovalStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectCompletionStatus")
+                    b.Property<int?>("ProjectCompletionStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("ProjectDescription")
@@ -275,11 +272,10 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProjectLevelApprovalStatus")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ProjectOwner")
+                    b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -287,7 +283,10 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ServiceProviderId")
+                    b.Property<int?>("ProjectStartApproval")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceProviderUsername")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
@@ -398,6 +397,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DateOfBirth")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");

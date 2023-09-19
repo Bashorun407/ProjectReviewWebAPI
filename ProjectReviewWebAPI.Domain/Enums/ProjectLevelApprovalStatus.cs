@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Enums
 {
-    public enum Specialization
+    public enum ProjectLevelApprovalStatus
+
     {
-        None = 1, Writer, Editor, Researcher, Reviewer, Proof_Reader, Proof_Writer, Copyrighting
+        NOT_SATISFIED = 1, SATISFIED
     }
 }

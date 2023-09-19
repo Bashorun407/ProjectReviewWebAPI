@@ -13,10 +13,10 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
         public string CoverImage { get; set; }
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
-        public string ProjectOwner { get; set; }
+        public string ClientUsername { get; set; }
         public Category Category { get; set; }
-        [Column(TypeName = "Money")]
-        public double Budget { get; set; }
+/*        [Column(TypeName = "Money")]
+        public double Budget { get; set; }*/
         public string ProjectOwnerID { get; set; }
 
     }

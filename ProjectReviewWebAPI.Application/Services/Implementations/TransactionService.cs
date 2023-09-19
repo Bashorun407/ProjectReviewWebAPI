@@ -64,7 +64,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             _emailService.SendEmailAsync(projectOwner.Email, "Project Payment Notification", $"Dear {projectOwner.FirstName},\n You have successfully paid for project-id :{project.ProjectId}.\n Thank You.");
 
             //Using the project details to retrieve service-provider details from the database
-            var serviceProviderRes = _userService.GetByUserId(project.ServiceProviderId);
+            var serviceProviderRes = _userService.GetByUserId(project.ServiceProviderUsername);
             var serviceProvider = _mapper.Map<User>(serviceProviderRes);
             //email notification to service-provider 
             _emailService.SendEmailAsync(projectOwner.Email, "Project Commencement Notification", $"Dear {serviceProvider.FirstName},\n You can commence with project-id :{project.ProjectId}");

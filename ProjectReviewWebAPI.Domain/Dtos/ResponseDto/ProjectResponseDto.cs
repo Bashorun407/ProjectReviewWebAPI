@@ -18,7 +18,7 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
         //public string ProjectOwnerId { get; set; }
         //public string? ServiceProviderId { get; set; }
         public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
-        public ProjectApprovalStatus ProjectApprovalStatus { get; set; }
+        public ProjectLevelApprovalStatus ProjectApprovalStatus { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

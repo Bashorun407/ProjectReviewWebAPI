@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -71,6 +72,14 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(new {token = await _authenticationService.CreateToken()});
         }
 
+        [HttpGet("confirm-email/{email}/{token}")]
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        {
+            string decodedToken = WebUtility.UrlDecode(token);
+            var result=await _authenticationService.ConfirmEmailAddress(email, decodedToken);
+
+            return StatusCode(result.StatusCode, result.Message);
+        }
 
     }
 }

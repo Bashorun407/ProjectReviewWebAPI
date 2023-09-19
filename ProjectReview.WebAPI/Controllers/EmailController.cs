@@ -16,9 +16,9 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         [HttpPost("sendMail")]
-        public async Task<IActionResult> SendMail()
+        public async Task<IActionResult> SendMail([FromQuery] string receiver)
         {
-            var receiver = "olusheyidan@gmail.com";
+            //var receiver = "olusheyidan@gmail.com";
             var subject = "Dot Net Test Mail";
             var message = "Hello Bashorun DotNet";
 

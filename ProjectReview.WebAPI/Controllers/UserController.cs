@@ -86,7 +86,7 @@ namespace ProjectReview.WebAPI.Controllers
         // GET: api/<UserController>
         //[Authorize(Roles = "Admin")]
         [HttpGet("specializatiion/{specialization}")]
-        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] int pageNumber, Specialization specialization)
+        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] int pageNumber, ServiceProviderSpecialization specialization)
         {
             var result = await _userService.GetBySpecialization(pageNumber, specialization);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
@@ -139,16 +139,34 @@ namespace ProjectReview.WebAPI.Controllers
 
         // PUT api/<UserController>/5
         //[Authorize]
-        [HttpPut("userId/{id}")]
+        [HttpPut("userUpdate/{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateRequestDto userUpdateDto)
         {
             var result = await _userService.UpdateUser(id, userUpdateDto);
             return Ok(result);
         }
 
+        // PUT api/<UserController>/5
+        //[Authorize]
+        [HttpPut("serviceProviderUpdate/{id}")]
+        public async Task<IActionResult> ServiceProviderUpdate(string id, [FromBody] UserServiceProviderUpdateDto userUpdateDto)
+        {
+            var result = await _userService.ServiceProviderUpdate(id, userUpdateDto);
+            return Ok(result);
+        }
+
+        // PUT api/<UserController>/5
+        //[Authorize]
+        [HttpPut("jobRoleUpdate/{id}")]
+        public async Task<IActionResult> JobRoleUpdate(string id, [FromBody] UserAdminUpdateDto userUpdateDto)
+        {
+            var result = await _userService.JobRoleUpdate(id, userUpdateDto);
+            return Ok(result);
+        }
+
         // DELETE api/<UserController>/5
         //[Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var result = await _userService.DeleteUser(id);

@@ -48,7 +48,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await FindByCondition(c => c.UserId == userId, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, Specialization specialization, bool trackChanges)
+        public async Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, ServiceProviderSpecialization specialization, bool trackChanges)
         {
            var result = await FindByCondition(c => c.Specialization.Equals(specialization), trackChanges).ToListAsync();
 

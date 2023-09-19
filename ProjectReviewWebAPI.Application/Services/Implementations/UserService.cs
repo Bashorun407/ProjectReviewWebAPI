@@ -148,7 +148,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<IEnumerable<UserResponseDto>>.Success("Users by role specified found", usersDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, Specialization specialization)
+        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, ServiceProviderSpecialization specialization)
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
@@ -330,5 +330,61 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
           
         }
 
+        public async Task<StandardResponse<UserUpdateResponseDto>> ServiceProviderUpdate(string id, UserServiceProviderUpdateDto userUpdateDto)
+        {
+            _logger.LogInformation($"Checking for user with id: {id}");
+            //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
+
+            if (userExists is null)
+            {
+                _logger.LogError($"User with id: {id} does not exist.");
+                return StandardResponse<UserUpdateResponseDto>.Failed($"User with id: {id} does not exist.");
+            }
+
+            //Update happens here
+            var updatedEntity = _mapper.Map(userUpdateDto, userExists);
+
+
+            _logger.LogInformation($"Updating user with id: {id}");
+
+            _unitOfWork.UserRepository.Update(updatedEntity);
+            await _unitOfWork.SaveAsync();
+            var userDto = _mapper.Map<UserUpdateResponseDto>(updatedEntity);
+
+            //Sends email notification to user
+            _emailService.SendEmailAsync(updatedEntity.Email, "Update Notification", $"Hello {updatedEntity.FirstName}, \nYour details on BookReev has been successfully updated.");
+
+            return StandardResponse<UserUpdateResponseDto>.Success($"User with id: {id} has been updated successfully", userDto, 200);
+
+        }
+
+        public async Task<StandardResponse<UserUpdateResponseDto>> JobRoleUpdate(string id, UserAdminUpdateDto userUpdateDto)
+        {
+            _logger.LogInformation($"Checking for user with id: {id}");
+            //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
+
+            if (userExists is null)
+            {
+                _logger.LogError($"User with id: {id} does not exist.");
+                return StandardResponse<UserUpdateResponseDto>.Failed($"User with id: {id} does not exist.");
+            }
+
+            //Update happens here
+            var updatedEntity = _mapper.Map(userUpdateDto, userExists);
+
+
+            _logger.LogInformation($"Updating user with id: {id}");
+
+            _unitOfWork.UserRepository.Update(updatedEntity);
+            await _unitOfWork.SaveAsync();
+            var userDto = _mapper.Map<UserUpdateResponseDto>(updatedEntity);
+
+            //Sends email notification to user
+            _emailService.SendEmailAsync(updatedEntity.Email, "Update Notification", $"Hello {updatedEntity.FirstName}, \nYour details on BookReev has been successfully updated.");
+
+            return StandardResponse<UserUpdateResponseDto>.Success($"User with id: {id} has been updated successfully", userDto, 200);
+        }
     }
 }

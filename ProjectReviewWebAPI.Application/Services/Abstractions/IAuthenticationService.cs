@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     {
         Task<(IdentityResult identity, string emailToken)> RegisterUser(UserRegisterDto userRegisterDto);
         Task<(IdentityResult identity, string emailToken)> RegisterAdmin(UserRegisterDto userRegisterDto);
+        Task<StandardResponse<string>> ConfirmEmailAddress(string email, string token);
         void SendResetPasswordEmail(string email, string callback_url);
         void SendConfirmationEmail(string email, string callback_url);
         Task<bool> ValidateUser(UserLoginDto userLoginDto);

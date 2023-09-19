@@ -35,13 +35,14 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChargeRate = table.Column<decimal>(type: "Money", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Specialization = table.Column<int>(type: "int", nullable: false),
                     ApplicationStatus = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -70,7 +71,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -236,14 +236,15 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Budget = table.Column<decimal>(type: "Money", nullable: false),
-                    ProjectOwner = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ServiceProviderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServiceProviderUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobAcceptanceStatus = table.Column<int>(type: "int", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProjectCompletionStatus = table.Column<int>(type: "int", nullable: false),
-                    ProjectApprovalStatus = table.Column<int>(type: "int", nullable: false),
+                    ProjectStartApproval = table.Column<int>(type: "int", nullable: true),
+                    ProjectLevelApprovalStatus = table.Column<int>(type: "int", nullable: true),
+                    ProjectCompletionStatus = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -287,8 +288,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6eae82a7-6080-43cf-aa04-cd4bf2d0fcf4", null, "User", "USER" },
-                    { "ffd85c52-c272-4b15-a791-e0c981d5fd47", null, "Admin", "ADMIN" }
+                    { "2d598cf6-b32e-415d-aa19-940f85abdf31", null, "User", "USER" },
+                    { "c1990f75-ee20-40b7-860c-82d290916f5c", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

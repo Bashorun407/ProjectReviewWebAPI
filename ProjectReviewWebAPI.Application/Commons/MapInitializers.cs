@@ -29,9 +29,12 @@ namespace ProjectReviewWebAPI.Application.Commons
             CreateMap<Transaction, TransactionResponseDto>();
 
             CreateMap<UserRegisterDto, User>();
-            CreateMap<User, UserResponseDto>();
-
             CreateMap<UserUpdateRequestDto, User>();
+            CreateMap<UserRequestDto, User>();
+            CreateMap<UserServiceProviderUpdateDto, User>();
+            CreateMap<UserAdminUpdateDto, User>();
+
+            CreateMap<User, UserResponseDto>();
             CreateMap<User, UserUpdateResponseDto>();
             CreateMap<User, ServiceProviderResponseDto>();
 
