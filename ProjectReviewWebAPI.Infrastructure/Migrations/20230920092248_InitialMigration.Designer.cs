@@ -12,8 +12,8 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230919221339_ThirdMigration")]
-    partial class ThirdMigration
+    [Migration("20230920092248_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28a6b2c8-7fd8-46bb-88fe-986a87bd827c",
+                            Id = "e9040429-5ff1-41b5-b329-4642b55b06ff",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "866f2e66-3510-4370-8e2f-683819ab17ca",
+                            Id = "5eb5440a-7bec-4b96-8253-a23ba4ec304e",
                             Name = "User",
                             NormalizedName = "USER"
                         });

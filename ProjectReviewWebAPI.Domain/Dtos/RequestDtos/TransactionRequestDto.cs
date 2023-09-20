@@ -11,11 +11,9 @@ namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string OtherName { get; set; }
         public string Email { get; set; }
         public string ProjectId { get; set; }
         [Column(TypeName = "Money")]
         public double Amount { get; set; }
-        public string InvoiceCode { get; set; }
     }
 }

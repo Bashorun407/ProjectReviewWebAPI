@@ -54,12 +54,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             await _unitOfWork.SaveAsync();
 
             //To retrieve user details from project database
-            var result = _projectService.GetByProjectId(transaction.ProjectId);
+            var result = await _projectService.GetByProjectId(transaction.ProjectId);
             var project = _mapper.Map<Project>(result);
 
             //Using the project details to retrieve project owner details from user database
             var projectOwnerRes = _userService.GetByUserId(project.ProjectOwnerId);
             var projectOwner = _mapper.Map<User>(projectOwnerRes);
+
             //email notification to project-owner 
             _emailService.SendEmailAsync(projectOwner.Email, "Project Payment Notification", $"Dear {projectOwner.FirstName},\n You have successfully paid for project-id :{project.ProjectId}.\n Thank You.");
 
@@ -78,7 +79,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new TransactionRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.TransactionRepository.GetAll(parameter, false);
 

@@ -12,5 +12,6 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
         public int StarRating { get; set; }
         public int RateCount { get; set; }
         public double AverageRating { get; set; }
+
     }
 }

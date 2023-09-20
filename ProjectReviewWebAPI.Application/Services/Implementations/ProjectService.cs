@@ -154,7 +154,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new ProjectRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.ProjectRepository.GetAll(parameter, false);
 
@@ -172,7 +172,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new ProjectRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
             var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter, approvalStatus, false);
 
             if (!result.Any())
@@ -215,7 +215,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new ProjectRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.ProjectRepository.GetByProjectName(parameter, projectName, false);
 
@@ -279,7 +279,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new ProjectRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.ProjectRepository.GetByCategory(parameter, category, false);
 

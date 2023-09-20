@@ -16,6 +16,6 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<RatingResponseDto>> AddRating(RatingRequestDto ratingRequestDto);
         Task<StandardResponse<IEnumerable<RatingResponseDto>>> GetAllRatingsAsync(int pageNumber);
         //Task<StandardResponse<(IEnumerable<RatingResponseDto> ratings, MetaData pagingData)>> GetAllRatingsAsync(RatingRequestInputParameter parameter);
-        Task<StandardResponse<RatingResponseDto>> GetRatingByUserId(string userId);
+        Task<StandardResponse<RatingResponseDto>> GetRatingByUsername(string username);
     }
 }

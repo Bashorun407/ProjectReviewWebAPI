@@ -48,7 +48,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new CommentRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.CommentRepository.GetAll(parameter, false);
 

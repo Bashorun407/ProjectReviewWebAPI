@@ -95,13 +95,13 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         //[Authorize(Roles = "User")]
-        [HttpGet("allProjectsByUser/{userId}")]
+        /* [HttpGet("allProjectsByUser/{userId}")]
         public async Task<IActionResult> GetAllProjectsByUserId([FromQuery]int pageNumber, string userId)
         {
             var result = await _userService.GetAllProjectsByUserId(pageNumber, userId);
 
             return Ok(result);
-        }
+        }*/
 
         [HttpGet("allServiceProviders")]
         public async Task<IActionResult> GetAllServiceProviders([FromQuery]int pageNumber)
@@ -121,7 +121,7 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
         //[Authorize(Roles = "User")]
-        [HttpGet("ratingsByUserl/{userId}")]
+        [HttpGet("ratingsByUserId/{userId}")]
         public async Task<IActionResult> GetRatingByUserId(string userId)
         {
             var result = await _userService.GetRatingByUserId(userId);

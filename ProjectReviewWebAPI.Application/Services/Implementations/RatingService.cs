@@ -88,7 +88,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new RatingRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
             var result = await _unitOfWork.RatingRepository.GetAll(parameter, false);
 
             if (!result.Any())
@@ -101,18 +101,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
            
         }
 
-        public async Task<StandardResponse<RatingResponseDto>> GetRatingByUserId(string userId)
+        public async Task<StandardResponse<RatingResponseDto>> GetRatingByUsername(string username)
         {
-            var rate = await _unitOfWork.RatingRepository.GetRatingByUserId(userId, false);
+            var rate = await _unitOfWork.RatingRepository.GetRatingByUsername(username, false);
 
             if(rate is null)
             {
-                return StandardResponse<RatingResponseDto>.Failed($"Rate by user id: {userId} does not exist", 99);
+                return StandardResponse<RatingResponseDto>.Failed($"Rate by username: {username} does not exist", 99);
             }
 
             var rateDto = _mapper.Map<RatingResponseDto>(rate);
 
-            return StandardResponse<RatingResponseDto>.Success($"Rate by user with id: {userId}", rateDto, 200);
+            return StandardResponse<RatingResponseDto>.Success($"Rate by user with id: {username}", rateDto, 200);
         }
     }
 }

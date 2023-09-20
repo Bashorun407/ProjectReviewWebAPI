@@ -238,7 +238,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ClientUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectOwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServiceProviderUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JobAcceptanceStatus = table.Column<int>(type: "int", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -246,6 +246,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     ProjectStartApproval = table.Column<int>(type: "int", nullable: true),
                     ProjectLevelApprovalStatus = table.Column<int>(type: "int", nullable: true),
                     ProjectCompletionStatus = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -253,11 +254,10 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_AspNetUsers_ProjectOwnerId",
-                        column: x => x.ProjectOwnerId,
+                        name: "FK_Projects_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -268,6 +268,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RateCount = table.Column<int>(type: "int", nullable: false),
                     AverageRating = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -289,8 +290,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "095d7e4e-1560-446c-afaf-0b357980b645", null, "Admin", "ADMIN" },
-                    { "9a64fa67-78f3-4345-ad85-d1d4cd94632d", null, "User", "USER" }
+                    { "5eb5440a-7bec-4b96-8253-a23ba4ec304e", null, "User", "USER" },
+                    { "e9040429-5ff1-41b5-b329-4642b55b06ff", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -333,9 +334,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_ProjectOwnerId",
+                name: "IX_Projects_UserId",
                 table: "Projects",
-                column: "ProjectOwnerId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ratings_UserId",

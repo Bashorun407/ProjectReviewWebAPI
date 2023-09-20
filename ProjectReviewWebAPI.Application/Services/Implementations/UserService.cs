@@ -58,7 +58,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetAllUsers(parameter, false);
             if (!result.Any())
@@ -76,7 +76,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
             var result = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
 
             if (!result.Any())
@@ -135,7 +135,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
             var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, role, false);
 
             if (!result.Any())
@@ -152,7 +152,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
             var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, specialization, false);
 
             if (!result.Any())
@@ -183,7 +183,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetByUserType(parameter, userType, false);
 
@@ -203,7 +203,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, userId, false);
 
@@ -223,7 +223,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             var parameter = new UserRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 10;
+            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(parameter, false);
 

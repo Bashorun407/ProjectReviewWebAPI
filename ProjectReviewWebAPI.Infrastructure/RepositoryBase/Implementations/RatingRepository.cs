@@ -31,9 +31,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-        public async Task<Rating> GetRatingByUserId(string userId, bool trackChanges)
+        public async Task<Rating> GetRatingByUsername(string username, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.Id.Equals(userId), trackChanges).SingleOrDefaultAsync();
+            var result = await FindByCondition(c => c.UserName.Equals(username), trackChanges).SingleOrDefaultAsync();
 
             return result;
         }
