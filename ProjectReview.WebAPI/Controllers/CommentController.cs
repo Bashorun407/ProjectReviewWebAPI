@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
+using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,6 +30,11 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<CommentController>
         [HttpGet("allComments")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<CommentResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         public  async Task<IActionResult> GetAllComments([FromQuery] int pageNumber)
         {
             var result = await _commentService.GetAllComments(pageNumber);
@@ -42,6 +50,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET api/<CommentController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<CommentResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("username/{username}")]
         public async Task<IActionResult> GetCommentsByUsername(string username)
         {
@@ -58,6 +71,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // POST api/<CommentController>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<CommentResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpPost("addComment")]
         public async Task<IActionResult> AddComment([FromBody] CommentRequestDto commentRequestDto)
         {

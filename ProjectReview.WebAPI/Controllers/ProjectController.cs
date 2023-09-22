@@ -7,6 +7,7 @@ using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -39,14 +40,14 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-/*        // GET: api/<ProjectController>
-        [HttpGet("projectName/{projectName}")]
-        public async Task<IActionResult> GetByProjectName(string projectName)
-        {
-            var result = await _projectService.GetByProjectName(projectName);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
-        }*/
+        /*        // GET: api/<ProjectController>
+                [HttpGet("projectName/{projectName}")]
+                public async Task<IActionResult> GetByProjectName(string projectName)
+                {
+                    var result = await _projectService.GetByProjectName(projectName);
+                    //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+                    return Ok(result);
+                }*/
 
         /// <summary>
         /// Returns all projects that falls under specified category
@@ -56,6 +57,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("projectCategory/{category}")]
         public async Task<IActionResult> GetByCategory([FromQuery] int pageNumber, Category category)
         {
@@ -72,6 +78,11 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("projectOwnerId/{ownerId}")]
         public async Task<IActionResult> GetByProjectOwnerId(string ownerId)
         {
@@ -98,6 +109,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "Admin")]
         [HttpGet("projectStatus/{status}")]
         public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] int pageNumber, ProjectCompletionStatus status)
@@ -115,6 +131,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "Admin")]
         [HttpGet("approvalStatus/{status}")]
         public async Task<IActionResult> GetByApprovalStatus( [FromQuery] int pageNumber, ProjectLevelApprovalStatus status)
@@ -131,6 +152,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpGet("project/{projectId}")]
         public async Task<IActionResult> GetByProjectId(string projectId)
@@ -147,6 +173,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // POST api/<ProjectController>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPost("createProject")]
         public async Task<IActionResult> CreateProject([FromBody] ProjectRequestDto projectRequstDto)
@@ -164,6 +195,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // PUT api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPut("update/{projectId}")]
         public async Task<IActionResult> UpdateProject(string projectId, [FromBody] ProjectUpdateDto projectUpdateDto)
@@ -181,6 +217,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // PUT api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPut("serviceProviderProjectUpdate/{projectId}")]
         public async Task<IActionResult> ServiceProviderProjectUpdate(string projectId, [FromBody] ProjectServiceProviderUpdateDto projectUpdateDto)
@@ -198,6 +239,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // PUT api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPut("addServiceProvider/{projectId}")]
         public async Task<IActionResult> AddServiceProvider(string projectId, [FromBody] SelectServiceProviderDto serviceProviderDto)
@@ -215,6 +261,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // PUT api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPut("adminProjectUpdate/{projectId}")]
         public async Task<IActionResult> AdminProjectUpdate(string projectId, [FromBody] ProjectAdminUpdateDto projectUpdateDto)
@@ -231,6 +282,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // DELETE api/<ProjectController>/5
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpDelete("delete/{projectId}")]
         public async Task<IActionResult> DeleteProject(string projectId)
@@ -248,6 +304,11 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // [Authorize]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpPost("uploadImage/{projectId}")]
         public IActionResult UploadProfilePic(string projectId, IFormFile file)
