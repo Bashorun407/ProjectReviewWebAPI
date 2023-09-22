@@ -19,6 +19,12 @@ namespace ProjectReview.WebAPI.Controllers
             _commentService = commentService;
         }
 
+        /// <summary>
+        /// Returns all comments by users
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         // GET: api/<CommentController>
         [HttpGet("allComments")]
         public  async Task<IActionResult> GetAllComments([FromQuery] int pageNumber)
@@ -29,6 +35,12 @@ namespace ProjectReview.WebAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Returns comments by username. username of user is passed as method argument
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+
         // GET api/<CommentController>/5
         [HttpGet("username/{username}")]
         public async Task<IActionResult> GetCommentsByUsername(string username)
@@ -38,6 +50,12 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Users are able to add comment via this endpoint
+        /// </summary>
+        /// <param name="commentRequestDto"></param>
+        /// <returns></returns>
 
         // POST api/<CommentController>
         [HttpPost("addComment")]

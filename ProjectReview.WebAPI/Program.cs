@@ -19,6 +19,7 @@ builder.Services.ConfigureSwaggerAuth();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -19,6 +19,12 @@ namespace ProjectReview.WebAPI.Controllers
             _transactionService = transactionService;
         }
 
+        /// <summary>
+        /// Returns all transactions
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         // GET: api/<TransactionController>
         [HttpGet("allTransactions")]
         public async Task<IActionResult> GetAllTransaction([FromQuery] int pageNumber)
@@ -29,6 +35,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns a transaction by passing invoice-code as method parameter
+        /// </summary>
+        /// <param name="invoiceCode"></param>
+        /// <returns></returns>
+
         // GET api/<TransactionController>/5
         [HttpGet("invoiceCode/{invoiceCode}")]
         public async Task<IActionResult> GetByInvoiceCode( string invoiceCode)
@@ -38,6 +50,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns a transaction by passing projectId as method parameter
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        
         [HttpGet("projectId/{projectId}")]
         public async Task<IActionResult> GetByProjectId(string projectId)
         {
@@ -45,6 +63,12 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Creates a transaction by passing required contents via transactionRequestDto
+        /// </summary>
+        /// <param name="transactionRequestDto"></param>
+        /// <returns></returns>
 
         // POST api/<TransactionController>
         [HttpPost("/addTransaction")]

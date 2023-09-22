@@ -19,6 +19,12 @@ namespace ProjectReview.WebAPI.Controllers
             _ratingService = ratingService;
         }
 
+        /// <summary>
+        /// Returns the ratings of all service providers
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         // GET: api/<RatingController>
         [HttpGet("allRatings")]
         public async Task<IActionResult> GetAllRatings([FromQuery] int pageNumber)
@@ -29,6 +35,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns the rating of a service provider by passing the username of the service provider as a parameter
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+
         // GET api/<RatingController>/5
         [HttpGet("rateByUsername/{username}")]
         public async Task<IActionResult> GetRatingByUsername(string username)
@@ -38,6 +50,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// A user rates a service provider by passing the username and rating (integer 1 - 5) as method parameter
+        /// </summary>
+        /// <param name="ratingRequestDto"></param>
+        /// <returns></returns>
+        
         // POST api/<RatingController>
         [HttpPost("addRating")]
         public async Task<IActionResult> AddRating([FromBody] RatingRequestDto ratingRequestDto)

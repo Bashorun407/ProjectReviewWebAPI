@@ -11,6 +11,7 @@ using System.Text;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Application.Services.Implementations;
+using System.Reflection;
 
 namespace ProjectReview.WebAPI.Extensions
 {
@@ -29,6 +30,7 @@ namespace ProjectReview.WebAPI.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddApiVersioningConfigured();
         }
 
 
@@ -87,6 +89,11 @@ configuration)
                     BearerFormat = "JWT",
                     Scheme = "bearer"
                 });
+
+                //For Documentation
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
                 opt.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {

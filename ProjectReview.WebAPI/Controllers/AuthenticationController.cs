@@ -21,6 +21,11 @@ namespace ProjectReview.WebAPI.Controllers
             _authenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Description: User will enter first name, last name, username, email and password to register
+        /// </summary>
+        /// <param name="userRegisterDto"></param>
+        /// <returns></returns>
 
         // POST api/<AuthenticationController>
         [HttpPost("register-user")]
@@ -45,6 +50,11 @@ namespace ProjectReview.WebAPI.Controllers
             return StatusCode(201, "Account created successfully. Please confirm your email");
         }
 
+        /// <summary>
+        /// Description: Admin will register by entering first name, last name, username, email and password
+        /// </summary>
+        /// <param name="userRegisterDto"></param>
+        /// <returns></returns>
 
         //[Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
@@ -62,6 +72,12 @@ namespace ProjectReview.WebAPI.Controllers
             return StatusCode(201);
         }
 
+
+        /// <summary>
+        /// Description: Users and admin will log in with email and password
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<IActionResult> LoginUser([FromBody] UserLoginDto loginDto)
         {

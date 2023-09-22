@@ -21,6 +21,12 @@ namespace ProjectReview.WebAPI.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// This endpoint returns all Users
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         // GET: api/<UserController>
         //[Authorize(Roles = "User")]
         [HttpGet("getAll")]
@@ -38,7 +44,14 @@ namespace ProjectReview.WebAPI.Controllers
                 {
                     var result = await _userService.GetById(id);
                     return Ok(result);
-                }*/
+                }
+        */
+
+        /// <summary>
+        /// This endpoint returns a user by id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
 
         //[Authorize]
         //[Authorize(Roles = "User")]
@@ -73,7 +86,15 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _userService.GetByRole(role);
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
-        }*/
+        }
+*/
+
+        /// <summary>
+        /// This endpoint returns users by specified type which can be CLIENT or SERVICE_PROVIDER
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("usersByType/{type}")]
@@ -84,6 +105,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// This endpoint returns users by specialization given which can be EDITOR, REVIEWER, RESEARCHER, PROOF_READER
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="specialization"></param>
+        /// <returns></returns>
+        
         // GET: api/<UserController>
         //[Authorize(Roles = "User")]
         [HttpGet("specializatiion/{specialization}")]
@@ -103,6 +131,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }*/
 
+        /// <summary>
+        /// Returns all Service providers
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         [HttpGet("allServiceProviders")]
         public async Task<IActionResult> GetAllServiceProviders([FromQuery]int pageNumber)
         {
@@ -110,6 +144,12 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Returns a user by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
 
         //[Authorize(Roles = "User")]
         [HttpGet("userByUsername/{username}")]
@@ -129,6 +169,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Enables users to upload profile picture from a folder on their device
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+
         // [Authorize]
         //[Authorize(Roles = "User")]
         [HttpPost("image/{id}")]
@@ -142,6 +189,13 @@ namespace ProjectReview.WebAPI.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// User can update user details via this endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userUpdateDto"></param>
+        /// <returns></returns>
+
         // PUT api/<UserController>/5
         //[Authorize]
         //[Authorize(Roles = "User")]
@@ -151,6 +205,13 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _userService.UpdateUser(id, userUpdateDto);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Users that may want to update to Service provider will use this endpoint 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userUpdateDto"></param>
+        /// <returns></returns>
 
         // PUT api/<UserController>/5
         //[Authorize]
@@ -162,6 +223,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Service provider updates details of job assigned via this endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userUpdateDto"></param>
+        /// <returns></returns>
+
         // PUT api/<UserController>/5
         //[Authorize]
         //[Authorize(Roles = "User")]
@@ -171,6 +239,12 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _userService.JobRoleUpdate(id, userUpdateDto);
             return Ok(result);
         }
+
+        /// <summary>
+        /// User can delete details via this endpoint by passing username as parameter type
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         // DELETE api/<UserController>/5
         //[Authorize(Roles = "User")]

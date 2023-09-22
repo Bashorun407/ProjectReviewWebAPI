@@ -24,6 +24,12 @@ namespace ProjectReview.WebAPI.Controllers
             _projectService = projectService;
         }
 
+        /// <summary>
+        /// Returns all projects
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
         public async Task<IActionResult> GetAllProjects([FromQuery] int pageNumber)
@@ -42,6 +48,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }*/
 
+        /// <summary>
+        /// Returns all projects that falls under specified category
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
+
         // GET: api/<ProjectController>
         [HttpGet("projectCategory/{category}")]
         public async Task<IActionResult> GetByCategory([FromQuery] int pageNumber, Category category)
@@ -50,6 +63,12 @@ namespace ProjectReview.WebAPI.Controllers
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
+
+        /// <summary>
+        /// Returns a project by passing projectOwnerId as method parameter
+        /// </summary>
+        /// <param name="ownerId"></param>
+        /// <returns></returns>
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
@@ -71,6 +90,13 @@ namespace ProjectReview.WebAPI.Controllers
               return Ok(result);
           }*/
 
+        /// <summary>
+        /// Returns all projects that fall under the specified Completion status which can be Pending, Started and Completed
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
         [HttpGet("projectStatus/{status}")]
@@ -80,6 +106,13 @@ namespace ProjectReview.WebAPI.Controllers
             //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
             return Ok(result);
         }
+
+        /// <summary>
+        /// Returns a project by entering specific Project level status which can be NOT_SATISFIED or SATISFIED
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
 
         // GET: api/<ProjectController>
         //[Authorize(Roles = "Admin")]
@@ -91,6 +124,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns a project by entering project-id as method parameter
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+
         // GET api/<ProjectController>/5
         //[Authorize(Roles = "User")]
         [HttpGet("project/{projectId}")]
@@ -101,6 +140,11 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// A project is created via this endpoint
+        /// </summary>
+        /// <param name="projectRequstDto"></param>
+        /// <returns></returns>
 
         // POST api/<ProjectController>
         //[Authorize(Roles = "User")]
@@ -112,6 +156,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// A project is updated by passing the project's id and update dto which contains update values
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="projectUpdateDto"></param>
+        /// <returns></returns>
+
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "User")]
         [HttpPut("update/{projectId}")]
@@ -121,6 +172,13 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Service providers will update a project via this endpoint
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="projectUpdateDto"></param>
+        /// <returns></returns>
 
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "User")]
@@ -132,6 +190,13 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Clients add Service provider to a project via this endpoint by passing the project's id as method parameter
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="serviceProviderDto"></param>
+        /// <returns></returns>
+
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "User")]
         [HttpPut("addServiceProvider/{projectId}")]
@@ -141,6 +206,13 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Clients approve a projects level via this endpoint
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="projectUpdateDto"></param>
+        /// <returns></returns>
 
         // PUT api/<ProjectController>/5
         //[Authorize(Roles = "User")]
@@ -152,6 +224,12 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Proejct owner can delete a project via this end point by passing a project's id as method parameter
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+
         // DELETE api/<ProjectController>/5
         //[Authorize(Roles = "User")]
         [HttpDelete("delete/{projectId}")]
@@ -161,6 +239,13 @@ namespace ProjectReview.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Client can upload picture to a project via this endpoint. project's id is added as method parameter
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
 
         // [Authorize]
         //[Authorize(Roles = "User")]
