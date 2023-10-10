@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProjectReviewWebAPI.Domain.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Entities
 {
@@ -16,6 +10,8 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? DateOfBirth { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string UserId { get; set; }
         [Column(TypeName = "Money")]
         public double ChargeRate { get; set; }

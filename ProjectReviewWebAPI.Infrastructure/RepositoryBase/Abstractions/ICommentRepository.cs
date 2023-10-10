@@ -12,7 +12,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface ICommentRepository : IRepository<Comment>
     {
 
-        Task<IEnumerable<Comment>> GetAll(CommentRequestInputParameter parameter, bool trackChanges);
+        Task<PagedList<Comment>> GetAll(CommentRequestInputParameter parameter, bool trackChanges);
         Task<IEnumerable<Comment>> GetCommentByUsername(string username, bool trackChanges);
 
     }

@@ -13,7 +13,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     public interface IProjectRepository : IRepository<Project>
     {
 
-        Task<IEnumerable<Project>> GetAll(ProjectRequestInputParameter parameter, bool trackChanges);
+        Task<PagedList<Project>> GetAll(ProjectRequestInputParameter parameter, bool trackChanges);
         Task<IEnumerable<Project>> GetByProjectName(ProjectRequestInputParameter parameter, string name, bool trackChanges);
         Task<Project> GetById(int id, bool trackChanges);
         Task<Project> GetByProjectId(string projectId, bool trackChanges);

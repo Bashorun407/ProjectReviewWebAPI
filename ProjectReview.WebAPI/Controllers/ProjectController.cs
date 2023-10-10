@@ -33,11 +33,11 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<ProjectController>
         [HttpGet("allProjects")]
-        public async Task<IActionResult> GetAllProjects([FromQuery] int pageNumber)
+        public async Task<IActionResult> GetAllProjects([FromQuery] ProjectRequestInputParameter parameter)
         {
-            var result = await _projectService.GetAllProjectsAsync(pageNumber);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _projectService.GetAllProjectsAsync(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         /*        // GET: api/<ProjectController>

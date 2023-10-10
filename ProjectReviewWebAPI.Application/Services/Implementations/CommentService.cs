@@ -44,21 +44,19 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<CommentResponseDto>.Success("Comment successful", commentDto, 201);
         }
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments(int pageNumber)
+        public async Task<StandardResponse<PagedList<CommentResponseDto>>> GetAllComments(CommentRequestInputParameter parameter)
         {
-            var parameter = new CommentRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
-
+          
             var result = await _unitOfWork.CommentRepository.GetAll(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed("there are no comments yet", 99);
+                return StandardResponse<PagedList<CommentResponseDto>>.Failed("there are no comments yet", 99);
             }
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
+            var pagedList = new PagedList<CommentResponseDto>(commentsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<CommentResponseDto>>.Success($"All Comments retrieved are: {commentsDto.Count()}", commentsDto, 200);
+            return StandardResponse<PagedList<CommentResponseDto>>.Success($"Comments Successfully retrieve",pagedList, 200);
         }
 
 

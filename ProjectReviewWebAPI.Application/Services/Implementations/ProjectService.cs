@@ -11,13 +11,6 @@ using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using ProjectReviewWebAPI.Utility.Utility;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Application.Services.Implementations
 {
@@ -150,22 +143,24 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync(int pageNumber)
+        public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetAllProjectsAsync(ProjectRequestInputParameter parameter)
         {
-            var parameter = new ProjectRequestInputParameter();
+/*            var parameter = new ProjectRequestInputParameter();
             parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+            parameter.PageSize = 2;*/
 
             var result = await _unitOfWork.ProjectRepository.GetAll(parameter, false);
 
             if(!result.Any())
             {
-                return StandardResponse<IEnumerable<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<PagedList<ProjectResponseDto>>.Failed($"There are no projects yet", 99);
             }
 
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(result);
 
-            return StandardResponse<IEnumerable<ProjectResponseDto>>.Success($"All projects are: {projectsDto.Count()}", projectsDto, 200);
+            var pagedList = new PagedList<ProjectResponseDto>(projectsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
+
+            return StandardResponse<PagedList<ProjectResponseDto>>.Success($"All projects are: {projectsDto.Count()}", pagedList, 200);
         }
 
         public async Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectLevelApprovalStatus approvalStatus)

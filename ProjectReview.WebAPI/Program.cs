@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectReview.WebAPI.Extensions;
-using ProjectReviewWebAPI.Application;
 using ProjectReviewWebAPI.Application.Commons;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Application.Services.Implementations;

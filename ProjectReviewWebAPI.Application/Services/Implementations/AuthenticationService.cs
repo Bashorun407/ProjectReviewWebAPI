@@ -7,16 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
-using ProjectReviewWebAPI.Utility.Utility;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Application.Services.Implementations
 {
@@ -53,7 +47,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
            
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
-            user.UserId = Utilities.GenerateUniqueId();
+            //user.UserId = Utilities.GenerateUniqueId();....this has been taken care of in the User table with a uniquely generated id by entity framework
             user.Specialization = Domain.Enums.ServiceProviderSpecialization.NONE;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;
@@ -75,7 +69,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
            
             var user = _mapper.Map<User>(userRegisterDto);
             //assigning a unique UserId to each user
-            user.UserId = Utilities.GenerateUniqueId();
+            //user.UserId = Utilities.GenerateUniqueId(); ....this has been taken care of in the User table with a uniquely generated id by entity framework
             user.Specialization = Domain.Enums.ServiceProviderSpecialization.NONE;
             user.Role = Domain.Enums.UserRole.REGULAR;
             user.UserType = Domain.Enums.UserType.CLIENT;

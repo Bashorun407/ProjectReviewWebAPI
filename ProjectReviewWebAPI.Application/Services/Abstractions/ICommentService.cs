@@ -14,7 +14,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     public interface ICommentService
     {
         Task<StandardResponse<CommentResponseDto>> CreateComment(CommentRequestDto commentRequestDto);
-        Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetAllComments(int pageNumber);
+        Task<StandardResponse<PagedList<CommentResponseDto>>> GetAllComments(CommentRequestInputParameter parameter);
         Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username);
 
 

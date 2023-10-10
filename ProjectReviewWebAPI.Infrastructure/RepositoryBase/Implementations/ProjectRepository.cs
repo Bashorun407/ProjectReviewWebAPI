@@ -24,12 +24,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _projects = context.Set<Project>();
         }
 
-        public async Task<IEnumerable<Project>> GetAll(ProjectRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<Project>> GetAll(ProjectRequestInputParameter parameter, bool trackChanges)
         {
-           var result = FindAll(trackChanges).Skip((parameter.PageNumber - 1) * parameter.PageSize)
-                .Take(parameter.PageSize);
+           var result = FindAll(trackChanges)
+                        .OrderBy(x => x.CreatedAt)
+                        .AsQueryable(); //This ensures the data is queryable for further operations
 
-            return result;
+            return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<IEnumerable<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, ProjectLevelApprovalStatus approvalStatus, bool trackChanges)

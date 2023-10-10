@@ -35,11 +35,11 @@ namespace ProjectReview.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
-        public  async Task<IActionResult> GetAllComments([FromQuery] int pageNumber)
+        public  async Task<IActionResult> GetAllComments([FromQuery]CommentRequestInputParameter parameter)
         {
-            var result = await _commentService.GetAllComments(pageNumber);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _commentService.GetAllComments(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
 

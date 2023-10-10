@@ -24,12 +24,19 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _comments = context.Set<Comment>();
         }
 
-        public async Task<IEnumerable<Comment>> GetAll(CommentRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<Comment>> GethAll(CommentRequestInputParameter parameter, bool trackChanges)
         {
-            var result =  FindAll(trackChanges).Skip((parameter.PageNumber - 1) * parameter.PageSize)
-            .Take(parameter.PageSize);
+            var result = FindAll(trackChanges).OrderBy(x => x.CreatedAt);
+           return await PagedList<Comment>.GetPagination(result,parameter.PageNumber,parameter.PageSize);
+        }
+        public async Task<PagedList<Comment>> GetAll(CommentRequestInputParameter parameter, bool trackChanges)
+        {
+            // Assuming FindAll returns an IQueryable<Comment>
+            var result = FindAll(trackChanges)
+                .OrderBy(x => x.CreatedAt)
+                .AsQueryable(); // Ensure it's IQueryable for further operations
 
-            return result;
+            return await PagedList<Comment>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
 
