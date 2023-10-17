@@ -56,12 +56,12 @@ namespace ProjectReview.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("username/{username}")]
-        public async Task<IActionResult> GetCommentsByUsername(string username)
+        public async Task<IActionResult> GetCommentsByUsername(CommentRequestInputParameter parameter)
         {
-            var result = await _commentService.GetCommentsByUsername(username);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.comments));
+            var result = await _commentService.GetCommentsByUsername(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
 
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>

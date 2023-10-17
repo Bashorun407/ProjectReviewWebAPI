@@ -60,18 +60,19 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public async Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username)
+        public async Task<StandardResponse<PagedList<CommentResponseDto>>> GetCommentsByUsername(CommentRequestInputParameter parameter)
         {
-            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(username, false);
+            var result = await _unitOfWork.CommentRepository.GetCommentByUsername(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<CommentResponseDto>>.Failed($"there are no comments by user with username : {username} yet", 99);
+                return StandardResponse<PagedList<CommentResponseDto>>.Failed($"there are no comments by user with username : {parameter.SearchTerm} yet", 99);
             }
 
             var commentsDto = _mapper.Map<IEnumerable<CommentResponseDto>>(result);
+            var pagedList = new PagedList<CommentResponseDto>(commentsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<CommentResponseDto>>.Success($"All comments by specified username are: {commentsDto.Count()}", commentsDto, 200);
+            return StandardResponse<PagedList<CommentResponseDto>>.Success($"All comments by specified username", pagedList, 200);
         }
     }
 }

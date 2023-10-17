@@ -40,11 +40,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
         }
 
 
-        public async Task<IEnumerable<Comment>> GetCommentByUsername(string username, bool trackChanges)
+        public async Task<PagedList<Comment>> GetCommentByUsername(CommentRequestInputParameter parameter, bool trackChanges)
         {
-           var result = await FindByCondition(c => c.UserName.Equals(username), trackChanges).ToListAsync();
+           var result = FindByCondition(c => c.UserName.Equals(parameter.SearchTerm), trackChanges)
+                .OrderBy(x => x.CreatedAt)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<Comment>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         /*

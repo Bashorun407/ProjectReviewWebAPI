@@ -15,11 +15,7 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     {
         Task<StandardResponse<CommentResponseDto>> CreateComment(CommentRequestDto commentRequestDto);
         Task<StandardResponse<PagedList<CommentResponseDto>>> GetAllComments(CommentRequestInputParameter parameter);
-        Task<StandardResponse<IEnumerable<CommentResponseDto>>> GetCommentsByUsername(string username);
+        Task<StandardResponse<PagedList<CommentResponseDto>>> GetCommentsByUsername(CommentRequestInputParameter parameter);
 
-
-/*        Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetAllComments(CommentRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetCommentsByProjectId(CommentRequestInputParameter parameter);
-        Task<StandardResponse<(IEnumerable<CommentResponseDto> comments, MetaData pagingData)>> GetCommentsByUsername(CommentRequestInputParameter parameter);*/
     }
 }

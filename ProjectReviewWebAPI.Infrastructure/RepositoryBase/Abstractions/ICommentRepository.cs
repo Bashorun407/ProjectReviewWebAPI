@@ -13,7 +13,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     {
 
         Task<PagedList<Comment>> GetAll(CommentRequestInputParameter parameter, bool trackChanges);
-        Task<IEnumerable<Comment>> GetCommentByUsername(string username, bool trackChanges);
+        Task<PagedList<Comment>> GetCommentByUsername(CommentRequestInputParameter parameter, bool trackChanges);
 
     }
 }
