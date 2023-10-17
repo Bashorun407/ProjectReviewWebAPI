@@ -3,6 +3,7 @@ using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
@@ -30,7 +31,7 @@ namespace ProjectReview.WebAPI.Controllers
 
         // GET: api/<CommentController>
         [HttpGet("allComments")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<CommentResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<CommentResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 
 namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
@@ -19,12 +19,12 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _users = _context.Set<User>();
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers(UserRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<User>> GetAllUsers(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = FindAll(trackChanges).OrderBy(c => c.LastName).Skip((parameter.PageNumber - 1) * parameter.PageSize)
-                .Take(parameter.PageSize);
+            var result = FindAll(trackChanges).OrderBy(c => c.LastName)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<User> GetUserByEmail(string email, bool trackChanges)
@@ -48,39 +48,51 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await FindByCondition(c => c.UserId == userId, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<User>> GetBySpecialization(UserRequestInputParameter param, ServiceProviderSpecialization specialization, bool trackChanges)
+        public async Task<PagedList<User>> GetBySpecialization(UserRequestInputParameter parameter, bool trackChanges)
         {
-           var result = await FindByCondition(c => c.Specialization.Equals(specialization), trackChanges).ToListAsync();
+           var result = FindByCondition(c => c.Specialization.Equals(parameter.SearchTerm), trackChanges)
+                .OrderBy(c => c.LastName)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<IEnumerable<User>> GetByUserRole(UserRequestInputParameter param, UserRole role, bool trackChanges)
+        public async Task<PagedList<User>> GetByUserRole(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.Role.Equals(role), trackChanges).ToListAsync();
+            var result = FindByCondition(c => c.Role.Equals(parameter.SearchTerm), trackChanges)
+                .OrderBy(c => c.LastName)
+                .AsQueryable();
 
-            return result;
+
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<IEnumerable<User>> GetByApplicationStatus(UserRequestInputParameter param, ApplicationStatus applicationStatus, bool trackChanges)
+        public async Task<PagedList<User>> GetByApplicationStatus(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.ApplicationStatus.Equals(applicationStatus), trackChanges).ToListAsync();
+            var result = FindByCondition(c => c.ApplicationStatus.Equals(parameter.SearchTerm), trackChanges)
+                .OrderBy(c => c.LastName)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<IEnumerable<User>> GetByUserType(UserRequestInputParameter param, UserType type, bool trackChanges)
+        public async Task<PagedList<User>> GetByUserType(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserType.Equals(type), trackChanges).OrderByDescending(c => c.ChargeRate).ToListAsync();
+            var result = FindByCondition(c => c.UserType.Equals(parameter.SearchTerm), trackChanges)
+                .OrderByDescending(c => c.ChargeRate)
+                .AsQueryable();
             
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<IEnumerable<User>> GetAllProjectsByUserId(UserRequestInputParameter param, string userId, bool trackChanges)
+        public async Task<PagedList<User>> GetAllProjectsByUserId(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Projects).ToListAsync();
+            var result = FindByCondition(c => c.UserId.Equals(parameter.SearchTerm), trackChanges)
+                .Include(c => c.Projects)
+                .OrderBy(x => x.CreatedAt)
+                .AsQueryable();
             
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<User> GetUserRatingByUserId(string userId, bool trackChanges)
@@ -91,11 +103,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         }
 
-        public async Task<IEnumerable<User>> GetAllServiceProvidersWithRating(UserRequestInputParameter param, bool trackChanges)
+        public async Task<PagedList<User>> GetAllServiceProvidersWithRating(UserRequestInputParameter parameter, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserType.Equals(UserType.SERVICE_PROVIDER), trackChanges).OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Ratings).ToListAsync();
+            var result = FindByCondition(c => c.UserType.Equals(UserType.SERVICE_PROVIDER), trackChanges)
+                .OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Ratings)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<User> GetByUsername(string username, bool trackChanges)
@@ -104,21 +118,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
             return result;
         }
-
-
-
-        /*        
-                public async Task<PagedList<User>> GetUsersBySpecialization(UserRequestInputParameter parameter)
-                {
-                    var result = await _users.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
-                        .Where(c=> c.Specialization.Equals(parameter.SearchTerm))
-                        .ToListAsync();
-
-                    var count = await _users.CountAsync();
-
-                    return new PagedList<User>(result, count, parameter.PageNumber, parameter.PageSize);
-                }
-        */
 
     }
 }

@@ -13,11 +13,13 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string? CoverImage { get; set; }
         public Category Category { get; set; }
         public string ProjectName { get; set;}
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ProjectId { get; set;}
         public string ProjectDescription { get; set;}
         public string ClientUsername { get; set; }
 
-        //[ForeignKey(nameof(User))]
+        [ForeignKey(nameof(User))]
         public string ProjectOwnerId { get; set; } 
         public string? ServiceProviderUsername{ get; set; }
         public JobAcceptanceStatus? JobAcceptanceStatus { get; set; }

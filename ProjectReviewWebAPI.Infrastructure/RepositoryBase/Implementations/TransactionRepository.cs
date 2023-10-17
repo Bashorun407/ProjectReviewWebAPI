@@ -4,11 +4,6 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
@@ -23,11 +18,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _transactions = context.Set<Transaction>();
         }
 
-        public async Task<IEnumerable<Transaction>> GetAll(TransactionRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<Transaction>> GetAll(TransactionRequestInputParameter parameter, bool trackChanges)
         {
-            var result =  FindAll(trackChanges).OrderByDescending(c => c.Amount).Skip((parameter.PageNumber - 1) * parameter.PageSize)
-                .Take(parameter.PageSize);
-            return result;
+            var result =  FindAll(trackChanges)
+                .OrderByDescending(c => c.CreatedAt)
+                .AsQueryable();
+
+            return await PagedList<Transaction>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode, bool trackChanges)
@@ -44,25 +41,5 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-
-
-        /*public async Task<PagedList<Transaction>> GetAllTransaction(TransactionRequestInputParameter parameter)
-        {
-            var result = await _transactions.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize).ToListAsync();
-            var count = await _transactions.CountAsync();
-
-            return new PagedList<Transaction>(result, count, parameter.PageNumber, parameter.PageSize);
-        }
-
-
-        public async Task<Transaction> GetTransactionByInvoiceCode(string invoiceCode)
-        {
-            return await _transactions.FindAsync(invoiceCode);
-        }
-
-        public async Task<Transaction> GetTransactionByProjectId(string projectId)
-        {
-            return await _transactions.FindAsync(projectId);
-        }*/
     }
 }

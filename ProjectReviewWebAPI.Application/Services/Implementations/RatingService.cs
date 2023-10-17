@@ -9,11 +9,6 @@ using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Application.Services.Implementations
 {
@@ -84,20 +79,19 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<RatingResponseDto>.Success("Thanks for reviewing", rateDto, 201);
         }
 
-        public async Task<StandardResponse<IEnumerable<RatingResponseDto>>> GetAllRatingsAsync(int pageNumber)
+        public async Task<StandardResponse<PagedList<RatingResponseDto>>> GetAllRatingsAsync(RatingRequestInputParameter parameter)
         {
-            var parameter = new RatingRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+
             var result = await _unitOfWork.RatingRepository.GetAll(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<RatingResponseDto>>.Failed($"There are no ratings yet", 99);
+                return StandardResponse<PagedList<RatingResponseDto>>.Failed($"There are no ratings yet", 99);
             }
             var ratesDto = _mapper.Map<IEnumerable<RatingResponseDto>>(result);
+            var pagedList = new PagedList<RatingResponseDto>(ratesDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<RatingResponseDto>>.Success($"All ratings are: {ratesDto.Count()}", ratesDto, 200);
+            return StandardResponse<PagedList<RatingResponseDto>>.Success($"All ratings", pagedList, 200);
            
         }
 

@@ -4,6 +4,7 @@ using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
@@ -38,14 +39,6 @@ namespace ProjectReview.WebAPI.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        /*        // GET: api/<ProjectController>
-                [HttpGet("projectName/{projectName}")]
-                public async Task<IActionResult> GetByProjectName(string projectName)
-                {
-                    var result = await _projectService.GetByProjectName(projectName);
-                    //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-                    return Ok(result);
-                }*/
 
         /// <summary>
         /// Returns all projects that falls under specified category
@@ -55,17 +48,17 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<ProjectResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("projectCategory/{category}")]
-        public async Task<IActionResult> GetByCategory([FromQuery] int pageNumber, Category category)
+        public async Task<IActionResult> GetByCategory([FromQuery] ProjectRequestInputParameter parameter)
         {
-            var result = await _projectService.GetProjectsByCategory(pageNumber, category);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _projectService.GetProjectsByCategory(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>
@@ -82,22 +75,13 @@ namespace ProjectReview.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("projectOwnerId/{ownerId}")]
-        public async Task<IActionResult> GetByProjectOwnerId(string ownerId)
+        public async Task<IActionResult> GetByProjectOwnerId(ProjectRequestInputParameter paramter)
         {
-            var result = await _projectService.GetByProjectOwnerIdAsync(ownerId);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _projectService.GetByProjectOwnerIdAsync(paramter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
-        // GET: api/<ProjectController>
-        //[Authorize(Roles = "Admin")]
-        /*  [HttpGet("serviceProvider/{providerId}")]
-          public async Task<IActionResult> GetByServiceProviderId(string providerId)
-          {
-              var result = await _projectService.GetByServiceProviderIdAsync(providerId);
-              //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-              return Ok(result);
-          }*/
 
         /// <summary>
         /// Returns all projects that fall under the specified Completion status which can be Pending, Started and Completed
@@ -107,18 +91,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<ProjectResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "Admin")]
         [HttpGet("projectStatus/{status}")]
-        public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] int pageNumber, ProjectCompletionStatus status)
+        public async Task<IActionResult> GetByProjectCompletionStatus([FromQuery] ProjectRequestInputParameter parameter)
         {
-            var result = await _projectService.GetByProjectStatus(pageNumber, status);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _projectService.GetByProjectStatus(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>
@@ -129,18 +113,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<ProjectController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<ProjectResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<ProjectResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "Admin")]
         [HttpGet("approvalStatus/{status}")]
-        public async Task<IActionResult> GetByApprovalStatus( [FromQuery] int pageNumber, ProjectLevelApprovalStatus status)
+        public async Task<IActionResult> GetByApprovalStatus( [FromQuery] ProjectRequestInputParameter parameter)
         {
-            var result = await _projectService.GetByApprovalStatus(pageNumber, status);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _projectService.GetByApprovalStatus(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>

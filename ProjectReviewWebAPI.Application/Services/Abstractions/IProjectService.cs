@@ -18,12 +18,12 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
         Task<StandardResponse<ProjectResponseDto>> CreateProject(ProjectRequestDto projectRequestDto);
         Task<StandardResponse<ProjectResponseDto>> AddServiceProvider(string projectId, SelectServiceProviderDto serviceProviderDto);
         Task<StandardResponse<PagedList<ProjectResponseDto>>> GetAllProjectsAsync(ProjectRequestInputParameter parameter);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByCategory(int pageNumber, Category category);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectName(int pageNumber, string projectName);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectOwnerIdAsync(string projectOwnerId);
+        Task<StandardResponse<PagedList<ProjectResponseDto>>> GetProjectsByCategory(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByProjectName(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByProjectOwnerIdAsync(ProjectRequestInputParameter parameter);
         //Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByServiceProviderIdAsync(string serviceProviderId);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByProjectStatus(int pageNumber, ProjectCompletionStatus completionStatus);
-        Task<StandardResponse<IEnumerable<ProjectResponseDto>>> GetByApprovalStatus(int pageNumber, ProjectLevelApprovalStatus approvalStatus);
+        Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByProjectStatus(ProjectRequestInputParameter parameter);
+        Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByApprovalStatus(ProjectRequestInputParameter parameter);
         Task<StandardResponse<ProjectResponseDto>> GetById(int id);
         Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId);
         Task<StandardResponse<ProjectResponseDto>> UpdateProject(string id, ProjectUpdateDto projectUpdateDto);

@@ -3,6 +3,7 @@ using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
@@ -29,18 +30,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<RatingController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<RatingResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<RatingResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("allRatings")]
-        public async Task<IActionResult> GetAllRatings([FromQuery] int pageNumber)
+        public async Task<IActionResult> GetAllRatings([FromQuery] RatingRequestInputParameter parameter)
         {
-            var result = await _ratingService.GetAllRatingsAsync(pageNumber);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            var result = await _ratingService.GetAllRatingsAsync(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
             
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>

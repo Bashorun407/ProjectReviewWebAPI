@@ -3,6 +3,7 @@ using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
@@ -29,18 +30,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<TransactionController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<TransactionResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<TransactionResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("allTransactions")]
-        public async Task<IActionResult> GetAllTransaction([FromQuery] int pageNumber)
+        public async Task<IActionResult> GetAllTransaction([FromQuery] TransactionRequestInputParameter parameter)
         {
-            var result = await _transactionService.GetAllTransactionsAsync(pageNumber);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+            var result = await _transactionService.GetAllTransactionsAsync(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
 
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>

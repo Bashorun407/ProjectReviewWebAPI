@@ -4,11 +4,6 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 using ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 {
@@ -23,12 +18,13 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             _ratings = context.Set<Rating>();
         }
 
-        public async Task<IEnumerable<Rating>> GetAll(RatingRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<Rating>> GetAll(RatingRequestInputParameter parameter, bool trackChanges)
         {
-           var result =  FindAll(trackChanges).OrderByDescending(c => c.StarRating).Skip((parameter.PageNumber - 1) * parameter.PageSize)
-                .Take(parameter.PageSize);
+           var result =  FindAll(trackChanges)
+                .OrderByDescending(c => c.StarRating)
+                .AsQueryable();
 
-            return result;
+            return await PagedList<Rating>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<Rating> GetRatingByUsername(string username, bool trackChanges)
@@ -38,23 +34,5 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return result;
         }
 
-
-
-        /*public async Task<PagedList<Rating>> GetAllRating(RatingRequestInputParameter parameter)
-        {
-            var result = await _ratings.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
-                .ToListAsync();
-            var count = await _ratings.CountAsync();
-
-            return new PagedList<Rating>(result, count, parameter.PageNumber, parameter.PageSize);
-        }
-
-        public async Task<Rating> GetRatingByUserId(string userId)
-        {
-            var rate =  _ratings.Where(c=> c.UserId.Equals(userId)).FirstOrDefault();
-
-            return rate;
-        }
-*/
     }
 }

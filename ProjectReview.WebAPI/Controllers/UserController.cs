@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
-using ProjectReviewWebAPI.Domain.Enums;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
+using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,29 +30,20 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<UserController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<UserResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<UserResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpGet("getAll")]
-        public async Task<IActionResult> GetAllUsers( [FromQuery] int pageNumber)
+        public async Task<IActionResult> GetAllUsers( [FromQuery] UserRequestInputParameter parameter)
         {
-            var result = await _userService.GetAllUsers(pageNumber);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data));
-            return Ok(result);
+            var result = await _userService.GetAllUsers(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
-
-        /*        //[Authorize]
-                [HttpGet("id/{id}")]
-                public async Task<IActionResult> GetById(string id)
-                {
-                    var result = await _userService.GetById(id);
-                    return Ok(result);
-                }
-        */
 
         /// <summary>
         /// This endpoint returns a user by id
@@ -73,32 +65,16 @@ namespace ProjectReview.WebAPI.Controllers
             return Ok(result);
         }
 
-   /*    //[Authorize]
-        [HttpGet("email/{email}")]
-        public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
-        {
-            var result = await _userService.GetByEmail(email);
-            return Ok(result);
-        }*/
-
-    /*    //[Authorize]
-        [HttpGet("phoneNumber/{phoneNumber}")]
-        public async Task<IActionResult> GetUserByPhoneNumber([FromQuery] string phoneNumber)
-        {
-            var result = await _userService.GetByPhoneNumber(phoneNumber);
-            return Ok(result);
-        }*/
-
-/*        // GET: api/<UserController>
-        //[Authorize(Roles = "Admin")]
-        [HttpGet("usersByRole/{role}")]
-        public async Task<IActionResult> GetUsersByRole(UserRole role)
-        {
-            var result = await _userService.GetByRole(role);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
-        }
-*/
+        /*        // GET: api/<UserController>
+                //[Authorize(Roles = "Admin")]
+                [HttpGet("usersByRole/{role}")]
+                public async Task<IActionResult> GetUsersByRole(UserRole role)
+                {
+                    var result = await _userService.GetByRole(role);
+                    //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
+                    return Ok(result);
+                }
+        */
 
         /// <summary>
         /// This endpoint returns users by specified type which can be CLIENT or SERVICE_PROVIDER
@@ -106,14 +82,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <param name="pageNumber"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<UserResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status409Conflict)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "Admin")]
         [HttpGet("usersByType/{type}")]
-        public async Task<IActionResult> GetUsersByUserType([FromQuery]int pageNumber, UserType type)
+        public async Task<IActionResult> GetUsersByUserType([FromQuery] UserRequestInputParameter parameter) 
         {
-            var result = await _userService.GetByUserType(pageNumber, type);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _userService.GetByUserType(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>
@@ -124,18 +104,18 @@ namespace ProjectReview.WebAPI.Controllers
         /// <returns></returns>
 
         // GET: api/<UserController>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<UserResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<UserResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         //[Authorize(Roles = "User")]
         [HttpGet("specializatiion/{specialization}")]
-        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] int pageNumber, ServiceProviderSpecialization specialization)
+        public async Task<IActionResult> GetUsersBySpecialization([FromQuery] UserRequestInputParameter parameter)
         {
-            var result = await _userService.GetBySpecialization(pageNumber, specialization);
-            //Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.Item2));
-            return Ok(result);
+            var result = await _userService.GetBySpecialization(parameter);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
+            return StatusCode(result.StatusCode, result);
         }
 
         //[Authorize(Roles = "User")]
@@ -153,17 +133,17 @@ namespace ProjectReview.WebAPI.Controllers
         /// <param name="pageNumber"></param>
         /// <returns></returns>
 
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<IEnumerable<UserResponseDto>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<UserResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         [HttpGet("allServiceProviders")]
-        public async Task<IActionResult> GetAllServiceProviders([FromQuery]int pageNumber)
+        public async Task<IActionResult> GetAllServiceProviders([FromQuery] UserRequestInputParameter parameter)
         {
-            var result = await _userService.GetAllServiceProviders(pageNumber);
+            var result = await _userService.GetAllServiceProviders(parameter);
 
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         /// <summary>

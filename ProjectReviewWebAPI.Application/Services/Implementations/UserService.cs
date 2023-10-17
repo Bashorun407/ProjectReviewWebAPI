@@ -6,8 +6,8 @@ using ProjectReviewWebAPI.Domain.Dtos;
 using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
-using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
+using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using ProjectReviewWebAPI.Utility.Utility;
 
@@ -54,39 +54,36 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         }
 
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllUsers(int pageNumber)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetAllUsers(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetAllUsers(parameter, false);
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed("There are no users yet", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed("There are no users yet", 99);
             }
 
             var userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(userDtos.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"All users are :{userDtos.Count()}", userDtos, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"All users", pagedList, 200);
 
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByApplicationStatus(int pageNumber, ApplicationStatus applicationStatus)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetByApplicationStatus(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
-            var result = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, applicationStatus, false);
+
+            var result = await _unitOfWork.UserRepository.GetByApplicationStatus(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"There are no users by the applicationStatus specified: {applicationStatus} yet", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed($"There are no users by the applicationStatus specified: {parameter.SearchTerm} yet", 99);
             }
 
             var usersDto =  _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by application status specified found are: {usersDto.Count()} ", usersDto, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"Users by application status specified found ", pagedList, 200);
 
         }
 
@@ -131,39 +128,37 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with phone number: {phoneNumber} found.", userDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByRole(int pageNumber, UserRole role)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetByRole(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
-            var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, role, false);
+
+            var result = await _unitOfWork.UserRepository.GetByUserRole(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with role: {role} does not exist", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed($"User with role: {parameter.SearchTerm} does not exist", 99);
 
             }
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by role specified found are : {usersDto.Count()}", usersDto, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"Users by role specified found", pagedList, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetBySpecialization(int pageNumber, ServiceProviderSpecialization specialization)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetBySpecialization(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
-            var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, specialization, false);
+
+            var result = await _unitOfWork.UserRepository.GetBySpecialization(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with specialization: {specialization} does not exist", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed($"User with specialization: {parameter.SearchTerm} does not exist", 99);
 
             }
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by specialization specified found are: {usersDto.Count()}", usersDto, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"Users by specialization specified found.", pagedList, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByUserId(string userId)
@@ -179,62 +174,55 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<UserResponseDto>.Success($"User with id: {userId} found", userDto, 200);
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetByUserType(int pageNumber, UserType userType)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetByUserType(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
 
-            var result = await _unitOfWork.UserRepository.GetByUserType(parameter, userType, false);
+            var result = await _unitOfWork.UserRepository.GetByUserType(parameter,  false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"User with user-type: {userType} does not exist", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed($"User with user-type: {parameter.SearchTerm} does not exist", 99);
 
             }
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Users by user-type specified found are: {usersDto.Count()}", usersDto, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"Users by user-type specified found", pagedList, 200);
 
         }
 
-        public async Task<StandardResponse<IEnumerable<UserResponseDto>>> GetAllProjectsByUserId(int pageNumber, string userId)
+        public async Task<StandardResponse<PagedList<UserResponseDto>>> GetAllProjectsByUserId(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
 
-            var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, userId, false);
+            var result = await _unitOfWork.UserRepository.GetAllProjectsByUserId(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<UserResponseDto>>.Failed($"There are no projects with userId: {userId}", 99);
+                return StandardResponse<PagedList<UserResponseDto>>.Failed($"There are no projects with userId: {parameter.SearchTerm}", 99);
             }
 
             var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(result);
+            var pagedList = new PagedList<UserResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-
-            return StandardResponse<IEnumerable<UserResponseDto>>.Success($"Projects with user id: {userId}", usersDto, 200);
+            return StandardResponse<PagedList<UserResponseDto>>.Success($"Projects with user id: {parameter.SearchTerm}", pagedList, 200);
 
         }
 
-        public async Task<StandardResponse<IEnumerable<ServiceProviderResponseDto>>> GetAllServiceProviders(int pageNumber)
+        public async Task<StandardResponse<PagedList<ServiceProviderResponseDto>>> GetAllServiceProviders(UserRequestInputParameter parameter)
         {
-            var parameter = new UserRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
 
             var result = await _unitOfWork.UserRepository.GetAllServiceProvidersWithRating(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Failed("There are no service providers yet");
+                return StandardResponse<PagedList<ServiceProviderResponseDto>>.Failed("There are no service providers yet");
             }
 
             var usersDto = _mapper.Map<IEnumerable<ServiceProviderResponseDto>>(result);
+            var pagedList = new PagedList<ServiceProviderResponseDto>(usersDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<ServiceProviderResponseDto>>.Success($"All Service providers are: {usersDto.Count()}", usersDto, 200);
+            return StandardResponse<PagedList<ServiceProviderResponseDto>>.Success($"All Service providers", pagedList, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetRatingByUserId(string userId)

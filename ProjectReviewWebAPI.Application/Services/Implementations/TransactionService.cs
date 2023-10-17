@@ -75,22 +75,21 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<TransactionResponseDto>.Success("New transaction added", transactionDto, 201); ;
         }
 
-        public async Task<StandardResponse<IEnumerable<TransactionResponseDto>>> GetAllTransactionsAsync(int pageNumber)
+        public async Task<StandardResponse<PagedList<TransactionResponseDto>>> GetAllTransactionsAsync(TransactionRequestInputParameter parameter)
         {
-            var parameter = new TransactionRequestInputParameter();
-            parameter.PageNumber = pageNumber;
-            parameter.PageSize = 2;
+
 
             var result = await _unitOfWork.TransactionRepository.GetAll(parameter, false);
 
             if (!result.Any())
             {
-                return StandardResponse<IEnumerable<TransactionResponseDto>>.Failed($"There are no projects yet", 99);
+                return StandardResponse<PagedList<TransactionResponseDto>>.Failed($"There are no projects yet", 99);
             }
 
             var transactionsDto = _mapper.Map<IEnumerable<TransactionResponseDto>>(result);
+            var pagedList = new PagedList<TransactionResponseDto>(transactionsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
-            return StandardResponse<IEnumerable<TransactionResponseDto>>.Success("All transactions", transactionsDto, 200);
+            return StandardResponse<PagedList<TransactionResponseDto>>.Success("All transactions", pagedList, 200);
         }
 
         public async Task<StandardResponse<TransactionResponseDto>> GetTransactionByInvoiceCode(string invoiceCode)
