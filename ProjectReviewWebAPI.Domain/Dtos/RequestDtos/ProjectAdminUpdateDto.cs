@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class ProjectAdminUpdateDto
+    public record ProjectAdminUpdateDto //(ProjectLevelApprovalStatus projectLevelApprovalStatus);
     {
-        public ProjectLevelApprovalStatus ProjectLevelApprovalStatus { get; set; }  
+        public ProjectLevelApprovalStatus ProjectLevelApprovalStatus { get; init; }  
     }
 }

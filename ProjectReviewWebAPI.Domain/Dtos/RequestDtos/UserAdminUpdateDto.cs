@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class UserAdminUpdateDto
+    public record UserAdminUpdateDto /*(UserRole userRole, UserType userType, ApplicationReviewStatus applicationReviewStatus);*/
     {
-        public UserRole UserRole { get; set; }
-        public UserType UserType { get; set; }  
-        public ApplicationReviewStatus ApplicationReviewStatus { get; set; }
+        public UserRole UserRole { get; init; }
+        public UserType UserType { get; init; }
+        public ApplicationReviewStatus ApplicationReviewStatus { get; init; }
     }
 }

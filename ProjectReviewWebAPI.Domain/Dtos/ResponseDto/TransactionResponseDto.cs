@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class TransactionResponseDto
+    public record TransactionResponseDto /*(string firstName,  string lastName, string otherName, string projectId, 
+        double amount, string invoiceCode);*/
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string OtherName { get; set; }
-        public string ProjectId { get; set; }
-        public double Amount { get; set; }
-        public string InvoiceCode { get; set; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+        public string? OtherName { get; init; }
+        public string? ProjectId { get; init; }
+        public double Amount { get; init; }
+        public string? InvoiceCode { get; init; }
     }
 }

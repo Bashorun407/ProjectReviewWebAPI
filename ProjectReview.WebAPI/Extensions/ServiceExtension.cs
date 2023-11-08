@@ -18,8 +18,28 @@ namespace ProjectReview.WebAPI.Extensions
 
     public static class ServiceExtension
     {
+        public static void ConfigureCors(this IServiceCollection services) =>
+          services.AddCors(options =>
+          {
+              options.AddPolicy("CorsPolicy", builder =>
+              builder.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+          });
+
+        //This method is left blank because we are okay with the default settings for now
+        public static void ConfigureIISIntegration(this IServiceCollection services) =>
+            services.Configure<IISOptions>(options =>
+            {
+
+            });
+
+
+
         public static void ConfigureDataBaseContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(configuration.GetConnectionString("Default")));
+       
+        
         public static void ResolveDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();

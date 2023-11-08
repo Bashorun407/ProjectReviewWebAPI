@@ -35,10 +35,10 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<ProjectResponseDto>> AddServiceProvider(string projectId, SelectServiceProviderDto serviceProviderDto)
         {
             //Check if username exists in User database
-            var userExists = await _unitOfWork.UserRepository.GetByUsername(serviceProviderDto.ServiceProviderUsername, false);
+            var userExists = await _unitOfWork.UserRepository.GetById(serviceProviderDto.ServiceProviderId, false);
             if (userExists == null)
             {
-                return StandardResponse<ProjectResponseDto>.Failed($"User with username: {serviceProviderDto.ServiceProviderUsername} does not exist", 99);
+                return StandardResponse<ProjectResponseDto>.Failed($"User with id: {serviceProviderDto.ServiceProviderId} does not exist", 99);
             }
 
             var projectExist = await _unitOfWork.ProjectRepository.GetByProjectId(projectId, false);

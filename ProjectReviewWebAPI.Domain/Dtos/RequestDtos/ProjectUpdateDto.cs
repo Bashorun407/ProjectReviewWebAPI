@@ -7,16 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class ProjectUpdateDto
+    public record ProjectUpdateDto /*(string projectName, string projectDescription);*/
     {
-        public string ProjectName { get; set; }
-        public string ProjectDescription { get; set; }
-
-        /*public string? ServiceProviderId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
-        public ProjectLevelApprovalStatus ProjectApprovalStatus { get; set; }
-        public DateTime ModifiedAt { get; set; } = DateTime.Now;*/
+        public string ProjectName { get; init; }
+        public string ProjectDescription { get; init; }
     }
 }

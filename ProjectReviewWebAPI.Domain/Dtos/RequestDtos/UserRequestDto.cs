@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class UserRequestDto
+    public record UserRequestDto /*(string profilePicture, string firstName, string lastName, string username, 
+        string email, string password, string? phoneNumber);*/
     {
-        public string ProfilePicture { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string ProfilePicture { get; init; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string UserName { get; init; }
+        public string Email { get; init; }
+        public string Password { get; init; }
+        public string? PhoneNumber { get; init; }
     }
 }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class SelectServiceProviderDto
+    public record SelectServiceProviderDto /*(string? serviceProviderId);*/
     {
-
-        public string? ServiceProviderUsername { get; set; }
+        public string? ServiceProviderId { get; set; }
     }
 }

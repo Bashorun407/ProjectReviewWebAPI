@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class UserServiceProviderUpdateDto
+    public record UserServiceProviderUpdateDto /*(ApplicationStatus applicationStatus, ServiceProviderSpecialization specialization, 
+        string description, double? chargeRate);*/
     {
-        //public UserType UserType { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
-        public ServiceProviderSpecialization Specialization { get; set; }
-        public string? Description { get; set; }
+        public ApplicationStatus ApplicationStatus { get; init; }
+        public ServiceProviderSpecialization Specialization { get; init; }
+        public string? Description { get; init; }
         [Column(TypeName = "Money")]
-        public double ChargeRate { get; set; }
-        //public ApplicationReviewStatus? ApplicationReviewStatus { get; set; }
+        public double ChargeRate { get; init; }
     }
 }

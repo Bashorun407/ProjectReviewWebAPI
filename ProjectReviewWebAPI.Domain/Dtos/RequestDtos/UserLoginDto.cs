@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class UserLoginDto
+    public record UserLoginDto /*(string email, string password);*/
     {
         [EmailAddress(ErrorMessage = "Email is invalid")]
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Email { get; init; }
+        public string Password { get; init; }
     }
 }

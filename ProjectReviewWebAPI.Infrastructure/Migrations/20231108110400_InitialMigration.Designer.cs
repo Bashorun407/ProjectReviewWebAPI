@@ -12,7 +12,7 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230920092248_InitialMigration")]
+    [Migration("20231108110400_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -54,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e9040429-5ff1-41b5-b329-4642b55b06ff",
+                            Id = "bcacfb12-dac5-4730-bb2a-b1d3d31c4c07",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5eb5440a-7bec-4b96-8253-a23ba4ec304e",
+                            Id = "a32a4d59-487d-4ac5-bbca-001a1dc03a86",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -174,11 +174,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comments")
                         .IsRequired()
@@ -236,18 +234,12 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Project", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
-
-                    b.Property<string>("ClientUsername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CoverImage")
                         .HasColumnType("nvarchar(max)");
@@ -273,6 +265,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<string>("ProjectId")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProjectLevelApprovalStatus")
@@ -289,7 +282,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<int?>("ProjectStartApproval")
                         .HasColumnType("int");
 
-                    b.Property<string>("ServiceProviderUsername")
+                    b.Property<string>("ServiceProviderId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
@@ -307,11 +300,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("AverageRating")
                         .HasColumnType("float");
@@ -347,11 +338,9 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Transaction", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("Money");
@@ -369,6 +358,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<string>("InvoiceCode")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -475,6 +465,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -550,17 +541,15 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Project", b =>
                 {
-                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "User")
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", null)
                         .WithMany("Projects")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
                 {
                     b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "Users")
-                        .WithOne("Ratings")
+                        .WithOne("Rating")
                         .HasForeignKey("ProjectReviewWebAPI.Domain.Entities.Rating", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -572,7 +561,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 {
                     b.Navigation("Projects");
 
-                    b.Navigation("Ratings")
+                    b.Navigation("Rating")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

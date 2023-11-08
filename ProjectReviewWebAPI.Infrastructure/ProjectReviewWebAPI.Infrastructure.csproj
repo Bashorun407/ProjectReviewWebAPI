@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DataSeeder\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>

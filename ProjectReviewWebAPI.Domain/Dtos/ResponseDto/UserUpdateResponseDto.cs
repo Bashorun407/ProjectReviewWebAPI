@@ -2,21 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class UserUpdateResponseDto
+    public record UserUpdateResponseDto /*(string? profilePicture, string? phoneNumber, string? email, 
+        string? password, string? description);*/
     {
-        public string? ProfilePicture { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-        public string? Description { get; set; }
-/*        public UserType UserType { get; set; }
-        public Specialization Specialization { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
-        public DateTime ModifiedAt { get; set; }*/
+        public string? ProfilePicture { get; init; }
+        public string? PhoneNumber { get; init; }
+        public string? Email { get; init; }
+        public string? Password { get; init; }
+        public string? Description { get; init; }
+
     }
 }

@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class UserResponseDto
-    {
-        public string ProfilePicture { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string UserId { get; set; }
-        public string Specialization { get; set; }
-        public string Description { get; set; }
-        public UserType UserType { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
+    public record UserResponseDto /*(string profilePicture, string firstName, string lastName, string userId, 
+        string specialization, string description, UserType userType, ApplicationStatus applicationStatus, 
+        RatingResponseDto ratings, IEnumerable<ProjectResponseDto> projects);*/
 
-        //Navigational property...to fetch user's projects
-        public RatingResponseDto Ratings { get; set; }
-        public IEnumerable<ProjectResponseDto> Projects { get; set; }
+    {
+        public string? ProfilePicture { get; init; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+        public string? UserId { get; init; }
+        public string? Specialization { get; init; }
+        public string? Description { get; init; }
+        public UserType UserType { get; init; }
+        public ApplicationStatus ApplicationStatus { get; init; }
+
+        //Navigation
+/*        public RatingResponseDto? Ratings { get; init; }
+        public IEnumerable<ProjectResponseDto>? Projects { get; init; }*/
     }
 }

@@ -236,7 +236,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             var userDto = _mapper.Map<UserResponseDto>(result);
 
-            return StandardResponse<UserResponseDto>.Success($"Rating by user id: {userId} is: {result.Ratings}", userDto, 200);
+            return StandardResponse<UserResponseDto>.Success($"Rating by user id: {userId} is: {result.Rating}", userDto, 200);
         }
 
         public async Task<StandardResponse<UserResponseDto>> GetByUsername(string username)

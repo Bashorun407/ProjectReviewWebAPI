@@ -15,9 +15,8 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string PublicId { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
-        //This foreign key points to User's primary key and not UserId
-        //which is a property in the class different from the class' primary key
-        //[ForeignKey(nameof(User))]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
+
     }
 }

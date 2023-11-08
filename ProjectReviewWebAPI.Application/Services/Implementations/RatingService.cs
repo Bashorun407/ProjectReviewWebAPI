@@ -29,10 +29,10 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<RatingResponseDto>> AddRating(RatingRequestDto ratingRequestDto)
         {
             //Check if ratingRequestDo.username exists in the database
-            var user = await _unitOfWork.UserRepository.GetByUsername(ratingRequestDto.Username, false);
+            var user = await _unitOfWork.UserRepository.GetById(ratingRequestDto.ServiceProviderId, false);
             if (user == null)
             {
-                return StandardResponse<RatingResponseDto>.Failed($"User by this username: {ratingRequestDto.Username} does not exist ", 99);
+                return StandardResponse<RatingResponseDto>.Failed($"User by this id: {ratingRequestDto.ServiceProviderId} does not exist ", 99);
             }
 
             _logger.LogInformation("New rating for service provider");

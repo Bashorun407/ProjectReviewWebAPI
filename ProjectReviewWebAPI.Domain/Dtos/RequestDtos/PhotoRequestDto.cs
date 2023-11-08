@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class PhotoRequestDto
+    public record PhotoRequestDto /*(string url, IFormFile file);*/
     {
-        public string Url { get; set; }
-        public IFormFile File { get; set; }
+        public string Url { get; init; }
+        public IFormFile File { get; init; }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class CommentRequestDto
+    public record CommentRequestDto /*(string username, string comments);*/
     {
-        public string UserName { get; set; }
-        public string Comments { get; set; }
+        public string UserName { get; init; }
+        public string Comments { get; init; }
     }
 }

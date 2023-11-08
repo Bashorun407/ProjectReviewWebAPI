@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class UserRegisterDto
+    public record UserRegisterDto /*(string firstName, string lastName, string username, string email, string password);*/
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string UserName { get; init; }
+        public string Email { get; init; }
+        public string Password { get; init; }
 
     }
 }

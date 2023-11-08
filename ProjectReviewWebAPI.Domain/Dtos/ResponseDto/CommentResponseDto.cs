@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class CommentResponseDto
+    public record CommentResponseDto /*(string username, string comments, DateTime createdAt);*/
     {
-        public string UserName { get; set; }
-        public string Comments { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string UserName { get; init; }
+        public string Comments { get; init; }
+        public DateTime CreatedAt { get; init; }
     }
 }

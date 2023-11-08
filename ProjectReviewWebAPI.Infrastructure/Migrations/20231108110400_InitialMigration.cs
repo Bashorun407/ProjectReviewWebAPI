@@ -70,8 +70,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -104,8 +103,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -230,22 +228,20 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CoverImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Category = table.Column<int>(type: "int", nullable: false),
                     ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectOwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceProviderUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServiceProviderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JobAcceptanceStatus = table.Column<int>(type: "int", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ProjectStartApproval = table.Column<int>(type: "int", nullable: true),
                     ProjectLevelApprovalStatus = table.Column<int>(type: "int", nullable: true),
                     ProjectCompletionStatus = table.Column<int>(type: "int", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -265,8 +261,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 columns: table => new
                 {
                     StarRating = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RateCount = table.Column<int>(type: "int", nullable: false),
@@ -290,8 +285,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5eb5440a-7bec-4b96-8253-a23ba4ec304e", null, "User", "USER" },
-                    { "e9040429-5ff1-41b5-b329-4642b55b06ff", null, "Admin", "ADMIN" }
+                    { "a32a4d59-487d-4ac5-bbca-001a1dc03a86", null, "User", "USER" },
+                    { "bcacfb12-dac5-4730-bb2a-b1d3d31c4c07", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

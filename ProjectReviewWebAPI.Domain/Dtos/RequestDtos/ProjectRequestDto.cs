@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class ProjectRequestDto
+    public record ProjectRequestDto /*(string coverImage, string projectName, string projectDescription, 
+        string projectOwnerId, string serviceProviderId, Category category);*/
     {
-        public string CoverImage { get; set; }
-        public string ProjectName { get; set; }
-        public string ProjectDescription { get; set; }
-        public string ProjectOwnerId { get; set; }
-        public string ClientUsername { get; set; }
-        public Category Category { get; set; }
-
-
+        public string CoverImage { get; init; }
+        public string ProjectName { get; init; }
+        public string ProjectDescription { get; init; }
+        public string ProjectOwnerId { get; init; }
+     
+        public Category Category { get; init; }
     }
 }

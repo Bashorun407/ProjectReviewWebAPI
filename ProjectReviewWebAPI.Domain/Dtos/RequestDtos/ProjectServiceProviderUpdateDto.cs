@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class ProjectServiceProviderUpdateDto
+    public record ProjectServiceProviderUpdateDto /*(JobAcceptanceStatus JobAcceptanceStatus, ProjectCompletionStatus projectCompletionStatus, 
+        DateTime? startDate, DateTime? endDate);*/
     {
-        //public string ServiceProviderUsername { get; set; }
-        public JobAcceptanceStatus JobAcceptanceStatus { get; set; }
-        public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+
+        public JobAcceptanceStatus JobAcceptanceStatus { get; init; }
+        public ProjectCompletionStatus ProjectCompletionStatus { get; init; }
+        public DateTime? StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
     }
 }

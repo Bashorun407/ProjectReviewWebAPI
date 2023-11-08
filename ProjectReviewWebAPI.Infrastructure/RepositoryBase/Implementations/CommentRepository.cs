@@ -48,18 +48,5 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
             return await PagedList<Comment>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
-
-        /*
-        public async Task<PagedList<Comment>> GetCommentByUsername(CommentRequestInputParameter parameter)
-        {
-            var result = await _comments.Skip((parameter.PageNumber - 1) * parameter.PageSize).Take(parameter.PageSize)
-                .Where(c=> c.UserName.Equals(parameter.SearchTerm))
-                .ToListAsync();
-
-            var count = await _comments.CountAsync();
-
-            return new PagedList<Comment>(result, count, parameter.PageNumber, parameter.PageSize);
-        }
-*/
     }
 }

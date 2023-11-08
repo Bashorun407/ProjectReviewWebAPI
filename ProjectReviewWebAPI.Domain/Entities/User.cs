@@ -25,7 +25,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public DateTime ModifiedAt { get; set; }
 
         //Relationship with Rating and Project table
-        public Rating Ratings { get; set; }
+        public Rating Rating { get; set; }
         public IEnumerable<Project> Projects { get; set; }
 
     }

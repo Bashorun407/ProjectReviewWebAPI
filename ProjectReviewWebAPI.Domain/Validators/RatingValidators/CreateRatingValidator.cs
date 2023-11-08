@@ -12,7 +12,7 @@ namespace ProjectReviewWebAPI.Domain.Validators.RatingValidators
     {
         public CreateRatingValidator()
         {
-            RuleFor(d => d.Username).NotEmpty().WithMessage("Username field is required");
+            RuleFor(d => d.ServiceProviderId).NotEmpty().WithMessage("Username field is required");
             RuleFor(d => d.StarRating).NotEmpty().GreaterThanOrEqualTo(1).WithMessage("Rating field must be between 1 and 5");
         }
     }

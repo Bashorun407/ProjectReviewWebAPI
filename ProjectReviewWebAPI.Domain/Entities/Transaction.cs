@@ -15,6 +15,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public string ProjectId { get; set; }
         [Column(TypeName = "Money")]
         public double Amount { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string InvoiceCode { get; set; }
     }
 }

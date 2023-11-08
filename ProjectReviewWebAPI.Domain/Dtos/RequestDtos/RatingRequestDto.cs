@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.RequestDtos
 {
-    public class RatingRequestDto
+    public record RatingRequestDto /*(string serviceProviderId, string starRating);*/
     {
-        public string Username { get; set; }
-        public int StarRating { get; set; }
-/*        public int RateCount { get; set; }
-        public double AverageRating { get; set; }*/
+        public string? ServiceProviderId { get; init; }
+        public int StarRating { get; init; }
     }
 }

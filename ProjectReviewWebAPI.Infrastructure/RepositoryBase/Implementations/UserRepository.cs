@@ -97,7 +97,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<User> GetUserRatingByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Ratings).FirstOrDefaultAsync();
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).Include(c => c.Rating).FirstOrDefaultAsync();
 
             return result;
 
@@ -106,7 +106,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
         public async Task<PagedList<User>> GetAllServiceProvidersWithRating(UserRequestInputParameter parameter, bool trackChanges)
         {
             var result = FindByCondition(c => c.UserType.Equals(UserType.SERVICE_PROVIDER), trackChanges)
-                .OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Ratings)
+                .OrderByDescending(c => c.ChargeRate).OrderByDescending(c => c.Rating)
                 .AsQueryable();
 
             return await PagedList<User>.GetPagination(result, parameter.PageNumber, parameter.PageSize);

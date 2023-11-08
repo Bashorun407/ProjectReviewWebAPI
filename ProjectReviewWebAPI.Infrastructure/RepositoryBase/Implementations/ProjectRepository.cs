@@ -93,10 +93,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageNumber);
         }
 
-        public async Task<PagedList<Project>> GetByServiceProviderName(ProjectRequestInputParameter parameter, bool trackChanges)
+        public async Task<PagedList<Project>> GetByServiceProviderId(ProjectRequestInputParameter parameter, bool trackChanges)
         {
-            var result = FindByCondition(c => c.ServiceProviderUsername.Equals(parameter.SearchTerm), trackChanges)
-                .OrderBy(x => x.ServiceProviderUsername)
+            var result = FindByCondition(c => c.ServiceProviderId.Equals(parameter.SearchTerm), trackChanges)
+                .OrderBy(x => x.ServiceProviderId)
                 .AsQueryable();
 
             return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);

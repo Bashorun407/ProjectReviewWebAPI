@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class RatingResponseDto
+    public record RatingResponseDto /*(string userId, int starRating, int rateCount, double averageRating);*/
     {
-        public string Username { get; set; }
-        public int StarRating { get; set; }
-        public int RateCount { get; set; }
-        public double AverageRating { get; set; }
+        public string? UserId { get; init; }
+        public int StarRating { get; init; }
+        public int RateCount { get; init; }
+        public double AverageRating { get; init; }
 
     }
 }

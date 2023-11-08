@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
 {
-    public class ProjectResponseDto
+    public record ProjectResponseDto /*(string coverImage, string projectName, string projectId, Category category, 
+        string projectOwner, ProjectCompletionStatus projectCompletionStatus, ProjectLevelApprovalStatus projectLevelApprovalStatus, 
+        DateTime startDate, DateTime endDate);*/
     {
-        public string CoverImage { get; set; }
-        public string ProjectName { get; set; }
-        public string ProjectId { get; set; }
-        public Category Category { get; set; }
-        public string ProjectOwner { get; set; }
-        //public string ProjectOwnerId { get; set; }
-        //public string? ServiceProviderId { get; set; }
-        public ProjectCompletionStatus ProjectCompletionStatus { get; set; }
-        public ProjectLevelApprovalStatus ProjectApprovalStatus { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string CoverImage { get; init; }
+        public string ProjectName { get; init; }
+        public string ProjectId { get; init; }
+        public Category Category { get; init; }
+        public string ProjectOwner { get; init; }
+        public ProjectCompletionStatus ProjectCompletionStatus { get; init; }
+        public ProjectLevelApprovalStatus ProjectApprovalStatus { get; init; }
+        public DateTime StartDate { get; init; }
+        public DateTime EndDate { get; init; }
     }
 }
