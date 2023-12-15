@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
 using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

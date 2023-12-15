@@ -27,9 +27,9 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await PagedList<Rating>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<Rating> GetRatingByUsername(string username, bool trackChanges)
+        public async Task<Rating> GetRatingByUserId(string userId, bool trackChanges)
         {
-            var result = await FindByCondition(c => c.UserName.Equals(username), trackChanges).SingleOrDefaultAsync();
+            var result = await FindByCondition(c => c.UserId.Equals(userId), trackChanges).SingleOrDefaultAsync();
 
             return result;
         }

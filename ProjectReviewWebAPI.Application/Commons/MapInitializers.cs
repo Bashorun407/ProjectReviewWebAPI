@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;

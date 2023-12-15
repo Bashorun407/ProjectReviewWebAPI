@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
@@ -62,13 +62,13 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var projectOwner = _mapper.Map<User>(projectOwnerRes);
 
             //email notification to project-owner 
-            _emailService.SendEmailAsync(projectOwner.Email, "Project Payment Notification", $"Dear {projectOwner.FirstName},\n You have successfully paid for project-id :{project.ProjectId}.\n Thank You.");
+            _emailService.SendEmailAsync(projectOwner.Email, "Project Payment Notification", $"Dear {projectOwner.FirstName},\n You have successfully paid for project-id :{project.Id}.\n Thank You.");
 
             //Using the project details to retrieve service-provider details from the database
-            var serviceProviderRes = _userService.GetByUserId(project.ServiceProviderId);
+            var serviceProviderRes = _userService.GetByUserId(project.ProjectOwnerId);
             var serviceProvider = _mapper.Map<User>(serviceProviderRes);
             //email notification to service-provider 
-            _emailService.SendEmailAsync(projectOwner.Email, "Project Commencement Notification", $"Dear {serviceProvider.FirstName},\n You can commence with project-id :{project.ProjectId}");
+            _emailService.SendEmailAsync(projectOwner.Email, "Project Commencement Notification", $"Dear {serviceProvider.FirstName},\n You can commence with project-id :{project.Id}");
 
             var transactionDto = _mapper.Map<TransactionResponseDto>(transaction);
 

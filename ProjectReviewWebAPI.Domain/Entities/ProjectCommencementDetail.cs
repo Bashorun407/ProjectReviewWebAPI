@@ -23,7 +23,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public DateTime? EndDate { get; set; }
 
         //Navigational Properties
-        public Project Project { get; set; }
+        //public Project Project { get; set; }
         public IEnumerable<User> Users { get; set; }
     }
 }

@@ -6,12 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
+namespace ProjectReviewWebAPI.Shared.Dtos.ResponseDto
 {
-    public record UserResponseDto /*(string profilePicture, string firstName, string lastName, string userId, 
-        string specialization, string description, UserType userType, ApplicationStatus applicationStatus, 
-        RatingResponseDto ratings, IEnumerable<ProjectResponseDto> projects);*/
-
+    public record UserResponseDto 
     {
         public string? ProfilePicture { get; init; }
         public string? FirstName { get; init; }
@@ -21,9 +18,5 @@ namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
         public string? Description { get; init; }
         public UserType UserType { get; init; }
         public ApplicationStatus ApplicationStatus { get; init; }
-
-        //Navigation
-/*        public RatingResponseDto? Ratings { get; init; }
-        public IEnumerable<ProjectResponseDto>? Projects { get; init; }*/
     }
 }

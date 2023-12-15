@@ -12,8 +12,8 @@ using ProjectReviewWebAPI.Infrastructure.Persistence;
 namespace ProjectReviewWebAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231108110400_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231215161456_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bcacfb12-dac5-4730-bb2a-b1d3d31c4c07",
+                            Id = "d5f2c232-4272-43da-a2d0-a7ae3f76517b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a32a4d59-487d-4ac5-bbca-001a1dc03a86",
+                            Id = "12be0a2b-701d-4875-b33e-98514c5bff6a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -179,7 +179,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -188,13 +187,30 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Comments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c9d4c053-49b6-410c-bc78-2d54a9991870",
+                            Comments = "How is it going?",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(20),
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(34),
+                            UserId = "c9d4c053-49b6-410c-bc78-2d54a97890"
+                        },
+                        new
+                        {
+                            Id = "3d490a70-94ce-4d15-9494-5248280c2ce3",
+                            Comments = "It's going great!",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(36),
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(37),
+                            UserId = "b9d4c053-49b6-410c-uj78-2d54a9991819"
+                        });
                 });
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.ProfilePhoto", b =>
@@ -247,6 +263,66 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProjectDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectOwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectOwnerId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c9d4c053-49b6-410c-bc78-2d54a9991870",
+                            Category = 2,
+                            CoverImage = "urlImage",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(355),
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(355),
+                            ProjectDescription = "To build a house.",
+                            ProjectName = "House_Project",
+                            ProjectOwnerId = "b9d4c053-49b6-410c-uj78-2d54a9991819"
+                        },
+                        new
+                        {
+                            Id = "c9d4c053-49b6-410c-bc78-2d54a99911123",
+                            Category = 1,
+                            CoverImage = "urlImage",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(359),
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(359),
+                            ProjectDescription = "To build a school.",
+                            ProjectName = "School_Project",
+                            ProjectOwnerId = "c9d4c053-49b6-410c-bc78-2d54a97890"
+                        });
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.ProjectCommencementDetail", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -259,25 +335,12 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<int?>("ProjectCompletionStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProjectDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProjectId")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ProjectLevelApprovalStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("ProjectName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectOwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProjectStartApproval")
                         .HasColumnType("int");
@@ -288,14 +351,12 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
 
-                    b.ToTable("Projects");
+                    b.ToTable("ProjectCommencementDetail");
                 });
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
@@ -317,21 +378,13 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("StarRating")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Ratings");
                 });
@@ -372,6 +425,10 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Transactions");
@@ -388,17 +445,17 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<int>("ApplicationReviewStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("ApplicationStatus")
+                    b.Property<int?>("ApplicationStatus")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ChargeRate")
+                    b.Property<decimal?>("ChargeRate")
                         .HasColumnType("Money");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DateOfBirth")
@@ -428,7 +485,7 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NormalizedEmail")
@@ -451,28 +508,33 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
+                    b.Property<string>("ProjectCommencementDetailId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("Role")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Specialization")
+                    b.Property<int?>("Specialization")
                         .HasColumnType("int");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("UserType")
+                    b.Property<int?>("UserType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -485,7 +547,53 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("ProjectCommencementDetailId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b9d4c053-49b6-410c-uj78-2d54a9991819",
+                            AccessFailedCount = 0,
+                            ApplicationReviewStatus = 0,
+                            ConcurrencyStamp = "f6dbbcd4-025c-4c21-811d-6d5779183cb1",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(809),
+                            Email = "adex@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Adedayo",
+                            LastName = "Banji",
+                            LockoutEnabled = false,
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(811),
+                            PasswordHash = "adex1234",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5644745d-e752-4788-a7e8-3f0ee3fa8241",
+                            TwoFactorEnabled = false,
+                            UserName = "Adex"
+                        },
+                        new
+                        {
+                            Id = "c9d4c053-49b6-410c-bc78-2d54a97890",
+                            AccessFailedCount = 0,
+                            ApplicationReviewStatus = 0,
+                            ConcurrencyStamp = "ab735b4e-66b9-414d-9a94-b72915afc093",
+                            CreatedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(835),
+                            Email = "bobson@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Boboye",
+                            LastName = "Adelani",
+                            LockoutEnabled = false,
+                            ModifiedAt = new DateTime(2023, 12, 15, 17, 14, 55, 857, DateTimeKind.Local).AddTicks(836),
+                            PasswordHash = "bobo1234",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "2bee7c57-5526-4e83-8ff4-39730c2494eb",
+                            TwoFactorEnabled = false,
+                            UserName = "Bobson"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -541,18 +649,64 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Project", b =>
                 {
-                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", null)
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "User")
                         .WithMany("Projects")
+                        .HasForeignKey("ProjectOwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.Transaction", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("TransactionId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.ProjectCommencementDetail", b =>
+                {
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.Project", null)
+                        .WithOne("ProjectCommencementDetail")
+                        .HasForeignKey("ProjectReviewWebAPI.Domain.Entities.ProjectCommencementDetail", "ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.User", b =>
+                {
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.ProjectCommencementDetail", null)
+                        .WithMany("Users")
+                        .HasForeignKey("ProjectCommencementDetailId");
+
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.Transaction", null)
+                        .WithMany("Users")
+                        .HasForeignKey("TransactionId");
+
+                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.Rating", "Rating")
+                        .WithMany("Users")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Project", b =>
+                {
+                    b.Navigation("ProjectCommencementDetail")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.ProjectCommencementDetail", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Rating", b =>
                 {
-                    b.HasOne("ProjectReviewWebAPI.Domain.Entities.User", "Users")
-                        .WithOne("Rating")
-                        .HasForeignKey("ProjectReviewWebAPI.Domain.Entities.Rating", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.Transaction", b =>
+                {
+                    b.Navigation("Projects");
 
                     b.Navigation("Users");
                 });
@@ -560,9 +714,6 @@ namespace ProjectReviewWebAPI.Infrastructure.Migrations
             modelBuilder.Entity("ProjectReviewWebAPI.Domain.Entities.User", b =>
                 {
                     b.Navigation("Projects");
-
-                    b.Navigation("Rating")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

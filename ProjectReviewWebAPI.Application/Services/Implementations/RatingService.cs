@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
@@ -29,10 +29,10 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         public async Task<StandardResponse<RatingResponseDto>> AddRating(RatingRequestDto ratingRequestDto)
         {
             //Check if ratingRequestDo.username exists in the database
-            var user = await _unitOfWork.UserRepository.GetById(ratingRequestDto.ServiceProviderId, false);
+            var user = await _unitOfWork.UserRepository.GetById(ratingRequestDto.UserId, false);
             if (user == null)
             {
-                return StandardResponse<RatingResponseDto>.Failed($"User by this id: {ratingRequestDto.ServiceProviderId} does not exist ", 99);
+                return StandardResponse<RatingResponseDto>.Failed($"User by this id: {ratingRequestDto.UserId} does not exist ", 99);
             }
 
             _logger.LogInformation("New rating for service provider");
@@ -95,18 +95,18 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
            
         }
 
-        public async Task<StandardResponse<RatingResponseDto>> GetRatingByUsername(string username)
+        public async Task<StandardResponse<RatingResponseDto>> GetRatingByUserId(string userId)
         {
-            var rate = await _unitOfWork.RatingRepository.GetRatingByUsername(username, false);
+            var rate = await _unitOfWork.RatingRepository.GetRatingByUserId(userId, false);
 
             if(rate is null)
             {
-                return StandardResponse<RatingResponseDto>.Failed($"Rate by username: {username} does not exist", 99);
+                return StandardResponse<RatingResponseDto>.Failed($"Rate by username: {userId} does not exist", 99);
             }
 
             var rateDto = _mapper.Map<RatingResponseDto>(rate);
 
-            return StandardResponse<RatingResponseDto>.Success($"Rate by user with id: {username}", rateDto, 200);
+            return StandardResponse<RatingResponseDto>.Success($"Rate by user with id: {userId}", rateDto, 200);
         }
     }
 }

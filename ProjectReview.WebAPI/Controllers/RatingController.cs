@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;
@@ -56,10 +56,10 @@ namespace ProjectReview.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status409Conflict)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
-        [HttpGet("rateByUsername/{username}")]
-        public async Task<IActionResult> GetRatingByUsername(string username)
+        [HttpGet("rateByUserId/{userId}")]
+        public async Task<IActionResult> GetRatingByUsername(string userId)
         {
-            var result = await _ratingService.GetRatingByUsername(username);
+            var result = await _ratingService.GetRatingByUserId(userId);
 
             return Ok(result);
         }

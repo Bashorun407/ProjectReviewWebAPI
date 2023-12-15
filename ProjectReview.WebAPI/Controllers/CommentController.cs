@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using Swashbuckle.AspNetCore.Annotations;

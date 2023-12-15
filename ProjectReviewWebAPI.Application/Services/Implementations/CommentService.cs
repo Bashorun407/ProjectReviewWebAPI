@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;

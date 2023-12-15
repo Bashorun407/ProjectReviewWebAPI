@@ -1,6 +1,6 @@
 ﻿using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
 using System;
@@ -15,6 +15,6 @@ namespace ProjectReviewWebAPI.Application.Services.Abstractions
     {
         Task<StandardResponse<RatingResponseDto>> AddRating(RatingRequestDto ratingRequestDto);
         Task<StandardResponse<PagedList<RatingResponseDto>>> GetAllRatingsAsync(RatingRequestInputParameter parameter);
-        Task<StandardResponse<RatingResponseDto>> GetRatingByUsername(string username);
+        Task<StandardResponse<RatingResponseDto>> GetRatingByUserId(string userId);
     }
 }

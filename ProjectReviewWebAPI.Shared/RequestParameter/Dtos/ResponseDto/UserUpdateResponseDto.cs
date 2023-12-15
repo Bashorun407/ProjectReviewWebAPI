@@ -6,10 +6,9 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectReviewWebAPI.Domain.Dtos.ResponseDto
+namespace ProjectReviewWebAPI.Shared.Dtos.ResponseDto
 {
-    public record UserUpdateResponseDto /*(string? profilePicture, string? phoneNumber, string? email, 
-        string? password, string? description);*/
+    public record UserUpdateResponseDto     
     {
         public string? ProfilePicture { get; init; }
         public string? PhoneNumber { get; init; }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
 using ProjectReviewWebAPI.Shared.RequestParameter.ModelParameters;
@@ -90,7 +90,7 @@ namespace ProjectReview.WebAPI.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
 
-        // GET: api/<ProjectController>
+/*        // GET: api/<ProjectController>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<ProjectResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
@@ -103,7 +103,7 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _projectService.GetByProjectStatus(parameter);
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
             return StatusCode(result.StatusCode, result);
-        }
+        }*/
 
         /// <summary>
         /// Returns a project by entering specific Project level status which can be NOT_SATISFIED or SATISFIED
@@ -112,7 +112,7 @@ namespace ProjectReview.WebAPI.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
 
-        // GET: api/<ProjectController>
+/*        // GET: api/<ProjectController>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<PagedList<ProjectResponseDto>>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
@@ -125,7 +125,7 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _projectService.GetByApprovalStatus(parameter);
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Data.MetaData));
             return StatusCode(result.StatusCode, result);
-        }
+        }*/
 
         /// <summary>
         /// Returns a project by entering project-id as method parameter
@@ -198,7 +198,7 @@ namespace ProjectReview.WebAPI.Controllers
         /// <param name="projectUpdateDto"></param>
         /// <returns></returns>
 
-        // PUT api/<ProjectController>/5
+/*        // PUT api/<ProjectController>/5
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StandardResponse<ProjectResponseDto>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status409Conflict)]
@@ -211,7 +211,7 @@ namespace ProjectReview.WebAPI.Controllers
             var result = await _projectService.ServiceProviderProjectUpdate(projectId, projectUpdateDto);
 
             return Ok(result);
-        }
+        }*/
 
         /// <summary>
         /// Clients add Service provider to a project via this endpoint by passing the project's id as method parameter

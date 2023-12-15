@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
 using ProjectReviewWebAPI.Shared.RequestParameter.Common;
@@ -37,7 +37,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation($"Checking for user with id: {id} ");
             //var user = await _unitOfWork.UserRepository.GetById(id, false);
-            var user = await _unitOfWork.UserRepository.GetByUserId(id, false);
+            var user = await _unitOfWork.UserRepository.GetById(id, false);
 
             if(user == null)
             {
@@ -163,7 +163,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async Task<StandardResponse<UserResponseDto>> GetByUserId(string userId)
         {
-            var user = await _unitOfWork.UserRepository.GetByUserId(userId, false);
+            var user = await _unitOfWork.UserRepository.GetById(userId, false);
             if(user is null)
             {
                 return StandardResponse<UserResponseDto>.Failed($"User with id: {userId} does not exist", 99);
@@ -257,7 +257,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation($"Checking for user with id: {id}");
             //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
-            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetById(id, false);
 
             if(userExists is null)
             {
@@ -291,7 +291,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
         public async  Task<StandardResponse<(bool, string)>> UploadProfileImage(string userId, IFormFile file)
         {
-            var result = await  _unitOfWork.UserRepository.GetByUserId(userId, false);
+            var result = await  _unitOfWork.UserRepository.GetById(userId, false);
            
             if (result is null)
             {
@@ -322,7 +322,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation($"Checking for user with id: {id}");
             //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
-            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetById(id, false);
 
             if (userExists is null)
             {
@@ -352,7 +352,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation($"Checking for user with id: {id}");
             //var userExists = await _unitOfWork.UserRepository.GetById(id, false);
-            var userExists = await _unitOfWork.UserRepository.GetByUserId(id, false);
+            var userExists = await _unitOfWork.UserRepository.GetById(id, false);
 
             if (userExists is null)
             {

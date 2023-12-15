@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

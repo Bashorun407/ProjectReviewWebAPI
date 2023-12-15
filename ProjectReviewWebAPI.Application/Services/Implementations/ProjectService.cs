@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
-using ProjectReviewWebAPI.Domain.Dtos.ResponseDto;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.ResponseDto;
 using ProjectReviewWebAPI.Domain.Entities;
 using ProjectReviewWebAPI.Domain.Enums;
 using ProjectReviewWebAPI.Infrastructure.UoW.Abstraction;
@@ -89,7 +89,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
         {
             _logger.LogInformation("Creating a project");
             //Check if there is a user by projectOwnerId from the projectRequestDto
-            var user = await _unitOfWork.UserRepository.GetByUserId(projectRequestDto.ProjectOwnerId, false);
+            var user = await _unitOfWork.UserRepository.GetById(projectRequestDto.ProjectOwnerId, false);
 
             if (user == null)
             {
@@ -99,21 +99,21 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             //setting unique projectId
             //project.ProjectId = Utilities.GenerateUniqueId();
-            project.JobAcceptanceStatus = JobAcceptanceStatus.NOT_ACCEPTED;
+/*            project.JobAcceptanceStatus = JobAcceptanceStatus.NOT_ACCEPTED;
             project.ProjectStartApproval = ProjectStartApproval.NOT_APPROVED;
             project.ProjectLevelApprovalStatus = ProjectLevelApprovalStatus.NOT_SATISFIED;
-            project.ProjectCompletionStatus = ProjectCompletionStatus.Pending;
+            project.ProjectCompletionStatus = ProjectCompletionStatus.Pending;*/
            
             await _unitOfWork.ProjectRepository.CreateAsync(project);
             _logger.LogInformation("Saving new project to database");
             await _unitOfWork.SaveAsync();
-            _logger.LogInformation($"Project with project Id: {project.ProjectId} successfully saved to database");
+            _logger.LogInformation($"Project with project Id: {project.Id} successfully saved to database");
 
             //Sends email notification to projectOwner that project has been created
             //var productOwner = await _unitOfWork.UserRepository.GetById(project.ProjectOwnerId, false);
             var owner = _mapper.Map<User>(user);
 
-            _emailService.SendEmailAsync(owner.Email, "Project Creation Notification", $"Dear {owner.LastName}, {owner.FirstName},\nYou have successfully created a project with project-id: {project.ProjectId}.\nThank you for your patronage.");
+            _emailService.SendEmailAsync(owner.Email, "Project Creation Notification", $"Dear {owner.LastName}, {owner.FirstName},\nYou have successfully created a project with project-id: {project.Id}.\nThank you for your patronage.");
 
 
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
@@ -159,7 +159,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<PagedList<ProjectResponseDto>>.Success($"All projects", pagedList, 200);
         }
 
-        public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByApprovalStatus(ProjectRequestInputParameter parameter)
+/*        public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByApprovalStatus(ProjectRequestInputParameter parameter)
         {
 
             var result = await _unitOfWork.ProjectRepository.GetByApprovalStatus(parameter, false);
@@ -172,9 +172,9 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var pagedList = new PagedList<ProjectResponseDto>(projectsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
             return StandardResponse<PagedList<ProjectResponseDto>>.Success($"Projects by Approval status", pagedList, 200);
-        }
+        }*/
 
-        public async Task<StandardResponse<ProjectResponseDto>> GetById(int id)
+/*        public async Task<StandardResponse<ProjectResponseDto>> GetById(int id)
         {
             var project = await _unitOfWork.ProjectRepository.GetById(id, false);
 
@@ -185,7 +185,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
             return StandardResponse<ProjectResponseDto>.Success($"Project with id: {id} found", projectDto, 200);
-        }
+        }*/
 
         public async Task<StandardResponse<ProjectResponseDto>> GetByProjectId(string projectId)
         {
@@ -232,7 +232,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<PagedList<ProjectResponseDto>>.Success("Projects by project name ", pagedList, 200);
         }
 
-        public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByProjectStatus(ProjectRequestInputParameter parameter)
+/*        public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetByProjectStatus(ProjectRequestInputParameter parameter)
         {
 
 
@@ -247,7 +247,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             var pagedList = new PagedList<ProjectResponseDto>(projectsDto.ToList(), result.MetaData.TotalCount, parameter.PageNumber, parameter.PageSize);
 
             return StandardResponse<PagedList<ProjectResponseDto>>.Success($"All projects by specified criteria ", pagedList, 200);
-        }
+        }*/
 
 
         public async Task<StandardResponse<PagedList<ProjectResponseDto>>> GetProjectsByCategory(ProjectRequestInputParameter parameter)
@@ -266,7 +266,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
             return StandardResponse<PagedList<ProjectResponseDto>>.Success($"All projects by category: {parameter.SearchTerm} ", pagedList, 200);
         }
 
-        public async Task<StandardResponse<ProjectResponseDto>> ServiceProviderProjectUpdate(string id, ProjectServiceProviderUpdateDto projectUpdateDto)
+/*        public async Task<StandardResponse<ProjectResponseDto>> ServiceProviderProjectUpdate(string id, ProjectServiceProviderUpdateDto projectUpdateDto)
         {
 
             var projectExists = await _unitOfWork.ProjectRepository.GetByProjectId(id, false);
@@ -296,7 +296,7 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
             return StandardResponse<ProjectResponseDto>.Success("Project was updated successfully", projectDto, 200);
 
-        }
+        }*/
 
         public async Task<StandardResponse<ProjectResponseDto>> UpdateProject(string id, ProjectUpdateDto projectUpdateDto)
         {
@@ -320,8 +320,8 @@ namespace ProjectReviewWebAPI.Application.Services.Implementations
 
 
             //Sends email notification to projectOwner that project has been completed
-            var productOwner = await _unitOfWork.UserRepository.GetByUserId(projectExists.ProjectOwnerId, false);
-            _emailService.SendEmailAsync(productOwner.Email, "Project Completion Notification", $"Dear {productOwner.LastName}, {productOwner.FirstName},\nYour project with project id: {projectExists.ProjectId} has been completed successfully.");
+            var productOwner = await _unitOfWork.UserRepository.GetById(projectExists.ProjectOwnerId, false);
+            _emailService.SendEmailAsync(productOwner.Email, "Project Completion Notification", $"Dear {productOwner.LastName}, {productOwner.FirstName},\nYour project with project id: {projectExists.Id} has been completed successfully.");
 
             return StandardResponse<ProjectResponseDto>.Success("Project was updated successfully", projectDto, 200);
         }

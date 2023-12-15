@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ProjectReviewWebAPI.Application.Services.Abstractions;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
 using ProjectReviewWebAPI.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

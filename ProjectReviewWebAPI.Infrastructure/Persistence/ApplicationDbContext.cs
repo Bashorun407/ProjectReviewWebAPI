@@ -38,16 +38,16 @@ namespace ProjectReviewWebAPI.Infrastructure.Persistence
                 .HasForeignKey(p => p.ProjectOwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Project>()
+/*            builder.Entity<Project>()
                 .HasOne(p => p.ProjectCommencementDetail)
                 .WithOne(p => p.Project)
                 .HasForeignKey<Project>(p => p.ProjectCommencementDetail)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
 
-            builder.Entity<ProjectCommencementDetail>()
+/*            builder.Entity<ProjectCommencementDetail>()
                 .HasOne(p => p.Project)
                 .WithOne(p => p.ProjectCommencementDetail)
-                .HasForeignKey<Project>(p => p.ProjectOwnerId);
+                .HasForeignKey<Project>(p => p.ProjectOwnerId);*/
 
             builder.Entity<Rating>()
                 .HasMany(r => r.Users)
@@ -60,7 +60,8 @@ namespace ProjectReviewWebAPI.Infrastructure.Persistence
 
             builder.Entity<User>()
                 .HasMany(u => u.Projects)
-                .WithOne(p => p.User);
+                .WithOne(p => p.User)
+;
                 
 
             builder.ApplyConfiguration(new CommentConfiguration());

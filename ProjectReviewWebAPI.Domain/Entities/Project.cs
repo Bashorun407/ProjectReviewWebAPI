@@ -18,8 +18,8 @@ namespace ProjectReviewWebAPI.Domain.Entities
         [ForeignKey(nameof(User))]
         public string ProjectOwnerId { get; set; }
 
-        [ForeignKey(nameof(ProjectCommencementDetail))]
-        public string ProjectCommencementId { get; set; }
+/*        [ForeignKey(nameof(ProjectCommencementDetail))]
+        public string ProjectCommencementId { get; set; }*/
 
         //Navigational Property
         public User User { get; set; }

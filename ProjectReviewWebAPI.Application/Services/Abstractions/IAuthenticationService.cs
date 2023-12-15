@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProjectReviewWebAPI.Domain.Dtos;
-using ProjectReviewWebAPI.Domain.Dtos.RequestDtos;
+using ProjectReviewWebAPI.Shared.Dtos.RequestDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
