@@ -12,7 +12,6 @@ namespace ProjectReviewWebAPI.Domain.Entities
     {
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
-        public string UserName { get; set; }
         [Range(1, 5)]
         [Required(ErrorMessage = "Data entry has to be integer"), Column(Order = 2)]
         public int StarRating { get; set; }
@@ -20,7 +19,7 @@ namespace ProjectReviewWebAPI.Domain.Entities
         public double AverageRating { get; set; }
 
         //Navigational property
-        public User Users { get; set; }
+        public IEnumerable<User> Users { get; set; }
 
     }
 }

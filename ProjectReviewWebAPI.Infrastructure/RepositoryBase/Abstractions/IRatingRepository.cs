@@ -8,6 +8,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
     {
 
         Task<PagedList<Rating>> GetAll(RatingRequestInputParameter parameter, bool trackChanges);
-        Task<Rating>GetRatingByUsername(string username, bool trackChanges);
+        Task<Rating>GetRatingByUserId(string username, bool trackChanges);
     }
 }

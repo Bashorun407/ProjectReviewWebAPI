@@ -11,7 +11,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
         Task<PagedList<User>> GetAllUsers(UserRequestInputParameter param, bool trackChanges);
         
         Task<User> GetById(string id, bool trackChanges);
-        Task<User> GetByUserId(string userId, bool trackChanges);
+        //Task<User> GetByUserId(string userId, bool trackChanges);
         Task<User> GetByUsername(string username, bool trackChanges);
 
         Task<User> GetUserByPhoneNumber(string phoneNumber, bool trackChanges);

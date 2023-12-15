@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectReviewWebAPI.Domain.Entities
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity 
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

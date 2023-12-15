@@ -15,14 +15,10 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Abstractions
 
         Task<PagedList<Project>> GetAll(ProjectRequestInputParameter parameter, bool trackChanges);
         Task<PagedList<Project>> GetByProjectName(ProjectRequestInputParameter parameter, bool trackChanges);
-        Task<Project> GetById(int id, bool trackChanges);
+       
+        Task<PagedList<Project>> GetByCategory(ProjectRequestInputParameter parameter, bool trackChanges);
         Task<Project> GetByProjectId(string projectId, bool trackChanges);
         Task<PagedList<Project>> GetByProjectOwnerId(ProjectRequestInputParameter parameter, bool trackChanges);
-        Task<PagedList<Project>> GetByServiceProviderId(ProjectRequestInputParameter parameter, bool trackChanges);
-        Task<PagedList<Project>> GetByCategory(ProjectRequestInputParameter parameter, bool trackChanges);
-        Task<PagedList<Project>> GetByProjectStatus(ProjectRequestInputParameter parameter, bool trackChanges);
-        Task<PagedList<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, bool trackChanges);
-
-
+        
     }
 }

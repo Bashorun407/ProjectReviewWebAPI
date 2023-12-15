@@ -33,14 +33,6 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<PagedList<Project>> GetByApprovalStatus(ProjectRequestInputParameter parameter, bool trackChanges)
-        {
-            var result = FindByCondition(c => c.ProjectLevelApprovalStatus.Equals(parameter.SearchTerm), trackChanges)
-                .OrderBy(x => x.ProjectName)
-                .AsQueryable();
-
-            return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
-        }
 
         public async Task<PagedList<Project>> GetByCategory(ProjectRequestInputParameter parameter, bool trackChanges)
         {
@@ -60,7 +52,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<Project> GetByProjectId(string projectId, bool trackChanges)
         {
-            var result =  FindByCondition(c=> c.ProjectId.Equals(projectId), trackChanges).SingleOrDefault();
+            var result =  FindByCondition(c=> c.Id.Equals(projectId), trackChanges).SingleOrDefault();
 
             return result;
         }
@@ -84,23 +76,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
             return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
         }
 
-        public async Task<PagedList<Project>> GetByProjectStatus(ProjectRequestInputParameter parameter, bool trackChanges)
-        {
-            var result = FindByCondition(c => c.ProjectCompletionStatus.Equals(parameter.SearchTerm), trackChanges)
-                .OrderBy(x => x.ProjectName)
-                .AsQueryable();
 
-            return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageNumber);
-        }
-
-        public async Task<PagedList<Project>> GetByServiceProviderId(ProjectRequestInputParameter parameter, bool trackChanges)
-        {
-            var result = FindByCondition(c => c.ServiceProviderId.Equals(parameter.SearchTerm), trackChanges)
-                .OrderBy(x => x.ServiceProviderId)
-                .AsQueryable();
-
-            return await PagedList<Project>.GetPagination(result, parameter.PageNumber, parameter.PageSize);
-        }
 
     }
 }

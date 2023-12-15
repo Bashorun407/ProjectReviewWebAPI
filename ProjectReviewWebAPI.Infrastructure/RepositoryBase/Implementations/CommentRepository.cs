@@ -42,7 +42,7 @@ namespace ProjectReviewWebAPI.Infrastructure.RepositoryBase.Implementations
 
         public async Task<PagedList<Comment>> GetCommentByUsername(CommentRequestInputParameter parameter, bool trackChanges)
         {
-           var result = FindByCondition(c => c.UserName.Equals(parameter.SearchTerm), trackChanges)
+           var result = FindByCondition(c => c.UserId.Equals(parameter.SearchTerm), trackChanges)
                 .OrderBy(x => x.CreatedAt)
                 .AsQueryable();
 

@@ -9,9 +9,9 @@ namespace ProjectReviewWebAPI.Domain.Entities
 {
     public class Comment : BaseEntity
     {
-
-        public string UserName { get; set; }
-        public string Comments { get; set; }
+        [ForeignKey(nameof(User))]
+        public string? UserId { get; set; }
+        public string? Comments { get; set; }
 
     }
 }
